@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu, X, Search, Sun, Moon, GraduationCap, BookOpen,
-  ChevronRight, ChevronDown, CheckCircle2, Monitor, Grid3X3,
+  ChevronRight, ChevronDown, CheckCircle2, Monitor, Grid3X3, UserRound,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { MODULES, getModuleById, getAllTopics } from '../data/courseData'
@@ -94,6 +94,18 @@ export default function Layout() {
               </div>
             )}
           </div>
+
+          {/* Resource Person */}
+          <a
+            href="https://scholar-sparkle-web.lovable.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-quantum !py-1.5 !px-4 text-xs flex items-center gap-2 whitespace-nowrap"
+            title="Resource Person Profile"
+          >
+            <UserRound size={15} />
+            <span className="hidden sm:inline">Resource Person</span>
+          </a>
 
           {/* Controls */}
           <div className="flex items-center gap-2">
