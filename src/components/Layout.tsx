@@ -10,7 +10,7 @@ import { MODULES, getModuleById, getAllTopics } from '../data/courseData'
 
 export default function Layout() {
   const {
-    darkMode, toggleDarkMode, sidebarOpen, toggleSidebar, setSidebarOpen,
+    darkMode, toggleDarkMode, sidebarOpen, toggleSidebar,
     searchQuery, setSearchQuery, isTopicComplete, projectorMode, toggleProjectorMode,
   } = useApp()
   const location = useLocation()
@@ -40,7 +40,7 @@ export default function Layout() {
       ).slice(0, 10)
     : []
 
-  const handleSearch = (topicId: string, moduleId: string, topicIndex: number) => {
+  const handleSearch = (_topicId: string, moduleId: string, topicIndex: number) => {
     setSearchQuery('')
     setShowSearchResults(false)
     const mod = getModuleById(moduleId)

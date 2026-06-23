@@ -1,12 +1,12 @@
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
-  ArrowLeft, CheckCircle2, BookOpen, Lightbulb, AlertTriangle,
+  ArrowLeft, CheckCircle2, BookOpen, Lightbulb,
   ChevronRight, GraduationCap, Target, BrainCircuit, ListChecks,
   MessageSquareQuote, FlaskConical,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
-import { MODULES, getModuleById } from '../data/courseData'
+import { getModuleById } from '../data/courseData'
 import { getTopicData } from '../data/topicData'
 import SectionWrapper from '../components/topic/SectionWrapper'
 import InfoCard from '../components/topic/InfoCard'
@@ -14,7 +14,6 @@ import FeedbackMCQ from '../components/topic/FeedbackMCQ'
 
 export default function TopicPage() {
   const { moduleId, topicId } = useParams<{ moduleId: string; topicId: string }>()
-  const navigate = useNavigate()
   const { markTopicComplete, isTopicComplete } = useApp()
 
   const mod = getModuleById(moduleId || '')
@@ -36,8 +35,6 @@ export default function TopicPage() {
   const prevTopic = topicIndex > 0 ? mod.topics[topicIndex - 1] : null
   const nextTopic = topicIndex < mod.topics.length - 1 ? mod.topics[topicIndex + 1] : null
   const isComplete = isTopicComplete(topicIdFull)
-  const prevModuleIdx = MODULES.findIndex(m => m.id === moduleId) - 1
-  const nextModuleIdx = MODULES.findIndex(m => m.id === moduleId) + 1
 
   return (
     <div className="space-y-8">

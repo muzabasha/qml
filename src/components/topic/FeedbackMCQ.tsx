@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, HelpCircle, RotateCcw, Trophy, ChevronRight } from 'lucide-react';
 import type { MCQ } from '../../types';

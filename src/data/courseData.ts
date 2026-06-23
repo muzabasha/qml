@@ -1,4 +1,4 @@
-import type { ModuleMeta } from '../types';
+import type { ModuleMeta, TopicMeta } from '../types';
 
 export const MODULES: ModuleMeta[] = [
   {

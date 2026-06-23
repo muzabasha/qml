@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, User, Monitor, UsersRound, CheckCircle2, Clock, Package, Target, BarChart2 } from 'lucide-react';
 import type { ActivityLevel } from '../../types';

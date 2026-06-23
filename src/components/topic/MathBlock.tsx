@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { InlineMath, BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';

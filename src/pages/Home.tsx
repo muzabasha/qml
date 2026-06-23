@@ -10,7 +10,7 @@ import { MODULES, TOTAL_TOPICS } from '../data/courseData'
 const moduleIcons = [GraduationCap, BookOpen, Atom, Brain, Cpu, Sparkles]
 
 export default function Home() {
-  const { completedTopics, markTopicComplete, completionPercent } = useApp()
+  const { completedTopics, completionPercent } = useApp()
 
   return (
     <div className="space-y-10">
