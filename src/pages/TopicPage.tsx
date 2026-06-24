@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft, CheckCircle2, BookOpen, Lightbulb,
   ChevronRight, GraduationCap, Target, BrainCircuit, ListChecks,
-  MessageSquareQuote, FlaskConical,
+  MessageSquareQuote, FlaskConical, Play, Code2, Users, Sparkles,
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { getModuleById } from '../data/courseData'
@@ -11,6 +11,228 @@ import { getTopicData } from '../data/topicData'
 import SectionWrapper from '../components/topic/SectionWrapper'
 import InfoCard from '../components/topic/InfoCard'
 import FeedbackMCQ from '../components/topic/FeedbackMCQ'
+import { MathBlock } from '../components/topic/MathBlock'
+import InteractiveDiagram from '../components/topic/InteractiveDiagram'
+import type { ContentItem, ActivityContent, ProjectContent, LabContent } from '../types'
+
+function renderContentItem(item: ContentItem, idx: number) {
+  switch (item.type) {
+    case 'text':
+      return (
+        <p key={idx} className="text-slate-700 dark:text-slate-300 leading-relaxed">
+          {item.text}
+        </p>
+      )
+    case 'math':
+      return item.formula ? (
+        <MathBlock
+          key={idx}
+          formula={item.formula}
+          label={item.title}
+          explanation={item.text}
+        />
+      ) : null
+    case 'diagram':
+      return item.chart ? (
+        <InteractiveDiagram
+          key={idx}
+          title={item.title || 'Diagram'}
+          description={item.text}
+          chart={item.chart}
+        />
+      ) : null
+    case 'code':
+      return item.code ? (
+        <div key={idx} className="lab-block !p-0 !overflow-hidden">
+          <div className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-cyan-200 dark:border-cyan-800">
+            <Code2 size={14} className="text-cyan-600" />
+            <span className="text-xs font-bold text-cyan-700 dark:text-cyan-300 uppercase">{item.code.language}</span>
+          </div>
+          <pre className="p-4 text-sm overflow-x-auto font-mono text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900">
+            <code>{item.code.code}</code>
+          </pre>
+        </div>
+      ) : null
+    case 'list':
+      return (
+        <ul key={idx} className="space-y-2">
+          {item.items?.map((li, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
+              <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+              {li}
+            </li>
+          ))}
+        </ul>
+      )
+    case 'card':
+      return item.cards ? (
+        <div key={idx} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {item.cards.map((c, i) => (
+            <div key={i} className="flip-card-container cursor-pointer group">
+              <div className="flip-card-inner group-hover:flip-card-flipped">
+                <div className="flip-card-front bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800">
+                  <Sparkles size={24} className="text-primary-500 mb-2" />
+                  <p className="text-sm font-bold text-slate-800 dark:text-slate-200">{c.front}</p>
+                </div>
+                <div className="flip-card-back bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{c.back}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null
+    default:
+      return null
+  }
+}
+
+function renderActivity(activity: ActivityContent) {
+  return (
+    <div className="activity-block space-y-5">
+      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{activity.description}</p>
+
+      {activity.codetask && (
+        <div className="!p-0 !overflow-hidden border border-emerald-200 dark:border-emerald-800 rounded-xl">
+          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-100 dark:bg-emerald-900/40 border-b border-emerald-200 dark:border-emerald-800">
+            <Code2 size={14} className="text-emerald-600" />
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase">{activity.codetask.language}</span>
+          </div>
+          <pre className="p-4 text-sm overflow-x-auto font-mono text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900">
+            <code>{activity.codetask.code}</code>
+          </pre>
+        </div>
+      )}
+
+      <div>
+        <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <Play size={12} /> Steps
+        </p>
+        <ol className="space-y-2">
+          {activity.steps.map((step, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+                {i + 1}
+              </span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {activity.discussionQuestions && activity.discussionQuestions.length > 0 && (
+        <div className="bg-white dark:bg-slate-800/40 rounded-xl p-4 border border-emerald-200 dark:border-emerald-800">
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+            <Users size={12} /> Discussion Questions
+          </p>
+          <ul className="space-y-1">
+            {activity.discussionQuestions.map((q, i) => (
+              <li key={i} className="text-sm text-slate-600 dark:text-slate-400 flex items-start gap-2">
+                <span className="text-emerald-500 font-bold">{i + 1}.</span> {q}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {activity.materials && activity.materials.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {activity.materials.map((m, i) => (
+            <span key={i} className="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-1 rounded-full text-slate-600 dark:text-slate-400">
+              {m}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function renderProject(project: ProjectContent) {
+  return (
+    <div className="project-block space-y-5">
+      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{project.description}</p>
+
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-slate-800/40 rounded-xl p-4 border border-violet-200 dark:border-violet-800">
+          <p className="text-xs font-bold text-violet-700 dark:text-violet-300 uppercase tracking-wider mb-2">Objectives</p>
+          <ul className="space-y-1.5">
+            {project.objectives.map((o, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <Target size={12} className="text-violet-500 flex-shrink-0 mt-1" /> {o}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-white dark:bg-slate-800/40 rounded-xl p-4 border border-violet-200 dark:border-violet-800">
+          <p className="text-xs font-bold text-violet-700 dark:text-violet-300 uppercase tracking-wider mb-2">Deliverables</p>
+          <ul className="space-y-1.5">
+            {project.deliverables.map((d, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <CheckCircle2 size={12} className="text-emerald-500 flex-shrink-0 mt-1" /> {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {project.tools && project.tools.length > 0 && (
+        <div>
+          <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Tools</p>
+          <div className="flex flex-wrap gap-2">
+            {project.tools.map((t, i) => (
+              <span key={i} className="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-1 rounded-full text-slate-600 dark:text-slate-400">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function renderLab(lab: LabContent) {
+  return (
+    <div className="lab-block space-y-5">
+      <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{lab.description}</p>
+
+      <div className="bg-white dark:bg-slate-800/40 rounded-xl px-4 py-3 border border-cyan-200 dark:border-cyan-800">
+        <p className="text-xs font-bold text-cyan-700 dark:text-cyan-300 uppercase tracking-wider mb-1">Setup</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-mono">{lab.setup}</p>
+      </div>
+
+      <div>
+        <p className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <Play size={12} /> Lab Steps
+        </p>
+        <ol className="space-y-2">
+          {lab.steps.map((step, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-xs font-bold">
+                {i + 1}
+              </span>
+              {step}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {lab.expectedOutput && (
+        <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl px-4 py-3 border border-emerald-200 dark:border-emerald-800">
+          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">Expected Output</p>
+          <pre className="text-sm text-slate-700 dark:text-slate-300 font-mono">{lab.expectedOutput}</pre>
+        </div>
+      )}
+
+      {lab.challenge && (
+        <InfoCard type="warning" title="Challenge">
+          {lab.challenge}
+        </InfoCard>
+      )}
+    </div>
+  )
+}
 
 export default function TopicPage() {
   const { moduleId, topicId } = useParams<{ moduleId: string; topicId: string }>()
@@ -76,7 +298,6 @@ export default function TopicPage() {
           </button>
         </div>
 
-        {/* Tags */}
         {topic.tags && (
           <div className="flex flex-wrap gap-2">
             {topic.tags.map(tag => (
@@ -113,79 +334,77 @@ export default function TopicPage() {
       )}
 
       {/* Story / Motivation */}
-      <SectionWrapper
-        id="story"
-        title="The Story"
-        icon={<MessageSquareQuote size={18} className="text-orange-500" />}
-        accentColor="border-orange-500"
-        badge="Motivation"
-        badgeColor="bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300"
-      >
-        <div className="story-block">
-          <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            Coming soon — a narrative that connects this topic to real-world problems and quantum possibilities.
-          </p>
-        </div>
-      </SectionWrapper>
+      {data?.story && (
+        <SectionWrapper
+          id="story"
+          title="The Story"
+          icon={<MessageSquareQuote size={18} className="text-orange-500" />}
+          accentColor="border-orange-500"
+          badge="Motivation"
+          badgeColor="bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300"
+        >
+          <div className="story-block">
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+              {data.story}
+            </p>
+          </div>
+        </SectionWrapper>
+      )}
 
       {/* Core Content / Concepts */}
-      <SectionWrapper
-        id="concepts"
-        title="Core Concepts"
-        icon={<BrainCircuit size={18} className="text-primary-500" />}
-        accentColor="border-primary-500"
-        badge="Learn"
-        badgeColor="bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300"
-      >
-        <div className="space-y-4">
-          <p className="text-slate-600 dark:text-slate-400">
-            Content for this topic is being developed. Please check back or explore the MCQs and recap below.
-          </p>
-          {data?.keyInsights && (
-            <div className="grid sm:grid-cols-2 gap-3">
-              {data.keyInsights.map((ki, i) => (
-                <InfoCard key={i} type="insight" title={`Insight ${i + 1}`}>
-                  {ki}
-                </InfoCard>
-              ))}
-            </div>
-          )}
-        </div>
-      </SectionWrapper>
+      {data?.concepts && data.concepts.length > 0 && (
+        <SectionWrapper
+          id="concepts"
+          title="Core Concepts"
+          icon={<BrainCircuit size={18} className="text-primary-500" />}
+          accentColor="border-primary-500"
+          badge="Learn"
+          badgeColor="bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300"
+        >
+          <div className="space-y-5">
+            {data.concepts.map((item, idx) => renderContentItem(item, idx))}
+            {data.keyInsights && (
+              <div className="grid sm:grid-cols-2 gap-3 pt-2">
+                {data.keyInsights.map((ki, i) => (
+                  <InfoCard key={i} type="insight" title={`Insight ${i + 1}`}>
+                    {ki}
+                  </InfoCard>
+                ))}
+              </div>
+            )}
+          </div>
+        </SectionWrapper>
+      )}
 
       {/* Activity */}
-      <SectionWrapper
-        id="activity"
-        title="Activity"
-        icon={<Target size={18} className="text-emerald-500" />}
-        accentColor="border-emerald-500"
-        badge="Hands-On"
-        badgeColor="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
-        defaultOpen={false}
-      >
-        <div className="activity-block">
-          <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            Interactive activity coming soon. This section will include guided exercises, coding tasks, and group discussions.
-          </p>
-        </div>
-      </SectionWrapper>
+      {data?.activity && (
+        <SectionWrapper
+          id="activity"
+          title="Activity"
+          icon={<Target size={18} className="text-emerald-500" />}
+          accentColor="border-emerald-500"
+          badge="Hands-On"
+          badgeColor="bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
+          defaultOpen={false}
+        >
+          {renderActivity(data.activity)}
+        </SectionWrapper>
+      )}
 
       {/* Project */}
-      <SectionWrapper
-        id="project"
-        title="Mini-Project"
-        icon={<FlaskConical size={18} className="text-violet-500" />}
-        accentColor="border-violet-500"
-        badge="Project"
-        badgeColor="bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300"
-        defaultOpen={false}
-      >
-        <div className="project-block">
-          <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            Mini-project coming soon. Apply the concepts learned in this topic to solve a real-world inspired problem.
-          </p>
-        </div>
-      </SectionWrapper>
+      {data?.project && (
+        <SectionWrapper
+          id="project"
+          title="Mini-Project"
+          icon={<FlaskConical size={18} className="text-violet-500" />}
+          accentColor="border-violet-500"
+          badge="Project"
+          badgeColor="bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300"
+          defaultOpen={false}
+        >
+          {renderProject(data.project)}
+        </SectionWrapper>
+      )}
 
       {/* MCQ Quiz */}
       {data?.mcqs && data.mcqs.length > 0 && (
@@ -203,21 +422,19 @@ export default function TopicPage() {
       )}
 
       {/* Virtual Lab */}
-      <SectionWrapper
-        id="lab"
-        title="Virtual Lab"
-        icon={<FlaskConical size={18} className="text-teal-500" />}
-        accentColor="border-teal-500"
-        badge="Lab"
-        badgeColor="bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300"
-        defaultOpen={false}
-      >
-        <div className="lab-block">
-          <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-            Virtual lab coming soon. Run Qiskit experiments directly in your browser with pre-configured notebooks.
-          </p>
-        </div>
-      </SectionWrapper>
+      {data?.lab && (
+        <SectionWrapper
+          id="lab"
+          title="Virtual Lab"
+          icon={<FlaskConical size={18} className="text-teal-500" />}
+          accentColor="border-teal-500"
+          badge="Lab"
+          badgeColor="bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300"
+          defaultOpen={false}
+        >
+          {renderLab(data.lab)}
+        </SectionWrapper>
+      )}
 
       {/* Recap */}
       {data?.recap && data.recap.length > 0 && (

@@ -109,6 +109,57 @@ const module2Data: Record<string, TopicData> = {
       'Machine learning is not magic — it is pattern recognition at scale.',
       'The quality of an ML model is fundamentally bounded by the quality of its training data.',
     ],
+    story: 'Every time you search on Google, watch a recommended video, or ask a voice assistant a question, you are interacting with machine learning. ML systems analyze vast amounts of data to find patterns that would be impossible for humans to encode manually. From spam filters protecting your inbox to facial recognition unlocking your phone, ML has become an invisible yet indispensable part of modern life. Understanding how these systems learn from data is the first step toward building intelligent applications — and eventually, quantum-enhanced ML models.',
+    concepts: [
+      { type: 'text', text: 'Machine Learning is a subset of AI where systems learn patterns from data without explicit programming. Instead of writing rules, we write algorithms that discover rules automatically from examples.' },
+      { type: 'math', formula: '\\text{Accuracy} = \\frac{TP + TN}{TP + TN + FP + FN}' },
+      { type: 'diagram', chart: 'graph LR; A[Raw Data] --> B[Preprocessing]; B --> C[Train/Test Split]; C --> D[Train Model]; D --> E[Evaluate]; E --> F[Deploy];' },
+      { type: 'code', code: { language: 'python', code: 'from sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import accuracy_score\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)\nmodel = RandomForestClassifier()\nmodel.fit(X_train, y_train)\npreds = model.predict(X_test)\nprint(f"Accuracy: {accuracy_score(y_test, preds):.2f}")' } },
+      { type: 'list', title: 'Core ML Components', items: ['Training data — examples the model learns from', 'Model/algorithm — the learning mechanism', 'Evaluation metrics — how we measure success', 'Hyperparameters — configuration choices'] },
+      { type: 'flip-card', title: 'ML Basics', cards: [
+        { front: 'What is the difference between AI, ML, and Deep Learning?', back: 'AI is the broadest field. ML is a subset of AI. Deep Learning is a subset of ML using multi-layer neural networks.' },
+        { front: 'Why split data into train and test sets?', back: 'To evaluate generalization to unseen data. Training accuracy is misleadingly optimistic.' },
+      ] },
+    ],
+    activity: {
+      description: 'Analyze real-world scenarios and identify which use machine learning, justifying your reasoning with ML concepts.',
+      steps: [
+        'Read three scenarios: (a) a spell-checker, (b) a calculator computing square roots, (c) a music streaming service recommending songs.',
+        'For each scenario, decide: rule-based or machine learning? Write your reasoning.',
+        'For ML scenarios, identify: training data, features, labels, and the task the model performs.',
+        'Share with a partner and discuss any disagreements.',
+        'Compile a class list of 10 everyday technologies that likely use ML.',
+      ],
+      discussionQuestions: [
+        'Could a rule-based system ever match an ML recommendation engine? What would the challenges be?',
+        'How would you design an ML system to detect fake news? What features would you engineer?',
+      ],
+      materials: ['Scenario worksheet', 'Pen and paper'],
+    },
+    project: {
+      description: 'Create a one-page infographic explaining ML to a non-technical audience, covering the ML pipeline, real-world examples, and the AI-ML-DL hierarchy.',
+      objectives: [
+        'Communicate ML concepts clearly to a non-technical audience',
+        'Identify and describe real-world ML applications',
+        'Explain the ML pipeline from data collection to deployment',
+      ],
+      deliverables: ['Infographic (digital or physical)', 'A short paragraph explaining design choices'],
+      tools: ['Canva, PowerPoint, or pen and paper'],
+    },
+    lab: {
+      description: 'Set up your Python environment and run your first ML classification on the Iris dataset.',
+      setup: 'pip install scikit-learn numpy pandas matplotlib',
+      steps: [
+        'Open Jupyter Notebook or Google Colab.',
+        'Import sklearn, numpy, pandas, and matplotlib.',
+        'Load the Iris dataset using sklearn.datasets.load_iris().',
+        'Split into training (80%) and testing (20%) sets.',
+        'Train a RandomForestClassifier on the training data.',
+        'Predict on test data and print accuracy and confusion matrix.',
+      ],
+      expectedOutput: 'Accuracy ~0.93–1.00 with a confusion matrix showing 0–3 misclassifications out of 30 test samples.',
+      challenge: 'Replace RandomForestClassifier with SVC or KNeighborsClassifier, compare accuracies, and explain which performed best.',
+    },
   },
 
   'module2-topic2': {
@@ -218,6 +269,57 @@ const module2Data: Record<string, TopicData> = {
       'The best ML model cannot compensate for poor data.',
       'Understanding your data deeply is more important than choosing the fanciest algorithm.',
     ],
+    story: 'How does a child learn to recognize a cat after seeing just two or three examples, while a machine needs thousands? Humans bring billions of years of evolutionary context, prior knowledge, and incredible few-shot learning ability to every task. Machines, by contrast, start from scratch — but they can process data at a scale no human can match. Understanding this complementary relationship between human intuition and machine scale is essential for designing effective ML systems.',
+    concepts: [
+      { type: 'text', text: 'Humans excel at few-shot learning with rich contextual understanding, while machines need many examples but operate at massive scale. The key is recognizing when each approach is更适合.' },
+      { type: 'math', formula: '\\text{Feature Vector} = \\begin{bmatrix} x_1 & x_2 & \\dots & x_n \\end{bmatrix}^T' },
+      { type: 'diagram', chart: 'graph TD; A[Human Learning] --> B[Few Examples]; A --> C[Rich Context]; A --> D[Prior Knowledge]; E[Machine Learning] --> F[Many Examples]; E --> G[Massive Scale]; E --> H[No Context];' },
+      { type: 'code', code: { language: 'python', code: 'import pandas as pd\n\ndf = pd.read_csv("data.csv")\nprint(df.head())\nprint(df.info())\nprint(df.describe())' } },
+      { type: 'list', title: 'Key Differences', items: ['Humans: few-shot, contextual, transfer learning naturally', 'Machines: data-hungry, narrow, but massively parallel', 'Data preprocessing is essential — raw data is messy', '"Garbage in, garbage out" — model quality ≤ data quality'] },
+      { type: 'flip-card', title: 'Human vs Machine', cards: [
+        { front: 'Why can humans learn from few examples while machines need thousands?', back: 'Humans have prior knowledge, context, and evolutionary priors. Machines start from random weights and must infer patterns solely from data.' },
+        { front: 'What does "garbage in, garbage out" mean?', back: 'If training data is noisy, biased, or incomplete, the model learns incorrect patterns and produces unreliable predictions.' },
+      ] },
+    ],
+    activity: {
+      description: 'Compare human and machine learning by having participants recognize handwritten digits, then seeing how an ML model approaches the same task.',
+      steps: [
+        'Write a digit (0–9) on a piece of paper. Pass it to a partner who must identify it in under 1 second.',
+        'Discuss: What features did your brain use to recognize the digit? (edges, curves, loops, etc.)',
+        'Load the MNIST dataset and train a simple classifier (e.g., LogisticRegression) on 5000 samples.',
+        'Compare: How many training examples did the machine need vs how many you needed?',
+        'Discuss: What happens when the digit is rotated or poorly written? Does the machine handle this better or worse?',
+      ],
+      discussionQuestions: [
+        'What types of tasks are humans still better at than machines? What types are machines better at?',
+        'If you had to teach a machine to recognize emotions from facial expressions, how would you collect and label training data?',
+      ],
+      materials: ['Paper and pen', 'MNIST sample images', 'Jupyter notebook with scikit-learn'],
+    },
+    project: {
+      description: 'Design a data quality report for a real-world dataset of your choice (e.g., housing prices, customer churn, weather data). Document all preprocessing steps needed.',
+      objectives: [
+        'Identify data quality issues (missing values, outliers, inconsistencies)',
+        'Apply appropriate preprocessing techniques',
+        'Explain how data quality impacts model performance',
+      ],
+      deliverables: ['Data quality report (PDF or Markdown)', 'Cleaned dataset (CSV)', 'Preprocessing code (Python script)'],
+      tools: ['Python with pandas, numpy, matplotlib', 'Jupyter Notebook'],
+    },
+    lab: {
+      description: 'Explore a real dataset using pandas, identify quality issues, and apply preprocessing techniques.',
+      setup: 'pip install pandas numpy matplotlib seaborn scikit-learn',
+      steps: [
+        'Load a dataset (e.g., Titanic from seaborn or a CSV of your choice).',
+        'Use df.info() and df.describe() to inspect data types, missing values, and summary statistics.',
+        'Visualize distributions using histograms and box plots.',
+        'Handle missing values (fill with mean/median or drop rows).',
+        'Encode categorical variables using OneHotEncoder or LabelEncoder.',
+        'Scale numerical features using StandardScaler.',
+      ],
+      expectedOutput: 'A cleaned, preprocessed DataFrame ready for ML, with no missing values and all features in numeric format.',
+      challenge: 'Introduce a deliberate bias (e.g., remove all rows of a certain category) and observe how it affects a trained model\'s predictions.',
+    },
   },
 
   'module2-topic3': {
@@ -328,6 +430,56 @@ const module2Data: Record<string, TopicData> = {
       'Supervised learning is powerful but expensive (requires labeled data). Unsupervised is cheaper but harder to evaluate.',
       'Reinforcement Learning is how the most impressive AI systems (AlphaGo, GPT) are trained.',
     ],
+    story: 'Not all learning problems are the same — some have labeled answers, some have hidden structures, and some require trial-and-error interaction with an environment. Just as a student learns through textbooks (supervised), exploration (unsupervised), and practice exams with feedback (reinforcement), ML algorithms come in three major flavors. Choosing the right type of learning for your problem is one of the most important decisions an ML practitioner makes. Each paradigm has unique strengths, data requirements, and computational characteristics that determine when it is the right tool for the job.',
+    concepts: [
+      { type: 'text', text: 'Supervised Learning uses labeled data (features → ground-truth labels). Unsupervised Learning finds hidden patterns in unlabeled data. Reinforcement Learning trains an agent via rewards and penalties.' },
+      { type: 'math', formula: '\\text{MSE} = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2' },
+      { type: 'diagram', chart: 'graph TD; A[ML Types] --> B[Supervised]; A --> C[Unsupervised]; A --> D[Reinforcement]; B --> E[Classification]; B --> F[Regression]; C --> G[Clustering]; C --> H[Dim. Reduction]; D --> I[Reward-Based];' },
+      { type: 'code', code: { language: 'python', code: '# Supervised: Classification\nfrom sklearn.svm import SVC\nmodel = SVC()\nmodel.fit(X_train, y_train)\n\n# Unsupervised: Clustering\nfrom sklearn.cluster import KMeans\nkmeans = KMeans(n_clusters=3)\nkmeans.fit(X)' } },
+      { type: 'list', title: 'ML Types at a Glance', items: ['Supervised: Classification (spam/not-spam) and Regression (price prediction)', 'Unsupervised: Clustering (customer segments) and Dimensionality Reduction (PCA)', 'Reinforcement: Game-playing AI, robotics, autonomous driving', 'Semi-supervised: Small labeled + large unlabeled dataset'] },
+      { type: 'flip-card', title: 'ML Types', cards: [
+        { front: 'What is the difference between classification and regression?', back: 'Classification predicts discrete categories (spam/not-spam). Regression predicts continuous values (house price $450,000).' },
+        { front: 'What is the bias-variance tradeoff?', back: 'High bias = underfitting (model too simple). High variance = overfitting (model too complex). The goal is the sweet spot that generalizes well.' },
+      ] },
+    ],
+    activity: {
+      description: 'Given a set of problem descriptions, classify each as supervised, unsupervised, or reinforcement learning, and justify your choice.',
+      steps: [
+        'Read 6 problem descriptions: (a) predicting stock prices, (b) grouping news articles by topic, (c) training a robot to walk, (d) detecting fraudulent transactions, (e) recommending movies, (f) playing chess against itself.',
+        'For each problem, classify the ML type and explain your reasoning.',
+        'For supervised problems, specify if it is classification or regression.',
+        'Identify what data would be needed for each problem (labels, rewards, features).',
+        'Present your classifications to the class and discuss disagreements.',
+      ],
+      discussionQuestions: [
+        'Can a single real-world system use multiple types of ML? Give an example.',
+        'What type of learning would a self-driving car primarily use? How might it combine multiple approaches?',
+      ],
+      materials: ['Problem description cards', 'Classification worksheet'],
+    },
+    project: {
+      description: 'Design an ML solution for a real-world problem of your choice. Specify the ML type(s) needed, data requirements, evaluation metrics, and potential challenges.',
+      objectives: [
+        'Match problem types to appropriate ML paradigms',
+        'Identify data requirements and constraints',
+        'Design a high-level ML system architecture',
+      ],
+      deliverables: ['ML solution proposal (1–2 pages)', 'Data requirements specification', 'Model selection justification'],
+      tools: ['Google Docs or Overleaf', 'Research papers for reference'],
+    },
+    lab: {
+      description: 'Implement and compare a supervised classifier and an unsupervised clustering algorithm on the same dataset.',
+      setup: 'pip install scikit-learn numpy pandas matplotlib',
+      steps: [
+        'Load the Iris dataset and create features (X) and labels (y).',
+        'Train a supervised KNeighborsClassifier and evaluate accuracy.',
+        'Now ignore labels — apply KMeans clustering with 3 clusters on X.',
+        'Compare cluster assignments to true labels using a confusion matrix or adjusted Rand index.',
+        'Visualize both results using 2D scatter plots (PCA for dimensionality reduction).',
+      ],
+      expectedOutput: 'Supervised accuracy ~0.95+. Unsupervised clustering should roughly recover the 3 species with some mismatches.',
+      challenge: 'Try different numbers of clusters (k=2, 4, 5) and use the elbow method to determine the optimal k.',
+    },
   },
 
   'module2-topic4': {
@@ -437,6 +589,56 @@ const module2Data: Record<string, TopicData> = {
       'Overfitting is the single most common mistake in ML — always test on unseen data.',
       'A model that works perfectly on training data but fails in production is worse than useless.',
     ],
+    story: 'Your brain is the most sophisticated pattern recognition system known — it can identify a friend\'s face in a crowd, recognize a song from a few notes, and read handwriting that varies wildly between people. Machine learning attempts to replicate this ability, but through a very different mechanism: mathematical optimization over thousands of examples. The no free lunch theorem reminds us that no single algorithm works for all patterns, which is why choosing the right approach matters. Understanding overfitting and the importance of train-test split is what separates effective ML practitioners from those who build models that fail in the real world.',
+    concepts: [
+      { type: 'text', text: 'Pattern recognition is the core of both human and machine intelligence. In ML, it means finding mathematical functions that map inputs to outputs by learning from examples rather than hand-crafted rules.' },
+      { type: 'math', formula: '\\text{Generalization Error} = \\text{Bias}^2 + \\text{Variance} + \\text{Irreducible Error}' },
+      { type: 'diagram', chart: 'graph TD; A[Training Data] --> B[Underfitting]; A --> C[Good Fit]; A --> D[Overfitting]; B --> E[High Bias]; C --> F[Generalizes]; D --> G[High Variance];' },
+      { type: 'code', code: { language: 'python', code: 'from sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\nmodel.fit(X_train, y_train)\ntrain_err = mean_squared_error(y_train, model.predict(X_train))\ntest_err = mean_squared_error(y_test, model.predict(X_test))\nprint(f"Train error: {train_err:.3f}, Test error: {test_err:.3f}")' } },
+      { type: 'list', title: 'Pattern Recognition Techniques', items: ['Template matching — compare to stored patterns', 'Feature extraction — identify key characteristics', 'Statistical classification — probabilistic assignment', 'Neural networks — learned hierarchical features'] },
+      { type: 'flip-card', title: 'Overfitting Explained', cards: [
+        { front: 'What is overfitting?', back: 'The model memorizes training data (including noise) instead of learning generalizable patterns. High training accuracy, poor test accuracy.' },
+        { front: 'How does regularization prevent overfitting?', back: 'It adds a penalty for model complexity to the loss function, forcing the model to learn simpler, more general patterns.' },
+      ] },
+    ],
+    activity: {
+      description: 'Hands-on pattern recognition exercise where participants try to classify handwritten digits manually, then compare their performance to an ML classifier.',
+      steps: [
+        'Draw 5 handwritten digits (0–9) on paper. Exchange with a partner and try to identify them.',
+        'Discuss: What visual features did you use (loops, lines, curves)? Write down your decision rules.',
+        'Now use scikit-learn to train an SVM on the digits dataset and evaluate its accuracy.',
+        'Compare: Did your manual rules match the SVM\'s decision boundaries? Where did you differ?',
+        'Experiment: Add noise to the test images and see how both human and machine performance degrades.',
+      ],
+      discussionQuestions: [
+        'Why is the "no free lunch theorem" important for practical ML? How does it affect algorithm selection?',
+        'Can you think of a pattern that is easy for humans but hard for machines? Vice versa?',
+      ],
+      materials: ['Paper and pens', 'Printed digit samples', 'Jupyter notebook with digits dataset'],
+    },
+    project: {
+      description: 'Build a simple handwritten digit classifier and conduct an error analysis. Identify which digits are most commonly confused and propose improvements.',
+      objectives: [
+        'Implement a complete classification pipeline',
+        'Analyze confusion patterns to understand model weaknesses',
+        'Propose targeted improvements based on error analysis',
+      ],
+      deliverables: ['Classification notebook with visualizations', 'Error analysis report', 'Confusion matrix heatmap'],
+      tools: ['Python, scikit-learn, matplotlib, seaborn'],
+    },
+    lab: {
+      description: 'Demonstrate overfitting by training polynomial regression models of varying degrees and observing the bias-variance tradeoff.',
+      setup: 'pip install scikit-learn numpy matplotlib',
+      steps: [
+        'Generate synthetic sine wave data with random noise.',
+        'Split into training (10 points) and testing (100 points).',
+        'Fit polynomial regression models of degree 1, 3, 5, 10, and 15.',
+        'Plot each fit alongside the true sine function.',
+        'Compute training and testing MSE for each degree and plot the bias-variance tradeoff curve.',
+      ],
+      expectedOutput: 'Low-degree polynomials underfit (high bias). High-degree polynomials overfit (high variance). Degree 3–5 gives the best test performance.',
+      challenge: 'Add L2 regularization (Ridge regression) to the degree-15 model and show how it reduces overfitting as alpha increases.',
+    },
   },
 
   'module2-topic5': {
@@ -549,6 +751,56 @@ const module2Data: Record<string, TopicData> = {
       'A working ML model in 30 lines of Python — the power of modern ML libraries.',
       'Always evaluate on data the model has never seen — this is non-negotiable.',
     ],
+    story: 'scikit-learn is the Swiss Army knife of classical machine learning — a single Python library that provides dozens of algorithms with a consistent, elegant API. The Iris dataset, collected by botanist Edgar Anderson in 1936 and popularized by Ronald Fisher, serves as the "Hello World" of classification. Training your first ML model in under 30 lines of code is a transformative experience that makes abstract concepts concrete. This hands-on lab builds the bridge between theory and practice — and lays the foundation for understanding quantum ML models that will follow in later modules.',
+    concepts: [
+      { type: 'text', text: 'scikit-learn provides a consistent API: every model has .fit(X, y) for training and .predict(X) for inference. This uniformity means once you learn one model, you can use them all.' },
+      { type: 'math', formula: '\\text{F1} = 2 \\cdot \\frac{\\text{Precision} \\cdot \\text{Recall}}{\\text{Precision} + \\text{Recall}}' },
+      { type: 'diagram', chart: 'graph TD; A[Iris Dataset] --> B[150 Samples]; A --> C[4 Features]; A --> D[3 Classes]; B --> E[Setosa]; B --> F[Versicolor]; B --> G[Virginica]; C --> H[Sepal L/W]; C --> I[Petal L/W];' },
+      { type: 'code', code: { language: 'python', code: 'from sklearn import datasets\nfrom sklearn.svm import SVC\nfrom sklearn.metrics import classification_report\n\niris = datasets.load_iris()\nX, y = iris.data, iris.target\nmodel = SVC(kernel="rbf")\nmodel.fit(X_train, y_train)\nprint(classification_report(y_test, model.predict(X_test)))' } },
+      { type: 'list', title: 'Key scikit-learn Concepts', items: ['.fit() — train the model on data', '.predict() — make predictions on new data', '.score() — returns accuracy (classifiers) or R² (regressors)', 'train_test_split — reserve data for honest evaluation'] },
+      { type: 'flip-card', title: 'Model Evaluation', cards: [
+        { front: 'Why is accuracy alone insufficient for model evaluation?', back: 'On imbalanced data (e.g., 95% legitimate, 5% fraud), a model that predicts "legitimate" for everything gets 95% accuracy but catches zero fraud.' },
+        { front: 'What metrics complement accuracy?', back: 'Precision, Recall, F1-score, and the confusion matrix provide a complete picture of model performance.' },
+      ] },
+    ],
+    activity: {
+      description: 'Train multiple classifiers on the Iris dataset, compare their performance, and discuss why different algorithms produce different results.',
+      steps: [
+        'Split Iris data into train (80%) and test (20%) sets.',
+        'Train 3 different classifiers: LogisticRegression, SVC, and KNeighborsClassifier.',
+        'Evaluate each on the test set using accuracy, precision, recall, and F1-score.',
+        'Visualize decision boundaries for 2 selected features using matplotlib.',
+        'Discuss: Which classifier performed best and why? How does algorithm choice affect results?',
+      ],
+      discussionQuestions: [
+        'Why might a simple model (e.g., LogisticRegression) outperform a complex one (e.g., SVC) on some datasets?',
+        'How would you expect a quantum SVM to differ from this classical SVM? What potential advantages might it have?',
+      ],
+      materials: ['Jupyter notebook', 'scikit-learn documentation'],
+    },
+    project: {
+      description: 'Build an ML model comparison benchmark: train at least 5 different classifiers on the same dataset and create a comparison table of evaluation metrics.',
+      objectives: [
+        'Implement a systematic model comparison pipeline',
+        'Use multiple evaluation metrics for fair comparison',
+        'Visualize results using bar charts and confusion matrices',
+      ],
+      deliverables: ['Comparison notebook with all models', 'Evaluation metrics table/visualization', 'Recommendation report'],
+      tools: ['Python, scikit-learn, pandas, matplotlib, seaborn'],
+    },
+    lab: {
+      description: 'Train an SVM classifier on the Iris dataset with different kernels and visualize the decision boundaries.',
+      setup: 'pip install scikit-learn numpy pandas matplotlib',
+      steps: [
+        'Load the Iris dataset and select only 2 features (petal length, petal width) for visualization.',
+        'Split into training and testing sets.',
+        'Train SVC with linear, RBF, and polynomial kernels.',
+        'Plot decision boundaries for each kernel using a mesh grid.',
+        'Evaluate and compare accuracy, precision, recall for each kernel.',
+      ],
+      expectedOutput: 'Three side-by-side plots showing decision boundaries. Linear kernel separates Setosa perfectly; RBF handles non-linear boundaries between Versicolor and Virginica.',
+      challenge: 'Train a quantum kernel estimator (using qiskit-machine-learning\'s QuantumKernel) on the same 2-feature subset and compare decision boundaries.',
+    },
   },
 };
 

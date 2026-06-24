@@ -114,6 +114,85 @@ const module1Data: Record<string, TopicData> = {
       'Curiosity is the only prerequisite that truly matters.',
       'Every expert was once a complete beginner who asked "But why?"',
     ],
+    story: 'Imagine building an AI that can predict molecular behavior with perfect accuracy — but your classical computer simply cannot handle the exponential complexity. This is the reality facing researchers in drug discovery, materials science, and cryptography today. Quantum Machine Learning offers a path forward by combining the pattern-recognition power of machine learning with the exponential computational capacity of quantum computers. In this workshop, you will journey from quantum fundamentals to building your own QML models, regardless of your starting background. Whether you are a student, educator, or researcher, this hands-on experience will equip you to contribute to the next computing revolution.',
+    concepts: [
+      {
+        type: 'text',
+        text: 'This workshop introduces Quantum Machine Learning — the intersection of quantum computing and machine learning. Over 20 modules, you will progress from classical ML fundamentals through quantum computing basics to advanced QML algorithms and research. The workshop uses Qiskit (IBM\'s open-source quantum SDK) and runs entirely on Google Colab, requiring no local installation.',
+      },
+      {
+        type: 'diagram',
+        chart: 'mindmap\n  root((QML Workshop))\n    Classical ML Review\n    Quantum Fundamentals\n    QML Algorithms\n    Mini Project\n    Research & Careers',
+        title: 'Workshop Roadmap',
+      },
+      {
+        type: 'list',
+        title: 'Workshop Structure',
+        items: [
+          'Modules 1–3: Foundations — Workshop intro, Why QML, Learning Outcomes',
+          'Modules 4–6: Classical ML Refresher — Python, ML algorithms, Challenges',
+          'Modules 7–9: Quantum Basics — Qubits, Circuits, Qiskit Programming',
+          'Modules 10–12: QML Core — Data Encoding, QSVM, Quantum Kernels',
+          'Modules 13–15: Advanced QML — Quantum Neural Networks, Hybrid Models',
+          'Modules 16–18: Applications — Drug Discovery, Finance, Cybersecurity',
+          'Modules 19–20: Research & Capstone — Mini Project, Publication Guidance',
+        ],
+      },
+      {
+        type: 'card',
+        title: 'Key Workshop Principles',
+        cards: [
+          { front: 'Learn by Doing', back: 'Every module includes hands-on labs and activities — no passive lectures.' },
+          { front: 'Progressive Scaffolding', back: 'Topics build on each other following Bloom\'s Taxonomy from Remember to Create.' },
+          { front: 'NEP 2020 Aligned', back: 'Experiential learning, critical thinking, and holistic education as per India\'s National Education Policy 2020.' },
+          { front: 'Research Ready', back: 'The final outcome is designing your own QML research project with publication guidance.' },
+        ],
+      },
+    ],
+    activity: {
+      description: 'Icebreaker: Introduce yourself and share your learning goals. In groups of 3–4, discuss what excites you most about quantum computing and what you hope to build by the end of this workshop.',
+      steps: [
+        'Form groups of 3–4 participants.',
+        'Each person shares: name, background, one thing they know about quantum computing, and one thing they want to learn.',
+        'As a group, list 3 real-world problems you think quantum computers could solve better than classical ones.',
+        'Present your group\'s top problem to the larger class and discuss why you chose it.',
+        'Write down your personal #1 learning goal for this workshop and share it with your group.',
+      ],
+      discussionQuestions: [
+        'What does "quantum" mean to you before starting this workshop?',
+        'How do you think quantum computing might change your field of study or work in the next 10 years?',
+        'What is one question about QML you hope this workshop answers?',
+      ],
+      duration: '20 minutes',
+      materials: ['Sticky notes', 'Whiteboard or shared digital board', 'Pen and paper for goal writing'],
+    },
+    project: {
+      description: 'Define your personal learning roadmap for the QML workshop. Identify your starting point, goals, and success metrics to keep yourself accountable across all 20 modules.',
+      objectives: [
+        'Articulate your current knowledge level in Python, ML, and quantum computing.',
+        'Define 3 specific learning goals you want to achieve by the end of the workshop.',
+        'Create a personal success metric — how will you know you have learned QML?',
+      ],
+      deliverables: [
+        'A one-page "Learning Roadmap" document with your self-assessment, goals, and success metrics.',
+        'A 2-minute elevator pitch to your group explaining what you hope to achieve.',
+      ],
+      tools: ['Google Docs or any word processor', 'Pen and paper'],
+    },
+    lab: {
+      description: 'Verify that your Python environment is ready for the workshop. This lab ensures you can run Python code in Google Colab and understand basic Python constructs used throughout the modules.',
+      setup: 'Open Google Colab (colab.research.google.com) and create a new notebook. No installation needed.',
+      steps: [
+        'Go to colab.research.google.com and sign in with your Google account.',
+        'Create a new notebook: File → New Notebook.',
+        'In the first cell, type: `print("Hello Quantum World!")` and press Shift+Enter to run.',
+        'Create a second cell and write a Python function that takes a list of numbers and returns their squares.',
+        'Test your function with `[1, 2, 3, 4, 5]` and verify the output is `[1, 4, 9, 16, 25]`.',
+        'Save your notebook as "QML_Workshop_Setup.ipynb" to your Google Drive.',
+      ],
+      expectedOutput: 'Hello Quantum World!\n\n[1, 4, 9, 16, 25]',
+      challenge: 'Modify your function to return cubes instead of squares. Then modify it to accept an optional exponent parameter with a default of 2.',
+    },
   },
 
   'module1-topic2': {
@@ -223,6 +302,95 @@ const module1Data: Record<string, TopicData> = {
       '"If you think you understand quantum mechanics, you don\'t understand quantum mechanics." — Richard Feynman',
       'The gap between classical and quantum capability grows exponentially with problem size.',
     ],
+    story: 'Imagine training a machine learning model on a dataset with thousands of features — your classical computer might take days or even weeks to converge, if it converges at all. This is the curse of dimensionality, and it is just one of several fundamental walls that classical machine learning hits as problems grow in complexity. Quantum computers, by their very nature, operate in exponentially large Hilbert spaces, making them naturally suited for high-dimensional problems that defeat classical approaches. From drug discovery to financial portfolio optimization, QML promises to solve problems that are currently intractable. Understanding "why QML" is the first step in recognizing that the future of artificial intelligence may be fundamentally quantum.',
+    concepts: [
+      {
+        type: 'text',
+        text: 'Classical machine learning faces fundamental limitations: the curse of dimensionality, exponential training times for complex models, and the inability to efficiently model quantum systems. Quantum computing offers a fundamentally different paradigm — using superposition, entanglement, and interference to process information in ways no classical computer can match. QML is not about replacing classical ML but about solving problems that classical ML cannot solve efficiently.',
+      },
+      {
+        type: 'math',
+        formula: '|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle \\quad \\text{where} \\quad |\\alpha|^2 + |\\beta|^2 = 1',
+        title: 'Qubit State (Superposition)',
+      },
+      {
+        type: 'diagram',
+        chart: 'graph TD;\n  A[Classical ML] -->|Curse of Dimensionality| B[Exponential Data Needs];\n  A -->|Slow Optimization| C[Convergence Bottlenecks];\n  A -->|Cannot Simulate Quantum| D[Limited Molecular Modeling];\n  E[Quantum ML] -->|Superposition| F[Parallel State Processing];\n  E -->|Entanglement| G[Correlated Feature Spaces];\n  E -->|Interference| H[Amplitude Amplification];\n  B --> I{QML Advantage};\n  C --> I;\n  D --> I;\n  F --> I;\n  G --> I;\n  H --> I;',
+        title: 'Classical vs Quantum ML Comparison',
+      },
+      {
+        type: 'code',
+        code: {
+          language: 'python',
+          code: '# Exponential growth visualization\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nn_features = np.arange(1, 11)\nclassical_complexity = 2 ** n_features\n\nplt.figure(figsize=(8, 4))\nplt.plot(n_features, classical_complexity, \'r-\', label=\'Classical: O(2^n)\')\nplt.xlabel(\'Number of Features\')\nplt.ylabel(\'Computational Complexity\')\nplt.yscale(\'log\')\nplt.title(\'The Curse of Dimensionality\')\nplt.legend()\nplt.grid(True)\nplt.show()',
+        },
+        title: 'Visualizing Exponential Complexity',
+      },
+      {
+        type: 'list',
+        title: 'Key QML Application Areas',
+        items: [
+          'Drug Discovery & Molecular Simulation — model quantum interactions naturally',
+          'Financial Portfolio Optimization — handle exponentially many asset combinations',
+          'Cybersecurity & Cryptography — quantum-resistant encryption and threat detection',
+          'Healthcare Diagnostics — high-dimensional medical imaging analysis',
+          'Climate Modeling — simulate complex environmental systems',
+        ],
+      },
+      {
+        type: 'card',
+        title: 'Quantum Phenomena Explained',
+        cards: [
+          { front: 'Superposition', back: 'A qubit exists in a blend of |0⟩ and |1⟩ simultaneously until measured. This allows quantum computers to explore many solutions at once.' },
+          { front: 'Entanglement', back: 'Two qubits become correlated so that measuring one instantly reveals the state of the other, regardless of distance. Enables powerful feature correlations.' },
+          { front: 'Interference', back: 'Quantum amplitudes can add constructively (reinforcing correct answers) or destructively (canceling wrong answers). Used in Grover\'s search and amplitude amplification.' },
+        ],
+      },
+    ],
+    activity: {
+      description: 'In small groups, research and debate one industry where QML could have transformative impact. Each group takes a different industry (pharma, finance, cybersecurity, climate) and presents a 3-minute pitch arguing why their industry is the most promising for QML adoption.',
+      steps: [
+        'Divide into 4 groups and assign each group an industry: Pharma, Finance, Cybersecurity, or Climate.',
+        'Each group spends 10 minutes researching: What ML problem in your industry is most computationally expensive?',
+        'Identify how a quantum computer could theoretically solve this problem faster.',
+        'Prepare a 3-minute pitch arguing why your industry will benefit most from QML.',
+        'Present pitches and vote as a class on the most convincing case.',
+      ],
+      discussionQuestions: [
+        'What specific ML task in your assigned industry is most limited by classical computing?',
+        'Is quantum advantage guaranteed for your industry\'s problem, or might classical improvements also work?',
+        'What ethical considerations arise when quantum computers can break current encryption?',
+      ],
+      duration: '25 minutes',
+      materials: ['Internet access for research', 'Whiteboard or slides for pitch', 'Timer'],
+    },
+    project: {
+      description: 'Research and write a one-page brief on a real-world problem that classical ML struggles with and explain how QML might address it. Include specific data on why the problem is hard for classical computers.',
+      objectives: [
+        'Identify a computationally hard problem in an industry of your choice.',
+        'Quantify the limitations of classical approaches (time, accuracy, data requirements).',
+        'Propose how quantum computing principles could theoretically overcome these limitations.',
+      ],
+      deliverables: [
+        'A one-page research brief with: problem description, classical limitations, proposed quantum approach, and potential impact.',
+        'A bibliography of at least 3 reputable sources (research papers, IBM/Google quantum blogs, etc.).',
+      ],
+      tools: ['Google Scholar', 'arXiv.org', 'IBM Quantum Research Blog'],
+    },
+    lab: {
+      description: 'Write a Python script that demonstrates the curse of dimensionality by computing the number of data points needed to maintain density as dimensions increase. Visualize this exponential growth.',
+      setup: 'pip install numpy matplotlib',
+      steps: [
+        'Import numpy and matplotlib in a new Colab notebook.',
+        'Create an array of dimensions from 1 to 15.',
+        'Compute the number of data points needed: points = 10 ** dimensions (assuming 10 points per dimension for minimal density).',
+        'Plot points vs dimensions using plt.plot() with a logarithmic y-axis.',
+        'Add labels, title, and grid.',
+        'Print a statement explaining why 15 dimensions would require 10^15 data points.',
+      ],
+      expectedOutput: 'A logarithmic plot showing exponential growth from 10^1 to 10^15. Print statement: "At 15 dimensions, we need 1,000,000,000,000,000 data points — more than all the grains of sand on Earth."',
+      challenge: 'Modify the script to show how quantum superposition could help: plot log2(points) to show the number of qubits needed (qubits = log2(points)). Show that 50 qubits can represent 2^50 states — roughly 15 dimensions of 10-point resolution.',
+    },
   },
 
   'module1-topic3': {
@@ -330,6 +498,95 @@ const module1Data: Record<string, TopicData> = {
       'Self-assessment before and after reveals how far you\'ve truly come.',
       'Each learning outcome is a milestone — celebrate every one you achieve.',
     ],
+    story: 'Bloom\'s Taxonomy, developed in 1956 by educational psychologist Benjamin Bloom, remains one of the most influential frameworks for designing learning outcomes — but how do you apply it to a field as cutting-edge as Quantum Machine Learning? The answer lies in progressive scaffolding: you begin by remembering what a qubit is, then understand how quantum gates work, apply them to build circuits, analyze their behavior, evaluate different approaches, and finally create your own QML model. This workshop\'s 20 modules are deliberately mapped to these cognitive levels. By the end, you won\'t just know about QML — you will be able to design and present a complete QML research project aligned with NEP 2020\'s vision of experiential learning.',
+    concepts: [
+      {
+        type: 'text',
+        text: 'This workshop defines 9 concrete learning outcomes spanning the full spectrum of Bloom\'s Taxonomy. Outcomes range from "Recall the definition of a qubit and quantum gates" (Remember) to "Design a complete QML mini research project and identify publication venues" (Create). Each module maps to one or more outcomes, ensuring progressive skill building from fundamentals to research readiness.',
+      },
+      {
+        type: 'diagram',
+        chart: 'mindmap\n  root((Learning Outcomes))\n    Remember\n      Define qubits & gates\n    Understand\n      Explain quantum circuits\n    Apply\n      Build QSVM & VQC\n    Analyze\n      Compare QML vs Classical\n    Evaluate\n      Assess model performance\n    Create\n      Design QML research project',
+        title: 'Bloom\'s Taxonomy in QML Workshop',
+      },
+      {
+        type: 'list',
+        title: '9 Learning Outcomes',
+        items: [
+          'Recall and define fundamental quantum computing concepts (qubits, gates, circuits).',
+          'Explain the working of quantum circuits and measurement principles.',
+          'Apply quantum gates to build and simulate basic quantum circuits using Qiskit.',
+          'Visualize quantum states using Bloch spheres and circuit diagrams.',
+          'Perform classical-to-quantum data encoding using angle, amplitude, and basis encoding.',
+          'Build a complete Quantum Support Vector Machine (QSVM) using quantum kernels.',
+          'Construct and train a Variational Quantum Circuit (VQC) for classification.',
+          'Evaluate and compare QML models against classical baselines using appropriate metrics.',
+          'Design a mini QML research project: identify datasets, methodology, and publication opportunities.',
+        ],
+      },
+      {
+        type: 'card',
+        title: 'NEP 2020 Alignment',
+        cards: [
+          { front: 'Experiential Learning', back: 'Hands-on labs and virtual experiments replace passive lectures, giving you direct experience with quantum circuits.' },
+          { front: 'Critical Thinking', back: 'Each module includes discussion questions and comparative analysis tasks that require you to evaluate and justify choices.' },
+          { front: 'Holistic Education', back: 'The workshop covers technical skills (Qiskit, ML), soft skills (presentation, collaboration), and research ethics.' },
+          { front: 'Self-Directed Learning', back: 'Pre/post assessments, self-paced Colab notebooks, and optional challenge exercises encourage ownership of your learning.' },
+        ],
+      },
+      {
+        type: 'code',
+        code: {
+          language: 'python',
+          code: '# Simple quantum circuit to demonstrate outcome tracking\nfrom qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\n# Create a Bell state circuit (entanglement)\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure([0, 1], [0, 1])\n\n# Simulate\nsim = AerSimulator()\nresult = sim.run(qc, shots=1000).result()\ncounts = result.get_counts()\nprint(f\'Measurement results: {counts}\')\nprint(f\'Outcome 2 achieved: Explain quantum circuits!\')',
+        },
+        title: 'Qiskit Bell State (Outcome 2)',
+      },
+    ],
+    activity: {
+      description: 'Self-assessment mapping: Rate your current confidence (1–5) on each of the 9 learning outcomes. Then discuss with a partner which outcomes you find most intimidating and most exciting, and create a personal learning priority list.',
+      steps: [
+        'Download or copy the 9 learning outcomes into a personal document.',
+        'Rate each outcome 1 (no clue) to 5 (could teach it). Be honest — this is for you.',
+        'Circle your top 3 "most intimidating" outcomes and star your top 3 "most exciting" outcomes.',
+        'Pair up and share your ratings — discuss why certain outcomes feel harder or more interesting.',
+        'Create a "Personal Priority" ordering: which 3 outcomes will you focus extra attention on?',
+      ],
+      discussionQuestions: [
+        'Why might the "Create" level outcome (design a research project) feel more intimidating than "Remember"?',
+        'How do the 9 outcomes connect to your personal or career goals?',
+        'What support (mentor, peers, resources) would help you achieve your most intimidating outcome?',
+      ],
+      duration: '15 minutes',
+      materials: ['Printed or digital outcome checklist', 'Pen or digital annotation tool'],
+    },
+    project: {
+      description: 'Create a personal "Outcome Achievement Tracker" — a document that maps each of the 9 learning outcomes to specific modules, labs, and activities in this workshop. Update it as you progress through each module.',
+      objectives: [
+        'Understand the complete mapping of learning outcomes to workshop modules.',
+        'Create a tracking system that lets you monitor progress against each outcome.',
+        'Identify which modules to focus on for your personal learning priorities.',
+      ],
+      deliverables: [
+        'A table/spreadsheet mapping each outcome to the relevant module numbers and lab activities.',
+        'A personal check-in schedule: set dates to re-assess your confidence ratings (e.g., after Module 5, 10, 15, 20).',
+      ],
+      tools: ['Google Sheets or Excel', 'Workshop syllabus/module list from the course page'],
+    },
+    lab: {
+      description: 'Build your first quantum circuit in Qiskit — a simple Bell state — and verify entanglement through measurement statistics. This directly addresses Learning Outcome 2 (Explain quantum circuits) and Outcome 3 (Apply gates to build circuits).',
+      setup: 'pip install qiskit qiskit-aer matplotlib',
+      steps: [
+        'Import Qiskit modules: QuantumCircuit, AerSimulator, and matplotlib for visualization.',
+        'Create a QuantumCircuit with 2 qubits and 2 classical bits.',
+        'Apply a Hadamard gate (h) to qubit 0 to create superposition.',
+        'Apply a CNOT gate (cx) with control=0, target=1 to create entanglement.',
+        'Add measurements to both qubits.',
+        'Run the circuit on AerSimulator with 1024 shots and print the counts histogram.',
+      ],
+      expectedOutput: 'Counts approximately { \'00\': 512, \'11\': 512 } — confirming that the two qubits are perfectly correlated (entangled). The circuit diagram shows H → CX → Measure.',
+      challenge: 'Modify the circuit to use 3 qubits in a GHZ state (|000⟩ + |111⟩)/√2. Verify that all qubits are correlated by checking that only |000⟩ and |111⟩ appear in the results.',
+    },
   },
 
   'module1-topic4': {
@@ -434,6 +691,82 @@ const module1Data: Record<string, TopicData> = {
       'A learner who knows they don\'t know is already smarter than one who doesn\'t know they don\'t know.',
       'Pre-assessment is not a test — it is a mirror.',
     ],
+    story: 'Every great journey begins by knowing exactly where you stand. World-class athletes undergo fitness assessments before training, doctors take vitals before diagnosis, and pilots run pre-flight checklists before takeoff. The same principle applies to learning Quantum Machine Learning — without measuring your starting point, tracking growth becomes guesswork. This pre-assessment is not a test of your intelligence; it is a diagnostic tool to help you and your instructor understand what you already know and what needs attention. Remember: a score of 0/5 is perfect — it means you have the maximum potential for growth throughout this workshop.',
+    concepts: [
+      {
+        type: 'text',
+        text: 'The pre-assessment covers 5 key areas: qubit fundamentals, classical ML algorithms (SVM), quantum gates (Hadamard), kernel methods, and Qiskit basics. These questions establish your baseline across the three pillars of QML: quantum computing, machine learning, and programming. Your responses will be anonymized and compared with post-assessment results in Module 20 to measure your growth.',
+      },
+      {
+        type: 'diagram',
+        chart: 'graph TD;\n  A[Pre-Assessment] -->|Your responses| B[Skill Profile];\n  B --> C{Score Analysis};\n  C -->|Low Score| D[Targeted Learning Path];\n  C -->|Medium Score| E[Accelerated Modules];\n  C -->|High Score| F[Advanced Challenges];\n  G[Module 20 Post-Assessment] -->|Compare| H[Growth Measurement];\n  D --> H;\n  E --> H;\n  F --> H;',
+        title: 'Assessment Flow',
+      },
+      {
+        type: 'list',
+        title: 'Pre-Assessment Topics',
+        items: [
+          'Qubit — the fundamental unit of quantum information',
+          'Support Vector Machine — classical supervised learning algorithm',
+          'Hadamard Gate — the quantum "coin toss" for superposition',
+          'Kernel Trick — mapping data to higher dimensions',
+          'Qiskit — IBM\'s open-source quantum SDK',
+        ],
+      },
+      {
+        type: 'card',
+        title: 'Assessment Mindset',
+        cards: [
+          { front: 'Not a Test', back: 'This is a diagnostic, not a graded exam. There is no passing or failing. The only "wrong" answer is one you do not learn from.' },
+          { front: 'Growth Metric', back: 'Your score today becomes the baseline. The growth = post-assessment score minus pre-assessment score. Maximum growth = maximum learning.' },
+          { front: 'Honest Answers', back: 'Do not Google answers. The purpose is to measure current knowledge, not to perform well. Inflated scores only hurt your learning journey.' },
+        ],
+      },
+    ],
+    activity: {
+      description: 'Take the 5-question pre-assessment quiz individually, then discuss your answers in small groups. The goal is not to get the right answer but to articulate your reasoning and learn from peers.',
+      steps: [
+        'Individually answer all 5 MCQs without external resources (5 minutes).',
+        'After completing, form groups of 3 and share your answers.',
+        'For each question, discuss: "Why did I choose this answer? What reasoning did I use?"',
+        'Identify as a group which question was the most confusing and why.',
+        'Write down one thing you learned just from the discussion, and one concept you are most curious about.',
+      ],
+      discussionQuestions: [
+        'Which question was hardest to answer and why? What does that tell you about your current knowledge?',
+        'After the discussion, did any answer change? What convinced you?',
+        'How might your approach to learning QML change based on your pre-assessment results?',
+      ],
+      duration: '15 minutes',
+      materials: ['Pre-assessment quiz (printed or digital)', 'Notebook for reflection'],
+    },
+    project: {
+      description: 'Based on your pre-assessment results, create a personalized "Knowledge Gap Map" that identifies which areas need the most attention and creates a study plan for Modules 2–6.',
+      objectives: [
+        'Identify your knowledge gaps across quantum concepts, classical ML, and programming.',
+        'Prioritize which modules deserve extra focus based on your gaps.',
+        'Create a concrete study schedule for the first 6 modules.',
+      ],
+      deliverables: [
+        'A "Knowledge Gap Map" document listing each pre-assessment topic, your score, and the corresponding module(s) that cover it.',
+        'A 2-week study plan detailing which days you will complete each module and what additional resources you will use.',
+      ],
+      tools: ['Google Sheets', 'Workshop module syllabus'],
+    },
+    lab: {
+      description: 'Create a self-assessment Python notebook that displays the pre-assessment questions interactively, collects your answers, and provides a score summary with personalized module recommendations.',
+      setup: 'Open Google Colab — no additional installation needed.',
+      steps: [
+        'Create a new Colab notebook titled "PreAssessment.ipynb".',
+        'Write a Python dictionary containing the 5 pre-assessment questions, options, and correct answers.',
+        'Write a function that displays each question, takes user input (A/B/C/D), and stores the response.',
+        'After all 5 questions, compute the score and print a summary: "You scored X/5."',
+        'Add logic: if score ≤ 2, recommend starting from Module 2; if score 3–4, recommend Module 4; if score 5, recommend Module 6.',
+        'Print personalized module recommendations based on the score.',
+      ],
+      expectedOutput: 'Interactive quiz output displaying each question, collecting input, and printing: "You scored 3/5. Recommendation: Start from Module 4 — focus on quantum computing fundamentals."',
+      challenge: 'Add a visualization using matplotlib that shows a radar chart of your current knowledge across 3 dimensions: Quantum Theory, Classical ML, and Qiskit Programming. Rate yourself 1–5 on each after the quiz.',
+    },
   },
 
   'module1-topic5': {
@@ -546,6 +879,97 @@ const module1Data: Record<string, TopicData> = {
       'The ability to set up and troubleshoot a tech environment is itself a critical research skill.',
       'Qiskit is one of the most actively maintained open-source quantum SDKs in the world.',
     ],
+    story: 'The hardest part of any technology journey is often the very first step — setting up your development environment. I have seen talented researchers abandon quantum computing because of a single failed pip install or a mismatched Python version. This topic is designed to eliminate that friction entirely. Using Google Colab, you can run Qiskit in your browser with zero local installation — just a few clicks and you are ready to build quantum circuits. By the end of this setup, you will have a complete QML development environment that will serve you through all 20 modules of this workshop, from your first Bell state to your final QML research model.',
+    concepts: [
+      {
+        type: 'text',
+        text: 'This workshop uses Google Colab (free cloud Jupyter notebooks) with Qiskit — IBM\'s open-source quantum computing SDK. No local installation is required for most of the workshop. You only need a Google account and an internet connection. For real quantum hardware access, a free IBM Quantum account is recommended but optional.',
+      },
+      {
+        type: 'code',
+        code: {
+          language: 'bash',
+          code: '# Install Qiskit and supporting libraries in Colab\n!pip install qiskit qiskit-machine-learning qiskit-aer matplotlib pylatexenc scikit-learn\n\n# Verify installation\nimport qiskit\nprint(f"Qiskit version: {qiskit.__version__}")',
+        },
+        title: 'Qiskit Installation Command',
+      },
+      {
+        type: 'diagram',
+        chart: 'graph TD;\n  A[Google Account] -->|Open| B[Google Colab];\n  B -->|Create Notebook| C[Install Qiskit];\n  C -->|pip install| D[Qiskit + ML + Aer];\n  D -->|Verify| E[import qiskit];\n  E --> F{Works?};\n  F -->|Yes| G[Ready for Labs];\n  F -->|No| H[Check Errors];\n  H -->|Restart Runtime| C;\n  H -->|Use Fresh Runtime| I[Run Again];\n  I --> D;\n  G --> J[IBM Quantum Account];\n  J -->|Optional| K[Real Hardware Access];',
+        title: 'Environment Setup Workflow',
+      },
+      {
+        type: 'list',
+        title: 'Packages We Install',
+        items: [
+          'qiskit — Core quantum computing SDK (circuits, gates, transpilation)',
+          'qiskit-machine-learning — QML algorithms (QSVM, QNN, VQC)',
+          'qiskit-aer — High-performance local quantum simulator',
+          'matplotlib — Circuit visualization and plotting',
+          'pylatexenc — LaTeX rendering for circuit diagrams',
+          'scikit-learn — Classical ML baselines and dataset tools',
+        ],
+      },
+      {
+        type: 'card',
+        title: 'Environment Options',
+        cards: [
+          { front: 'Google Colab (Recommended)', back: 'Free, cloud-based, no local install. Qiskit installs with one pip command. Ideal for workshops with varying hardware.' },
+          { front: 'Local Installation', back: 'For offline or heavy computation: install Python 3.8+, then pip install qiskit. Requires local setup but gives full control.' },
+          { front: 'IBM Quantum Lab', back: 'IBM\'s hosted Jupyter environment at lab.quantum.ibm.com. Qiskit pre-installed with access to real quantum hardware.' },
+        ],
+      },
+    ],
+    activity: {
+      description: 'Step-by-step hands-on environment setup. Each participant sets up Qiskit on Google Colab, verifies the installation, runs a test circuit, and helps at least one other participant who faces issues. This peer-support model ensures everyone starts Module 2 with a working environment.',
+      steps: [
+        'Open a new Google Colab notebook and rename it "QML_Environment_Test.ipynb".',
+        'Run `!pip install qiskit qiskit-machine-learning qiskit-aer matplotlib pylatexenc scikit-learn` in the first cell.',
+        'In a new cell, run: `import qiskit; print(qiskit.__version__)` to verify.',
+        'Create and run a simple quantum circuit (Bell state) to confirm the simulator works.',
+        'Pair up: help your partner if they encounter any errors. Document the error and fix.',
+        'Save the notebook and share the link with the instructor as confirmation.',
+      ],
+      discussionQuestions: [
+        'What errors did you encounter, and how did you resolve them? What debugging strategies worked?',
+        'Why might Google Colab be a better choice than local installation for a workshop with diverse participants?',
+        'What is the advantage of having a local simulator (Aer) versus always using cloud hardware?',
+      ],
+      duration: '20 minutes',
+      materials: ['Google account', 'Internet connection', 'IBM Quantum account (optional)'],
+      codetask: {
+        language: 'python',
+        code: '# Bell state circuit to verify Qiskit works\nfrom qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure([0, 1], [0, 1])\n\nsim = AerSimulator()\nresult = sim.run(qc, shots=1024).result()\ncounts = result.get_counts()\nprint(f\'Qiskit is working! Bell state counts: {counts}\')',
+      },
+    },
+    project: {
+      description: 'Set up and document your complete QML development environment, including Google Colab, Qiskit installation, and an optional IBM Quantum account. Create a "Setup Reference Guide" that documents exactly how you set up your environment so you can reproduce it or help others.',
+      objectives: [
+        'Successfully install and verify Qiskit with all required packages.',
+        'Create a reusable Google Colab notebook template for future modules.',
+        'Optionally set up an IBM Quantum account and save your API token for real hardware access.',
+      ],
+      deliverables: [
+        'A working Colab notebook with Qiskit installed and a Bell state circuit running successfully.',
+        'A "Setup Reference Guide" (Google Doc or Markdown) with step-by-step instructions, screenshots, and troubleshooting tips for your specific setup.',
+        '(Optional) IBM Quantum account with API token saved in your Colab environment.',
+      ],
+      tools: ['Google Colab', 'IBM Quantum account (quantum.ibm.com)', 'Google Docs or Markdown editor'],
+    },
+    lab: {
+      description: 'Comprehensive environment setup and verification lab. By the end of this lab, you will have a fully working QML development environment, verified through multiple test circuits and package checks.',
+      setup: 'pip install qiskit qiskit-machine-learning qiskit-aer matplotlib pylatexenc scikit-learn',
+      steps: [
+        'Install all required packages in a fresh Colab runtime (Runtime → Restart runtime).',
+        'Verify each package: print versions of qiskit, qiskit-machine-learning, qiskit-aer.',
+        'Build a 3-qubit GHZ state circuit: H on q0, CX q0→q1, CX q0→q2. Add measurements.',
+        'Simulate with AerSimulator using 2048 shots and plot the results as a histogram.',
+        'Visualize the circuit using qc.draw(output=\'mpl\').',
+        'Run the same circuit on the QASM simulator and compare the results with AerSimulator.',
+      ],
+      expectedOutput: 'Qiskit version 1.x.x\nqiskit-machine-learning version 0.x.x\nqiskit-aer version 0.x.x\n\nHistogram showing approximately equal distribution of |000⟩ and |111⟩ states.\nCircuit diagram showing H, CX gates with measurements.',
+      challenge: 'Create a parameterized circuit that takes an angle θ as input and applies Ry(θ) to each qubit before creating the GHZ state. For θ=0, all qubits should be in |0⟩; for θ=π, all should be in |1⟩. Verify with simulation.',
+    },
   },
 };
 

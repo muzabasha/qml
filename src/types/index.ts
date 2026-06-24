@@ -20,6 +20,50 @@ export interface ModuleMeta {
   estimatedHours?: number;
 }
 
+// ─── Content Section Types ────────────────────────────────────────────────────
+
+export interface CodeBlock {
+  language: string;
+  code: string;
+}
+
+export interface ContentItem {
+  type: 'text' | 'math' | 'diagram' | 'code' | 'list' | 'card' | 'flip-card' | 'image';
+  text?: string;
+  formula?: string;
+  chart?: string;
+  code?: CodeBlock;
+  items?: string[];
+  title?: string;
+  cards?: { front: string; back: string }[];
+}
+
+export interface ActivityContent {
+  description: string;
+  steps: string[];
+  discussionQuestions?: string[];
+  duration?: string;
+  materials?: string[];
+  codetask?: CodeBlock;
+}
+
+export interface ProjectContent {
+  description: string;
+  objectives: string[];
+  deliverables: string[];
+  rubrics?: string[];
+  timeline?: string;
+  tools?: string[];
+}
+
+export interface LabContent {
+  description: string;
+  setup: string;
+  steps: string[];
+  expectedOutput?: string;
+  challenge?: string;
+}
+
 // ─── Topic Data Types ─────────────────────────────────────────────────────────
 
 export interface MCQOption {
@@ -59,6 +103,11 @@ export interface TopicData {
   recap: string[];
   skillMapping: SkillMapping[];
   keyInsights?: string[];
+  story?: string;
+  concepts?: ContentItem[];
+  activity?: ActivityContent;
+  project?: ProjectContent;
+  lab?: LabContent;
 }
 
 // ─── Activity Types ───────────────────────────────────────────────────────────

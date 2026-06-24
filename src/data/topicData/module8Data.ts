@@ -110,6 +110,53 @@ const module8Data: Record<string, TopicData> = {
       'The kernel trick was a brilliant classical hack — quantum computers may make the explicit mapping practical.',
       'Understanding classical feature engineering is the foundation for designing quantum feature maps.',
     ],
+    story: 'Feature engineering is the art of transforming raw data into forms that machine learning models can best utilize. In classical ML, this includes scaling, creating polynomial features, and using the kernel trick to map data into higher dimensions without explicit computation. Quantum feature maps take this concept further — they use quantum circuits to explicitly map data into the exponentially large Hilbert space, where entangling gates naturally create feature interactions that would require complex polynomial expansions classically. Understanding these classical foundations is essential before diving into quantum feature spaces.',
+    concepts: [
+      { type: 'text', text: 'Feature engineering transforms raw data to improve ML model performance. The kernel trick computes K(x,z) = φ(x)·φ(z) implicitly, enabling non-linear SVMs. Polynomial expansion creates interaction terms (x₁·x₂). Quantum feature maps are the quantum analog, using entanglement to create correlated feature representations in Hilbert space.' },
+      { type: 'math', formula: '\\text{Polynomial kernel: } K(x,z) = (x \\cdot z + c)^d = \\phi(x) \\cdot \\phi(z), \\quad \\phi: \\mathbb{R}^n \\to \\mathbb{R}^{{n+d \\choose d}}' },
+      { type: 'diagram', chart: 'graph LR; A[Raw 2D Data] --> B[Polynomial Expansion]; B --> C[(x1, x2, x1x2, x1^2, x2^2)]; A --> D[Quantum Feature Map]; D --> E[Entangling Circuit]; E --> F[Hilbert Space State];' },
+      { type: 'code', code: { language: 'python', code: 'from sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.svm import SVC\n\n# Classical polynomial expansion\npoly = PolynomialFeatures(degree=2, include_bias=False)\nX_poly = poly.fit_transform(X)\n\n# Equivalent: use polynomial kernel directly\nsvm = SVC(kernel="poly", degree=2)\nsvm.fit(X, y)\n\n# Quantum analog: ZZFeatureMap creates feature interactions\nfrom qiskit.circuit.library import ZZFeatureMap\nfm = ZZFeatureMap(feature_dimension=2, reps=1)' } },
+      { type: 'list', title: 'Classical to Quantum Feature Progression', items: ['Raw features: x₁, x₂, ..., xₙ', 'Polynomial expansion: x₁, x₂, x₁x₂, x₁², x₂²', 'Kernel trick: implicit φ(x) mapping', 'Quantum feature map: explicit |φ(x)⟩ in Hilbert space via entangling circuit'] },
+    ],
+    activity: {
+      description: 'Take a 2D dataset that is not linearly separable (e.g., concentric circles). Apply classical feature engineering (polynomial expansion) and a quantum feature map (ZZFeatureMap). Compare how each transforms the data and enables linear separation.',
+      steps: [
+        'Generate make_circles(n_samples=200, noise=0.1). This is the classic non-linearly separable dataset.',
+        'Apply PolynomialFeatures(degree=2) to create new features. Plot the data in the transformed space.',
+        'Create a 2-qubit ZZFeatureMap with reps=1. Compute the kernel matrix and visualize as a heatmap.',
+        'Train an SVM with (a) polynomial kernel, (b) precomputed quantum kernel on the same data.',
+        'Compare decision boundaries (plot for classical SVM) and kernel heatmaps for both approaches.',
+      ],
+      discussionQuestions: [
+        'How does the polynomial feature space (5 dimensions) compare with the quantum feature space (4 complex dimensions)?',
+        'Does the quantum feature map capture interactions that the polynomial expansion misses?',
+      ],
+      materials: ['Qiskit', 'scikit-learn', 'matplotlib'],
+      codetask: { language: 'python', code: 'from sklearn.datasets import make_circles\n\nX, y = make_circles(n_samples=200, noise=0.1, factor=0.5)\n\n# Classical: polynomial kernel SVM\nsvm_poly = SVC(kernel="poly", degree=2)\nsvm_poly.fit(X, y)\n\n# Quantum: kernel from ZZFeatureMap\nfm = ZZFeatureMap(2, reps=1, entanglement="linear")\nqkernel = FidelityQuantumKernel(feature_map=fm)\nK = qkernel.evaluate(X)\nsvm_quantum = SVC(kernel="precomputed")\nsvm_quantum.fit(K, y)\n\nprint(f"Poly SVM acc: {svm_poly.score(X, y):.3f}")\nprint(f"Quantum SVM acc: {svm_quantum.score(K, y):.3f}")' },
+    },
+    project: {
+      description: 'Create a "Feature Engineering Evolution" interactive timeline that shows the progression from raw features → polynomial expansion → kernel trick → quantum feature maps, with live demos of each stage on sample datasets.',
+      objectives: [
+        'Build a multi-step interactive demo showing each stage of feature engineering evolution.',
+        'For each stage, show the mathematical formulation, code example, and visualization on a sample dataset.',
+        'Include side-by-side comparisons of classical and quantum approaches on the same data.',
+      ],
+      deliverables: ['Interactive web app or Jupyter book', 'Code examples for each stage', 'Comparison visualizations'],
+      tools: ['Jupyter Book or Streamlit', 'scikit-learn', 'Qiskit', 'matplotlib'],
+    },
+    lab: {
+      description: 'Implement classical polynomial feature expansion and a quantum feature map (ZZFeatureMap) side by side. For a 2D dataset, manually verify that the quantum entangling gates create interaction terms analogous to classical polynomial features.',
+      setup: 'Create a simple 2D dataset with 4 points: (0,0), (1,0), (0,1), (1,1) — the corners of a unit square.',
+      steps: [
+        'Apply PolynomialFeatures(degree=2) to the 4 points. Write down the resulting 5D features.',
+        'Create a 2-qubit ZZFeatureMap circuit. Simulate the resulting statevectors for each of the 4 points.',
+        'Compute the inner products (fidelity) between all pairs of states. This is the quantum kernel matrix K_ij = |⟨φ(x_i)|φ(x_j)⟩|².',
+        'Compare: compute the classical polynomial kernel matrix K_poly = (x_i · x_j + 1)².',
+        'Are the kernel matrices the same? How do they differ? What does the quantum feature map capture that the polynomial expansion does not?',
+      ],
+      expectedOutput: 'Both kernel matrices should show that (0,0) and (1,1) are more similar to each other than to (1,0) and (0,1). The quantum kernel may show additional structure due to phase terms from the ZZ interaction.',
+      challenge: 'Add entanglement scaling: repeat with reps=1,2,3 for the ZZFeatureMap. How does the kernel matrix change with more layers? Does the quantum kernel start to diverge more from the polynomial kernel as depth increases?',
+    },
   },
 
   'module8-topic2': {
@@ -219,6 +266,53 @@ const module8Data: Record<string, TopicData> = {
       'Nature computes inner products for free — this is what makes quantum kernels potentially powerful.',
       'Understanding the geometry of your feature space is the key to designing better QML models.',
     ],
+    story: 'Imagine a library that is not just larger than any classical library, but organized in a fundamentally different way — where the distance between books is measured not by how many shelves apart they are, but by how related their contents are. That is the quantum feature space: an n-qubit Hilbert space with 2ⁿ complex dimensions, where distance is measured by fidelity (overlap of quantum states), not Euclidean distance. Nature gives us the inner product for free — measuring how much two quantum states overlap directly gives us a kernel value. This exponential space, with its unique projective geometry, is the arena where quantum machine learning operates.',
+    concepts: [
+      { type: 'text', text: 'An n-qubit quantum feature space is a 2ⁿ-dimensional complex projective space. Distances are measured by fidelity F = |⟨ψ|ϕ⟩|², not Euclidean distance. The inner product (kernel) is physically measurable. Expressibility measures how much of this space a feature map can access. The exponential dimensionality provides richer separation.' },
+      { type: 'math', formula: '\\mathcal{H} = \\mathbb{C}^{2^n}, \\quad \\text{Fubini-Study metric: } ds^2 = \\arccos^2(|\\langle\\psi|\\phi\\rangle|)' },
+      { type: 'diagram', chart: 'graph LR; A[1 qubit] --> B[2D complex space]; C[2 qubits] --> D[4D complex space]; E[3 qubits] --> F[8D complex space]; G[n qubits] --> H[2^n D complex space];' },
+      { type: 'code', code: { language: 'python', code: '# Compute inner product (kernel) between two states\nfrom qiskit.quantum_info import Statevector\n\n# Create two quantum states\nqc1 = QuantumCircuit(2)\nqc1.ry(0.5, 0); qc1.cx(0, 1)\nsv1 = Statevector(qc1)\n\nqc2 = QuantumCircuit(2)\nqc2.ry(0.8, 0); qc2.cx(0, 1)\nsv2 = Statevector(qc2)\n\n# The kernel value is the squared overlap\nkernel_value = np.abs(sv1.inner(sv2))**2\nprint(f"Quantum kernel K(x1,x2) = {kernel_value:.4f}")' } },
+      { type: 'list', title: 'Quantum Feature Space Properties', items: ['Dimension: 2ⁿ where n = number of qubits', 'Metric: Fubini-Study (based on fidelity)', 'Geometry: complex projective (rays, not points)', 'Kernel: physically measured as state overlap', 'Expressibility: how much of the space is accessible'] },
+    ],
+    activity: {
+      description: 'Explore the geometry of a 2-qubit Hilbert space (4 complex dimensions) by creating pairs of quantum states, computing their fidelities, and visualizing the resulting kernel matrix as a heatmap.',
+      steps: [
+        'Create 10 random 2-qubit states by applying random rotation angles to a circuit with Ry gates + CNOT.',
+        'Compute the fidelity |⟨ψᵢ|ψⱼ⟩|² for all 10×10 pairs.',
+        'Plot the resulting 10×10 kernel matrix as a heatmap.',
+        'Now create a second set of 10 states that are all very similar (small random perturbations of the same base state).',
+        'Compare the kernel matrices: the first should show varied similarities, the second should show uniformly high values.',
+      ],
+      discussionQuestions: [
+        'Why does the kernel matrix show non-zero off-diagonal values even for random states?',
+        'How would the kernel matrix look if all states were orthogonal to each other?',
+      ],
+      materials: ['Qiskit', 'numpy', 'seaborn for heatmaps'],
+      codetask: { language: 'python', code: 'import numpy as np\nfrom qiskit.quantum_info import Statevector\n\nn_states = 10\nstates = []\nfor _ in range(n_states):\n    qc = QuantumCircuit(2)\n    qc.ry(np.random.rand() * np.pi, 0)\n    qc.ry(np.random.rand() * np.pi, 1)\n    qc.cx(0, 1)\n    states.append(Statevector(qc))\n\nK = np.zeros((n_states, n_states))\nfor i in range(n_states):\n    for j in range(n_states):\n        K[i,j] = np.abs(states[i].inner(states[j]))**2\n\nsns.heatmap(K, cmap="RdBu", vmin=0, vmax=1)\nplt.show()' },
+    },
+    project: {
+      description: 'Build a "Hilbert Space Explorer" that visualizes quantum feature spaces of different sizes. Show the geometry, dimensionality, and how data points map into these spaces, with comparisons to classical Euclidean spaces.',
+      objectives: [
+        'Visualize 1D, 2D, and 3D projections of quantum feature spaces using dimensionality reduction (PCA/t-SNE).',
+        'Show how distances (fidelity vs Euclidean) differ between quantum and classical spaces.',
+        'Allow users to place points in a low-dimensional space and see their quantum encoding and resulting kernel matrix.',
+      ],
+      deliverables: ['Interactive 3D visualization app', 'Comparison animations of classical vs quantum spaces', 'Documentation'],
+      tools: ['Plotly or Three.js for 3D visualization', 'Qiskit for state preparation', 'scikit-learn for dimensionality reduction'],
+    },
+    lab: {
+      description: 'Map the Iris dataset into a quantum feature space using a 4-qubit ZZFeatureMap. Use t-SNE to visualize the 16-dimensional Hilbert space in 2D and verify that the classes become more separable in the quantum space.',
+      setup: 'Load Iris, select all 4 features, scale to [0, π]. Use a 4-qubit ZZFeatureMap with reps=2.',
+      steps: [
+        'Create quantum states for all 150 Iris samples using the ZZFeatureMap.',
+        'Compute the full 150×150 kernel matrix using statevector simulation (fidelity).',
+        'Apply t-SNE to the kernel matrix (using precomputed distance = 1 - K) to get a 2D embedding.',
+        'Plot the t-SNE embedding colored by Iris class. Compare with t-SNE on the original 4D Euclidean features.',
+        'Quantify separability: compute the silhouette score for the quantum embedding vs the classical embedding.',
+      ],
+      expectedOutput: 'The t-SNE plot of the quantum feature space should show better class separation than the classical feature space, especially for the more challenging Versicolor/Virginica separation. Silhouette score should be higher for the quantum embedding.',
+      challenge: 'Repeat the experiment with increasing feature map depth (reps=1,2,3,4). Plot the silhouette score vs depth. Does more depth always improve separability, or is there an optimal depth beyond which performance plateaus or declines?',
+    },
   },
 
   'module8-topic3': {
@@ -328,6 +422,54 @@ const module8Data: Record<string, TopicData> = {
       'The kernel matrix is where the quantum advantage lives or dies — it must capture problem structure.',
       'Noise is the enemy of kernel methods — each noisy gate corrupts the similarity measure.',
     ],
+    story: 'Quantum kernel methods represent one of the most promising approaches to achieving quantum advantage in machine learning. The idea is elegant: encode data into quantum states |φ(x)⟩ using a feature map circuit, then define the similarity between two data points as the squared overlap of their quantum states: K(x,z) = |⟨φ(x)|φ(z)⟩|². This kernel value is physically measurable on a quantum computer via a SWAP test or transition amplitude circuit — nature computes the inner product for us. By plugging this quantum kernel into a classical SVM solver, we can classify data in an exponentially large feature space that no classical computer can efficiently represent.',
+    concepts: [
+      { type: 'text', text: 'Quantum kernel methods compute similarity in Hilbert space via the overlap of quantum states. K(x,z) = |⟨φ(x)|φ(z)⟩|². Kernel values are physically measured using SWAP tests or transition amplitude circuits. Valid kernels satisfy Mercer\'s condition (positive semi-definite). Quantum kernels offer exponential feature space access but are sensitive to noise.' },
+      { type: 'math', formula: 'K(x_i, x_j) = |\\langle\\phi(x_i)|\\phi(x_j)\\rangle|^2, \\quad \\text{SWAP test: } P(0) = \\frac{1 + K}{2}' },
+      { type: 'diagram', chart: 'graph LR; A[x] --> B[U_feat(x)]; B --> C[|phi(x)>]; D[z] --> E[U_feat(z)]; E --> F[|phi(z)>]; C --> G[SWAP Test]; F --> G; G --> H[K(x,z)];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit_machine_learning.kernels import FidelityQuantumKernel\n\n# Create feature map\nfeature_map = ZZFeatureMap(feature_dimension=2, reps=2)\n\n# Create quantum kernel\nqkernel = FidelityQuantumKernel(\n    feature_map=feature_map,\n    enforce_psd=True  # ensure Mercer condition\n)\n\n# Compute kernel matrix\nK = qkernel.evaluate(X_train)\nprint(f"Kernel matrix shape: {K.shape}")\nprint(f"Is PSD: {np.all(np.linalg.eigvals(K) >= -1e-10)}")' } },
+      { type: 'list', title: 'Quantum Kernel Characteristics', items: ['Definition: K(x,z) = |⟨φ(x)|φ(z)⟩|²', 'Computation: SWAP test or transition amplitude circuit', 'Condition: must be positive semi-definite (Mercer)', 'Advantage: exponential feature space access', 'Limitation: NISQ noise corrupts kernel values'] },
+    ],
+    activity: {
+      description: 'Compare a classical RBF kernel with a quantum fidelity kernel on a synthetic dataset. Compute both kernel matrices, visualize them side by side, and discuss the qualitative differences.',
+      steps: [
+        'Generate a 2D dataset: 100 samples from 2 Gaussian blobs (make_blobs).',
+        'Compute the classical RBF kernel matrix: K_rbf(x,z) = exp(-γ||x-z||²).',
+        'Create a 2-qubit ZZFeatureMap and compute the quantum kernel matrix.',
+        'Plot both kernel matrices as heatmaps (sorted by class label).',
+        'Compute the Frobenius norm difference between the two matrices: ||K_rbf - K_quantum||_F.',
+        'Discuss: are the kernels capturing the same similarity structure? When would they differ?',
+      ],
+      discussionQuestions: [
+        'The RBF kernel depends only on Euclidean distance — what does the quantum kernel depend on?',
+        'If the quantum kernel matrix differs significantly from the RBF kernel, what does that imply about the feature space geometry?',
+      ],
+      materials: ['Qiskit', 'scikit-learn', 'matplotlib/seaborn'],
+      codetask: { language: 'python', code: 'from sklearn.metrics.pairwise import rbf_kernel\n\n# Classical RBF kernel\nK_rbf = rbf_kernel(X, gamma=0.5)\n\n# Quantum kernel\nfm = ZZFeatureMap(2, reps=2)\nqk = FidelityQuantumKernel(feature_map=fm)\nK_q = qk.evaluate(X)\n\n# Compare\ndiff = np.linalg.norm(K_rbf - K_q, "fro")\nprint(f"Frobenius difference: {diff:.4f}")\n\nfig, (ax1, ax2) = plt.subplots(1, 2)\nsns.heatmap(K_rbf, ax=ax1, cmap="RdBu")\nsns.heatmap(K_q, ax=ax2, cmap="RdBu")\nplt.show()' },
+    },
+    project: {
+      description: 'Build a "Kernel Comparator" tool that allows users to compute, visualize, and compare classical and quantum kernels on any dataset. Include metrics for kernel quality (alignment with labels, eigendecomposition, concentration measurement).',
+      objectives: [
+        'Implement classical kernels (linear, RBF, polynomial, sigmoid) and quantum kernels (fidelity-based).',
+        'Compute kernel-target alignment: how well does the kernel align with the ideal kernel (yy^T)?',
+        'Visualize kernel matrices, eigenvalue spectra, and t-SNE embeddings for comparison.',
+      ],
+      deliverables: ['Interactive Streamlit app', 'Python library kernel_comparator', 'Example notebooks'],
+      tools: ['scikit-learn', 'Qiskit', 'Streamlit', 'matplotlib'],
+    },
+    lab: {
+      description: 'Compute quantum kernel matrices on a quantum simulator using both (a) the statevector method (exact) and (b) the SWAP test method (sampling-based). Compare the results and measure how the sampling noise in the SWAP test affects the kernel values.',
+      setup: 'Create a 2-qubit ZZFeatureMap. Generate 10 Iris data points with 2 features. Prepare two kernel computation approaches.',
+      steps: [
+        'Statevector method: prepare |φ(x_i)⟩ for each of the 10 points using the statevector simulator. Compute K_ij = |⟨φ(x_i)|φ(x_j)⟩|² exactly.',
+        'SWAP test method: for each pair (i,j), build the SWAP test circuit on 2 copies of the feature map + ancilla. Run with shots=100, 1000, 10000.',
+        'From the SWAP test, compute K_ij = 2*P(0) - 1 where P(0) is the probability of measuring |0⟩ on the ancilla.',
+        'Plot the error ||K_swap - K_exact|| vs number of shots. Verify the 1/√(shots) scaling law.',
+        'Discuss: how many shots do you need for reliable kernel estimation?',
+      ],
+      expectedOutput: 'The SWAP test error should decrease as 1/√(shots). With 10000 shots, the kernel values should be within 0.01 of the exact values.',
+      challenge: 'Add depolarizing noise (1%, 5%, 10%) to the SWAP test circuit. How does noise affect the kernel estimation? Does it bias the kernel values in a specific direction (e.g., toward 0.5)? Compare the noisy kernel matrix with the exact one and measure the impact on SVM classification accuracy.',
+    },
   },
 
   'module8-topic4': {
@@ -437,6 +579,54 @@ const module8Data: Record<string, TopicData> = {
       'The SWAP test is elegant because it extracts a kernel value from a single measurement outcome.',
       'Kernel concentration is a warning: too much entanglement can destroy the information needed for classification.',
     ],
+    story: 'Fidelity-based quantum kernels use the most natural measure of similarity between quantum states: their overlap, or fidelity. If two data points produce nearly identical quantum states, they are considered similar; if their states are orthogonal, they are considered completely different. The SWAP test — a clever circuit using an ancillary qubit and controlled-SWAP gates — allows us to measure this fidelity directly on a quantum computer. However, there is a catch: in very high-dimensional Hilbert spaces, most states are nearly orthogonal to each other (a phenomenon called "concentration of measure"), which can make all data points seem equally dissimilar and destroy the kernel\'s discriminative power.',
+    concepts: [
+      { type: 'text', text: 'Fidelity F = |⟨ψ|ϕ⟩|² is the most natural quantum similarity measure. The SWAP test estimates it using an ancilla qubit: P(0) = (1+F)/2. Fidelity relates to Euclidean distance by d² = 2-2√F. Kernel concentration occurs in high dimensions — most states become nearly orthogonal, making all kernel values near zero.' },
+      { type: 'math', formula: 'F(\\psi, \\phi) = |\\langle\\psi|\\phi\\rangle|^2, \\quad \\text{SWAP: } P(|0\\rangle_{\\text{anc}}) = \\frac{1 + F}{2}' },
+      { type: 'diagram', chart: 'graph LR; A[|0>_anc] --> B[H]; B --> C[CSWAP]; C --> D[H]; D --> E[Measure]; F[|phi(x)>] --> C; G[|phi(z)>] --> C; E --> H[P(0) = (1+F)/2];' },
+      { type: 'code', code: { language: 'python', code: 'def swap_test(qc, state1, state2, ancilla=0):\n    # State1 on qubits 1..n, state2 on qubits n+1..2n\n    n = state1.num_qubits\n    qc.h(ancilla)\n    for i in range(n):\n        qc.cswap(ancilla, 1+i, 1+n+i)\n    qc.h(ancilla)\n    qc.measure(ancilla, 0)\n    return qc\n\n# Extract fidelity from measurement\ncounts = execute(qc, backend, shots=4096).result().get_counts()\np0 = counts.get("0", 0) / 4096\nfidelity = 2 * p0 - 1\nprint(f"Fidelity: {fidelity:.4f}")' } },
+      { type: 'list', title: 'Fidelity Kernel Summary', items: ['Definition: F = |⟨ψ|ϕ⟩|², ranges [0, 1]', 'Measurement: SWAP test or transition amplitude', 'Relation to distance: d² = 2 - 2√F', 'Challenge: concentration of measure in high dimensions', 'Advantage: direct similarity interpretation'] },
+    ],
+    activity: {
+      description: 'Implement the SWAP test circuit in Qiskit and measure the fidelity between pairs of known quantum states. Verify that the measured fidelity matches the theoretical value.',
+      steps: [
+        'Create a function swap_test(qc, q1_start, q2_start, n_qubits, ancilla) that builds the SWAP test circuit.',
+        'Prepare test state pairs: (a) |0⟩ and |0⟩, (b) |0⟩ and |1⟩, (c) |+⟩ and |+⟩, (d) |+⟩ and |0⟩, (e) |0⟩ and cos(θ)|0⟩+sin(θ)|1⟩.',
+        'Compute the theoretical fidelity for each pair.',
+        'Run the SWAP test on each pair with shots=4096. Extract fidelity from P(0).',
+        'Compare measured vs theoretical fidelity. Plot the error.',
+      ],
+      discussionQuestions: [
+        'Why does the SWAP test require an ancilla qubit? Could we measure fidelity without it?',
+        'How does the number of shots affect the precision of the fidelity estimate?',
+      ],
+      materials: ['Qiskit', 'numpy', 'Pen and paper for theoretical calculations'],
+      codetask: { language: 'python', code: 'def measure_fidelity(qc_state1, qc_state2, backend):\n    """Measure fidelity via SWAP test."""\n    n = qc_state1.num_qubits\n    total_q = 2 * n + 1  # ancilla + 2 copies\n    \n    qc = QuantumCircuit(total_q, 1)\n    qc.compose(qc_state1, qubits=range(1, 1+n), inplace=True)\n    qc.compose(qc_state2, qubits=range(1+n, 1+2*n), inplace=True)\n    \n    # SWAP test\n    qc.h(0)\n    for i in range(n):\n        qc.cswap(0, 1+i, 1+n+i)\n    qc.h(0)\n    qc.measure(0, 0)\n    \n    counts = execute(qc, backend, shots=4096).result().get_counts()\n    p0 = counts.get("0", 0) / 4096\n    return 2 * p0 - 1' },
+    },
+    project: {
+      description: 'Create a "Fidelity Kernel Lab" interactive notebook where users can explore fidelity kernels, implement SWAP tests, visualize kernel matrices, and understand kernel concentration through hands-on experiments with varying qubit counts.',
+      objectives: [
+        'Implement reusable fidelity and SWAP test functions with configurable qubit counts.',
+        'Build visualizations: kernel matrix heatmaps, eigenvalue spectra, fidelity distribution histograms.',
+        'Include experiments that demonstrate kernel concentration by comparing kernel matrices for 2, 4, 6, 8 qubits.',
+      ],
+      deliverables: ['Comprehensive Jupyter notebook with markdown explanations', 'Interactive widgets for parameter exploration', 'Report with key findings'],
+      tools: ['Qiskit', 'ipywidgets', 'matplotlib', 'seaborn'],
+    },
+    lab: {
+      description: 'Measure the concentration of measure phenomenon by computing fidelity kernel matrices for random data points using feature maps of increasing dimensionality (2, 4, 6, 8 qubits). Observe how the kernel value distribution concentrates near zero.',
+      setup: 'Generate random 2D data points. Create feature maps on 2, 4, 6, 8 qubits by projecting the 2D data to higher dimensions using repeated encoding layers.',
+      steps: [
+        'Create 50 random 2D points uniformly distributed in [0, 1]².',
+        'For n_qubits = 2, 4, 6, 8: create a ZZFeatureMap with reps = n_qubits (so depth scales with qubits).',
+        'For each n, compute the 50×50 fidelity kernel matrix using the statevector simulator.',
+        'Plot the histogram of off-diagonal kernel values for each n.',
+        'Compute the mean and standard deviation of off-diagonal entries. Plot mean ± std vs number of qubits.',
+        'Discuss: at what qubit count do all kernel values become essentially zero?',
+      ],
+      expectedOutput: 'As the number of qubits increases, the distribution of kernel values should shift toward zero and become narrower. The mean off-diagonal value should decrease approximately as 1/2ⁿ.',
+      challenge: 'Add an "alignment" experiment: create 50 points from two clusters (25 each). For each n, compute the kernel-target alignment: A = (Σᵢⱼ K_ij y_i y_j) / (Σᵢⱼ K_ij² · Σᵢⱼ yᵢ²yⱼ²)^(1/2). Plot alignment vs n. Does alignment decrease with n, showing that concentration hurts classification?',
+    },
   },
 
   'module8-topic5': {
@@ -546,6 +736,54 @@ const module8Data: Record<string, TopicData> = {
       'The choice of similarity measure is a design decision that directly impacts classifier performance.',
       'Understanding measure theory helps you choose the right tool for your specific QML problem.',
     ],
+    story: 'Beyond fidelity, there are many ways to measure how similar two quantum states are — each with its own strengths. Trace distance tells us how distinguishable two states are in the best possible measurement scenario. The Hilbert-Schmidt inner product extends similarity from pure states to mixed states and quantum operators. Choosing the right similarity measure is like choosing the right distance metric in classical ML — it should reflect the structure of the problem and be robust to noise. Understanding these measures gives you a richer toolkit for designing quantum kernels.',
+    concepts: [
+      { type: 'text', text: 'Quantum similarity goes beyond fidelity. Trace distance T(ρ,σ) = ½Tr|ρ-σ| measures state distinguishability. Hilbert-Schmidt inner product ⟨A,B⟩ = Tr(A†B) extends similarity to operators. Similarity measures are directly usable as kernels; distances need conversion (e.g., K = exp(-γ·d²)).' },
+      { type: 'math', formula: 'T(\\rho, \\sigma) = \\frac{1}{2}\\text{Tr}|\\rho - \\sigma|, \\quad \\langle A, B \\rangle_{HS} = \\text{Tr}(A^\\dagger B)' },
+      { type: 'diagram', chart: 'graph TD; A[Quantum Measures] --> B[Similarity]; A --> C[Distance]; B --> D[Fidelity F]; B --> E[HS Inner Product]; C --> F[Trace Distance]; C --> G[Hilbert-Schmidt Distance]; C --> H[Bures Distance];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.quantum_info import partial_trace, state_fidelity\nimport numpy as np\n\n# Create two density matrices (mixed states)\nrho = DensityMatrix.from_instruction(qc1)\nsigma = DensityMatrix.from_instruction(qc2)\n\n# Fidelity for mixed states\nF = state_fidelity(rho, sigma)\n\n# Trace distance\ntrace_dist = 0.5 * np.sum(np.abs(rho.data - sigma.data))\n\n# Hilbert-Schmidt inner product\nhs_inner = np.trace(rho.data.conj().T @ sigma.data).real\n\nprint(f"Fidelity: {F:.4f}, Trace dist: {trace_dist:.4f}, HS: {hs_inner:.4f}")' } },
+      { type: 'list', title: 'Quantum Similarity Measures', items: ['Fidelity (pure): F = |⟨ψ|ϕ⟩|²', 'Fidelity (mixed): F(ρ,σ) = Tr(√(√ρ σ √ρ))²', 'Trace distance: T(ρ,σ) = ½Tr|ρ-σ|', 'Hilbert-Schmidt: ⟨A,B⟩ = Tr(A†B)', 'Bures distance: dB = √(2 - 2√F)'] },
+    ],
+    activity: {
+      description: 'Compute three different similarity/distance measures (fidelity, trace distance, Hilbert-Schmidt inner product) for a set of quantum states and analyze how they rank pairs differently.',
+      steps: [
+        'Create 5 random 2-qubit states using different parameterized circuits.',
+        'Compute all pairwise fidelities, trace distances, and Hilbert-Schmidt inner products.',
+        'For each pair, create a table showing all three measures.',
+        'Rank the pairs by similarity for each measure. Are the rankings the same?',
+        'Identify a case where fidelity says two states are similar but trace distance says they are distinguishable — what does this mean?',
+      ],
+      discussionQuestions: [
+        'Why might two measures give different similarity rankings for the same states?',
+        'In a classification task, would you prefer a similarity or distance measure as your kernel?',
+      ],
+      materials: ['Qiskit quantum_info module', 'numpy', 'pandas for tables'],
+      codetask: { language: 'python', code: 'from qiskit.quantum_info import state_fidelity, partial_trace\n\ndef compare_measures(states):\n    n = len(states)\n    results = {}\n    for i in range(n):\n        for j in range(i+1, n):\n            F = state_fidelity(states[i], states[j])\n            td = 0.5 * np.sum(np.abs(states[i].data - states[j].data))\n            hs = np.trace(states[i].data.conj().T @ states[j].data).real\n            results[(i,j)] = {"F": F, "TD": td, "HS": hs}\n    return results\n\nstates = [DensityMatrix.from_instruction(make_state(seed)) for seed in range(5)]\nresults = compare_measures(states)' },
+    },
+    project: {
+      description: 'Create a "Quantum Similarity Playground" that allows users to compute and compare various quantum similarity and distance measures. Include visualization of the relationships between different measures and recommendations for kernel design.',
+      objectives: [
+        'Implement all major quantum similarity and distance measures.',
+        'Build an interactive dashboard where users can create states and compare measures.',
+        'Provide guidance on when to use each measure for kernel design.',
+      ],
+      deliverables: ['Streamlit app', 'Python library with all measures implemented', 'Example notebook'],
+      tools: ['Qiskit quantum_info', 'Streamlit', 'Plotly'],
+    },
+    lab: {
+      description: 'Compare the performance of three different similarity-based quantum kernels (fidelity, RBF-transformed trace distance, and Hilbert-Schmidt) on a binary classification task. Determine which similarity measure produces the best classifier.',
+      setup: 'Generate a synthetic 2D dataset with 2 classes. Use a 2-qubit ZZFeatureMap. Implement three kernel variants.',
+      steps: [
+        'Generate make_moons(200 samples, noise=0.15). Scale features to [0, π].',
+        'Create a 2-qubit ZZFeatureMap with reps=2.',
+        'Compute three kernel matrices from the encoded states: (1) K_fid = F(φ(x), φ(z)), (2) K_td = exp(-γ·T²), (3) K_hs = ⟨φ(x)|φ(z)⟩_HS.',
+        'Train an SVM with each kernel. Compare accuracy using 5-fold cross-validation.',
+        'Also compute the kernel-target alignment for each kernel.',
+        'Discuss: which similarity measure gave the best performance and why?',
+      ],
+      expectedOutput: 'The fidelity kernel should perform best on this simple dataset. The trace-distance-based kernel may perform similarly with proper γ tuning. The HS kernel may underperform due to different scaling.',
+      challenge: 'Repeat the experiment with depolarizing noise (2%, 5%, 10%) added to the feature map circuit. Which similarity measure is most robust to noise? Plot accuracy vs noise level for each kernel and identify the most noise-robust measure.',
+    },
   },
 
   'module8-topic6': {
@@ -656,6 +894,53 @@ const module8Data: Record<string, TopicData> = {
       'The advantage of quantum kernels is not guaranteed — it depends on the problem structure.',
       'Understanding both the promise and the limitations is essential for responsible QML research.',
     ],
+    story: 'Every technology has its strengths and weaknesses, and quantum kernels are no exception. On the plus side, they offer access to exponentially large feature spaces, potential advantages on small datasets, and the ability to compute similarities that are classically intractable. On the minus side, choosing the right feature map is hard (the "kernel bandwidth" problem), noise degrades kernel quality, and circuit depth limits what is feasible on NISQ devices. Understanding this balance — knowing when quantum kernels can help and when they cannot — is essential for any QML practitioner.',
+    concepts: [
+      { type: 'text', text: 'Quantum kernels offer: (1) access to 2ⁿ-dimensional Hilbert spaces, (2) potential small-data advantages, (3) quantum-natural similarity. Limitations: (1) kernel bandwidth selection (feature map design), (2) noise pushes kernel values to 0, (3) circuit depth limits complexity on NISQ, (4) no proven general advantage.' },
+      { type: 'math', formula: '\\text{Noisy kernel: } K_{\\text{noisy}} \\to \\frac{1}{2^n} \\mathbb{1}, \\quad \\text{as depolarizing noise } p \\to 1' },
+      { type: 'diagram', chart: 'graph TD; A[Quantum Kernels] --> B[Advantages]; A --> C[Limitations]; B --> D[Exponential feature space]; B --> E[Small data advantage]; B --> F[Quantum-native similarity]; C --> G[Kernel selection challenge]; C --> H[Noise degradation]; C --> I[NISQ depth limits];' },
+      { type: 'code', code: { language: 'python', code: '# Simulate noisy kernel estimation\nfrom qiskit.providers.aer.noise import NoiseModel, depolarizing_error\n\n# Create noise model\nnoise_model = NoiseModel()\nnoise_model.add_all_qubit_quantum_error(\n    depolarizing_error(0.01, 1), ["ry", "rz"]\n)\nnoise_model.add_all_qubit_quantum_error(\n    depolarizing_error(0.02, 2), ["cx"]\n)\n\nbackend_noisy = Aer.get_backend("qasm_simulator", noise_model=noise_model)\n\n# Compare ideal vs noisy kernel\nK_ideal = qkernel.evaluate(X)\nK_noisy = evaluate_kernel_noisy(X, feature_map, backend_noisy, shots=4096)\nerror = np.linalg.norm(K_ideal - K_noisy, "fro")\nprint(f"Kernel error under noise: {error:.4f}")' } },
+      { type: 'list', title: 'Advantages and Limitations', items: ['✅ Exponential feature space access', '✅ Small sample regime advantage', '✅ Quantum-native similarity computation', '❌ Feature map selection is challenging', '❌ NISQ noise degrades kernel values', '❌ Circuit depth limits expressibility', '❌ No unconditional quantum advantage proven'] },
+    ],
+    activity: {
+      description: 'Create a SWOT analysis (Strengths, Weaknesses, Opportunities, Threats) for quantum kernel methods. Research one specific claim from the literature and assess its validity based on what you have learned.',
+      steps: [
+        'Divide into groups. Each group takes one aspect: theoretical advantages, practical limitations, noise resilience, or scaling potential.',
+        'Research: use the course materials and one external source to gather evidence.',
+        'Create a SWOT matrix with at least 3 points in each quadrant.',
+        'Present your analysis to the class. Each presentation should include a concrete example or calculation.',
+        'Class discussion: based on the SWOT analyses, when should a practitioner choose quantum kernels over classical methods?',
+      ],
+      discussionQuestions: [
+        'Do the advantages of quantum kernels outweigh the limitations for current NISQ devices?',
+        'What single breakthrough would most improve the practicality of quantum kernels?',
+      ],
+      materials: ['SWOT template', 'Course notes and external references', 'Whiteboard for group work'],
+      codetask: { language: 'python', code: '# Feasibility calculator for quantum kernels\ndef quantum_kernel_feasibility(n_qubits, n_samples, reps, gate_fidelity):\n    depth_per_kernel = n_qubits * reps * 3  # approx\n    noise_per_gate = 1 - gate_fidelity\n    overall_fidelity = (gate_fidelity) ** depth_per_kernel\n    circuit_executions = n_samples ** 2\n    \n    print(f"Kernel feasibility analysis:")\n    print(f"  Qubits: {n_qubits}, Samples: {n_samples}")\n    print(f"  Circuit depth: {depth_per_kernel}")\n    print(f"  Single kernel fidelity: {overall_fidelity:.3f}")\n    print(f"  Total circuit executions: {circuit_executions}")\n    \n    if overall_fidelity < 0.5:\n        print("  WARNING: Kernel values too noisy to be reliable!")\n    \n    return overall_fidelity\n\nquantum_kernel_feasibility(10, 100, 3, 0.99)' },
+    },
+    project: {
+      description: 'Write a balanced technical report titled "Quantum Kernels: Promise and Peril" that presents both the theoretical advantages and practical limitations of quantum kernel methods, supported by experiments you run.',
+      objectives: [
+        'Demonstrate the exponential feature space advantage with small-scale simulations.',
+        'Show the noise degradation effect with controlled experiments.',
+        'Provide guidelines for practitioners: when to use quantum kernels and when to avoid them.',
+      ],
+      deliverables: ['Technical report (6-8 pages, LaTeX)', 'Supporting Jupyter notebook with all experiments', 'Presentation slides for findings'],
+      tools: ['LaTeX for report', 'Qiskit for experiments', 'matplotlib for figures'],
+    },
+    lab: {
+      description: 'Design and run a comprehensive experiment that measures the practical utility of quantum kernels across different noise levels, dataset sizes, and feature map complexities. The goal is to find the "sweet spot" where quantum kernels outperform classical ones.',
+      setup: 'Create 3 datasets: easy (linearly separable), medium (make_moons), hard (make_circles). Each with 50, 100, 200 samples.',
+      steps: [
+        'For each dataset, train: (a) classical RBF SVM, (b) quantum kernel SVM (ideal simulator), (c) quantum kernel SVM (noisy simulator with 1% depolarizing).',
+        'Vary feature map reps=1,2,3 and noise levels=0.1%, 0.5%, 1%, 2%, 5%.',
+        'Plot accuracy vs noise level for each dataset and feature map configuration.',
+        'For each configuration, determine whether the quantum kernel outperforms the classical baseline.',
+        'Create a "phase diagram" showing in which regions (noise, dataset size, complexity) quantum kernels win, tie, or lose.',
+      ],
+      expectedOutput: 'Quantum kernels should outperform classical ones on harder datasets (make_circles) with low noise. As noise increases or dataset becomes simpler, classical kernels become preferable. The phase diagram should clearly show these regimes.',
+      challenge: 'Extend the experiment to different feature maps (ZZFeatureMap vs PauliFeatureMap vs a custom design). Does one feature map maintain advantage at higher noise levels than others? What design principles emerge for noise-robust feature maps?',
+    },
   },
 
   'module8-topic7': {
@@ -767,6 +1052,56 @@ const module8Data: Record<string, TopicData> = {
       'The kernel heatmap tells you instantly whether your QML approach has promise.',
       'The lab transforms abstract kernel theory into a tangible, visual, and intuitive experience.',
     ],
+    story: 'This lab brings quantum kernel theory to life. Using Qiskit\'s built-in feature map classes (ZZFeatureMap, PauliFeatureMap), you will build quantum circuits that map classical data into Hilbert space, compute kernel matrices by measuring state overlaps, and visualize the results as heatmaps. The block-diagonal structure of a good kernel matrix — where same-class points show high similarity — will tell you instantly whether your feature map is working. This iterative process of building, testing, visualizing, and refining feature maps is the practical reality of quantum kernel design.',
+    concepts: [
+      { type: 'text', text: 'This lab uses Qiskit\'s ZZFeatureMap and PauliFeatureMap classes to build feature maps. The FidelityQuantumKernel computes kernel matrices via state overlap. Kernel heatmaps visualize separability: clear block-diagonal = good kernel. More layers increase expressibility but also depth and noise.' },
+      { type: 'math', formula: '\\text{Block-diagonal kernel: } K_{ij} \\approx \\begin{cases} \\text{high if } y_i = y_j \\\\ \\text{low if } y_i \\neq y_j \\end{cases}' },
+      { type: 'diagram', chart: 'graph LR; A[Iris Data] --> B[Feature Map]; B --> C[FidelityQuantumKernel]; C --> D[Kernel Matrix]; D --> E[Heatmap]; E --> F{Good?}; F -->|Yes| G[Train QSVM]; F -->|No| H[Redesign Feature Map];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.circuit.library import ZZFeatureMap, PauliFeatureMap\nfrom qiskit_machine_learning.kernels import FidelityQuantumKernel\nimport seaborn as sns\n\n# Build feature maps\nzz = ZZFeatureMap(feature_dimension=2, reps=2, entanglement="linear")\npauli = PauliFeatureMap(2, reps=2, paulis=["Z", "ZZ"])\n\n# Compute kernels\nkernel_zz = FidelityQuantumKernel(feature_map=zz)\nK_zz = kernel_zz.evaluate(X_train)\n\n# Visualize\nsns.heatmap(K_zz, cmap="RdBu", vmin=0, vmax=1,\n            xticklabels=y_train, yticklabels=y_train)\nplt.show()' } },
+      { type: 'list', title: 'Lab Workflow', items: ['Select dataset and preprocess features', 'Choose feature map (ZZ, Pauli, or custom)', 'Compute kernel matrix using FidelityQuantumKernel', 'Visualize kernel heatmap sorted by class labels', 'Assess separability from block-diagonal structure', 'Iterate: adjust feature map if kernel is poor', 'Train QSVM with final kernel and evaluate'] },
+    ],
+    activity: {
+      description: 'Build a ZZFeatureMap with different entanglement patterns (linear, circular, full) on the Iris dataset and compare how the kernel matrix and resulting QSVM accuracy change.',
+      steps: [
+        'Load Iris, select 2 features, binary classification (Versicolor vs Virginica).',
+        'Create ZZFeatureMaps with entanglement="linear", "circular", "full", all with reps=2.',
+        'For each, compute the kernel matrix and plot the heatmap sorted by class.',
+        'Train an SVC with precomputed kernel for each feature map. Record accuracy.',
+        'Create a table: entanglement type, kernel block-diagonal quality (visual score 1-5), accuracy.',
+        'Which entanglement pattern works best for Iris? Why?',
+      ],
+      discussionQuestions: [
+        'Why does entanglement pattern affect kernel quality?',
+        'Would you expect the best entanglement pattern to be dataset-dependent?',
+      ],
+      materials: ['Qiskit', 'scikit-learn', 'seaborn'],
+      codetask: { language: 'python', code: 'entanglement_patterns = ["linear", "circular", "full"]\nresults = {}\n\nfor ent in entanglement_patterns:\n    fm = ZZFeatureMap(2, reps=2, entanglement=ent)\n    kernel = FidelityQuantumKernel(feature_map=fm)\n    K = kernel.evaluate(X_train)\n    \n    svm = SVC(kernel="precomputed")\n    svm.fit(K, y_train)\n    \n    K_test = kernel.evaluate(X_test, X_train)\n    acc = svm.score(K_test, y_test)\n    results[ent] = acc\n    print(f"{ent}: {acc:.3f}")' },
+    },
+    project: {
+      description: 'Build "KernelMatrix Explorer" — an interactive tool that lets users choose a dataset, design feature maps, compute kernel matrices, visualize them, and train QSVM classifiers — all in one interface.',
+      objectives: [
+        'Create an end-to-end pipeline: data → feature map → kernel → visualization → QSVM training.',
+        'Allow users to experiment with feature map parameters and see real-time updates to the kernel heatmap.',
+        'Include a "kernel quality score" that quantifies block-diagonal structure.',
+      ],
+      deliverables: ['Streamlit app', 'Source code', 'User guide'],
+      tools: ['Qiskit', 'Streamlit', 'scikit-learn', 'matplotlib'],
+    },
+    lab: {
+      description: 'The culminating lab: build feature maps, compute kernel matrices, train QSVM classifiers, and evaluate performance on the Iris dataset. This end-to-end experience ties together everything from Module 8.',
+      setup: 'Load Iris, select 4 features. Scale to [0, π]. Split 70/30. Create a 4-qubit ZZFeatureMap with reps=2.',
+      steps: [
+        'Create feature map: ZZFeatureMap(feature_dimension=4, reps=2). Print the circuit diagram.',
+        'Compute the training kernel matrix: FidelityQuantumKernel(feature_map).evaluate(X_train).',
+        'Visualize the kernel matrix as a heatmap with class labels on axes.',
+        'Train an SVC with kernel="precomputed" on the training kernel matrix.',
+        'Compute the test kernel matrix: FidelityQuantumKernel.evaluate(X_test, X_train).',
+        'Predict and compute accuracy, precision, recall, F1 score.',
+        'Compare with classical SVM (RBF kernel) on the same data.',
+      ],
+      expectedOutput: 'Heatmap should show block-diagonal structure (3 classes). QSVM accuracy should be 90-98%. Classical SVM should achieve similar accuracy. The comparison should be documented.',
+      challenge: 'Repeat the full experiment with different reps (1, 2, 4, 8) for the ZZFeatureMap. Plot accuracy vs reps. Is there an optimal depth? Then repeat with PauliFeatureMap and compare the two feature map families. Which is better for Iris and why?',
+    },
   },
 };
 

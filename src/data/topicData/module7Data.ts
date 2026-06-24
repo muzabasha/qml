@@ -109,6 +109,54 @@ const module7Data: Record<string, TopicData> = {
       'The encoding bottleneck is one of the biggest practical challenges in QML today.',
       'Choosing an encoding method is as important as choosing a model architecture in classical ML.',
     ],
+    story: 'Imagine you speak only English and need to communicate with someone who only understands Mandarin. You need a translator to convert your words into a language the other person can process. Data encoding is that translator for quantum computers — classical data in the form of CSV files, images, or sensor readings must be converted into quantum states (superpositions of |0⟩ and |1⟩) before a quantum circuit can work with them. The efficiency and accuracy of this translation directly determines the quality of your QML model, making encoding one of the most critical design decisions in any quantum machine learning pipeline.',
+    concepts: [
+      { type: 'text', text: 'Data encoding is the process of converting classical data into quantum states. The choice of encoding determines qubit efficiency, circuit depth, and the geometry of the quantum feature space. Key methods include basis encoding (1 qubit/bit), angle encoding (1 qubit/feature), amplitude encoding (n qubits for 2ⁿ features), and dense encoding.' },
+      { type: 'math', formula: '\\text{Basis: } |b_1 b_2 \\ldots b_n\\rangle, \\quad \\text{Angle: } \\bigotimes_{i=1}^n R_y(x_i)|0\\rangle, \\quad \\text{Amplitude: } \\sum_{i=0}^{2^n-1} x_i |i\\rangle' },
+      { type: 'diagram', chart: 'graph LR; A[Classical Data] --> B{Encoding Method}; B --> C[Basis]; B --> D[Angle]; B --> E[Amplitude]; B --> F[Dense]; C --> G[1 qubit/bit]; D --> H[1 qubit/feature]; E --> I[n qubits/2^n features]; F --> J[3 features/qubit];' },
+      { type: 'code', code: { language: 'python', code: 'import numpy as np\nfrom qiskit import QuantumCircuit\n\n# Angle encoding example\ndata = [0.5, 0.8, 0.2]  # 3 features\nqc = QuantumCircuit(3)\nfor i, x in enumerate(data):\n    qc.ry(x * np.pi, i)  # scale to [0, pi]\nprint(qc.draw())' } },
+      { type: 'list', title: 'Encoding Methods Overview', items: ['Basis Encoding: direct binary mapping, 1 qubit/bit, simplest', 'Angle Encoding: rotation gates with feature values, 1 qubit/feature', 'Amplitude Encoding: feature values as amplitudes, n qubits for 2ⁿ features', 'Dense Encoding: multiple features per qubit using multiple rotation axes'] },
+    ],
+    activity: {
+      description: 'You will compare three encoding methods (basis, angle, amplitude) on a small dataset by implementing each in Qiskit and measuring the qubit count, circuit depth, and state preparation fidelity.',
+      steps: [
+        'Take a 4-element feature vector [0.2, 0.5, 0.7, 0.1] and scale/prepare it for each encoding method.',
+        'Implement basis encoding: convert to binary and apply X gates.',
+        'Implement angle encoding: apply Ry gates with scaled feature values on 4 qubits.',
+        'Implement amplitude encoding: normalize the vector and use Qiskit\'s initialize() method on 2 qubits.',
+        'For each method, print the circuit depth, qubit count, and verify the statevector matches expectations.',
+      ],
+      discussionQuestions: [
+        'Which encoding method uses the fewest qubits? Which uses the shallowest circuit?',
+        'How would the choice of encoding change if your dataset had 100 features? 1000 features?',
+      ],
+      materials: ['Qiskit environment', 'Jupyter notebook', 'Reference table of encoding methods'],
+      codetask: { language: 'python', code: 'from qiskit.quantum_info import Statevector\n\nfeatures = [0.2, 0.5, 0.7, 0.1]\n\n# Amplitude encoding on 2 qubits\nqc = QuantumCircuit(2)\nnorm = np.linalg.norm(features)\nqc.initialize(features / norm, [0, 1])\n\nstate = Statevector(qc)\nprint("Statevector:", state.data)\nprint("Depth:", qc.depth())' },
+    },
+    project: {
+      description: 'Build an interactive "Encoding Explorer" application that allows users to select an encoding method (basis, angle, amplitude, dense), input custom feature values, and visualize the resulting quantum circuit, statevector, and Bloch sphere representations.',
+      objectives: [
+        'Implement all four encoding methods (basis, angle, amplitude, dense) as interactive widgets.',
+        'Display the resulting quantum circuit diagram, statevector, and Bloch sphere for single-qubit cases.',
+        'Show a comparison table of qubit count, circuit depth, and gate count for each method.',
+      ],
+      deliverables: ['Streamlit or Jupyter widget-based interactive app', 'Source code with modular encoding function implementations', 'README with usage examples and encoding guide'],
+      tools: ['Streamlit or Voilà', 'Qiskit', 'Matplotlib for Bloch sphere visualization'],
+    },
+    lab: {
+      description: 'Implement all four data encoding methods (basis, angle, amplitude, dense) on a small classical dataset and verify the correctness of each by comparing the prepared quantum state with the expected mathematical state.',
+      setup: 'Create a dataset of 5 samples with 4 features each (e.g., from sklearn\'s make_blobs). Import Qiskit, numpy, and Statevector from qiskit.quantum_info.',
+      steps: [
+        'Normalize the data appropriately for each encoding method.',
+        'Implement basis encoding: take the binary representation of each feature (after discretization) and apply X gates.',
+        'Implement angle encoding: apply Ry(θ) gates where θ = feature × π (scaled to [0, π]).',
+        'Implement amplitude encoding: normalize the feature vector and use QuantumCircuit.initialize().',
+        'Implement dense encoding: encode 2 features per qubit using Ry and Rz rotations sequentially.',
+        'For each encoding, verify the statevector using Aer\'s statevector_simulator and compute the fidelity with the expected state.',
+      ],
+      expectedOutput: 'All encoding methods should produce statevectors with fidelity > 0.999 compared to the expected states. The circuit depth comparison should show: basis < angle < dense < amplitude.',
+      challenge: 'For amplitude encoding, implement a state preparation circuit manually using uniformly controlled Ry and Ry rotations (the method described by Mottonen et al.) instead of using Qiskit\'s built-in initialize(). Compare circuit depth and gate count between your manual implementation and Qiskit\'s.',
+    },
   },
 
   'module7-topic2': {
@@ -219,6 +267,53 @@ const module7Data: Record<string, TopicData> = {
       'The normalization constraint is not a limitation — it is a design feature that forces efficient representation.',
       'Gate-based encoding means every circuit is a learned representation of the input data.',
     ],
+    story: 'Consider the challenge of translating a book from English to Japanese — you need to choose whether to translate literally (words become words), conceptually (ideas become ideas), or poetically (emotions become emotions). Each approach preserves different aspects of the original. Mapping classical data to quantum states is similar: you must decide which aspects of your data are most important to preserve. A binary feature might naturally become a |0⟩ or |1⟩ state (basis encoding), a continuous value might become a rotation angle on the Bloch sphere (angle encoding), and a high-dimensional vector might be compressed into the amplitudes of a quantum superposition (amplitude encoding).',
+    concepts: [
+      { type: 'text', text: 'Mapping classical data to quantum states requires understanding three key constraints: normalization (state vectors must have unit norm), the choice of representation (amplitudes vs angles), and qubit efficiency (how many features per qubit). Quantum gates — especially rotation gates Rx, Ry, Rz — perform the actual transformation from the initial |0⟩ state.' },
+      { type: 'math', formula: '|\\psi\\rangle = \\cos(\\theta/2)|0\\rangle + e^{i\\phi}\\sin(\\theta/2)|1\\rangle, \\quad \\theta \\in [0, \\pi], \\phi \\in [0, 2\\pi]' },
+      { type: 'diagram', chart: 'graph LR; A[Features x1..xn] --> B[Preprocess]; B --> C[Angle Encoding]; C --> D[Ry(x1) Ry(x2) ...]; D --> E[Encoded State]; B --> F[Amplitude Encoding]; F --> G[Initialize(amp)]; G --> E;' },
+      { type: 'code', code: { language: 'python', code: 'import numpy as np\n\ndef preprocess_for_encoding(data, encoding_type="angle"):\n    if encoding_type == "angle":\n        # Scale to [0, pi]\n        min_val, max_val = np.min(data), np.max(data)\n        return (data - min_val) / (max_val - min_val) * np.pi\n    elif encoding_type == "amplitude":\n        # Normalize to unit norm\n        return data / np.linalg.norm(data)\n    return data\n\nfeatures = np.array([2.5, -1.3, 0.7, 4.1])\nprint(preprocess_for_encoding(features, "angle"))' } },
+      { type: 'list', title: 'Preprocessing for Encoding', items: ['Angle encoding: scale features to [0, π] or [0, 2π]', 'Amplitude encoding: normalize vector to unit norm (Σ|xi|² = 1)', 'Basis encoding: discretize continuous values or use binary representation', 'Dense encoding: split features across Rx, Ry, Rz on each qubit'] },
+    ],
+    activity: {
+      description: 'Given a raw dataset with mixed data types (binary, categorical, continuous), design the preprocessing and encoding strategy for each feature. Justify your encoding choices based on the nature of each feature and the available qubit budget.',
+      steps: [
+        'Examine the dataset: age (continuous), gender (binary), income (continuous), education_level (categorical: 4 levels), postal_code (categorical: 100+ codes).',
+        'For each feature, decide: which encoding method is most appropriate? Consider qubit cost and information loss.',
+        'Write the preprocessing code to transform each feature into the required format for your chosen encoding.',
+        'Calculate the total qubit budget required for your encoding strategy.',
+        'Compare with a partner: did you make different choices? Discuss the trade-offs.',
+      ],
+      discussionQuestions: [
+        'How would your encoding strategy change if you only had 4 qubits available?',
+        'What information is lost when you discretize continuous data for basis encoding?',
+      ],
+      materials: ['Printed dataset with mixed feature types', 'Calculator for qubit budget estimation'],
+      codetask: { language: 'python', code: '# Mixed data encoding strategy\ndataset = {\n    "age": {"type": "continuous", "encoding": "angle", "qubits": 1},\n    "gender": {"type": "binary", "encoding": "basis", "qubits": 1},\n    "income": {"type": "continuous", "encoding": "angle", "qubits": 1},\n    "education": {"type": "categorical_4", "encoding": "basis_onehot", "qubits": 4},\n    "postal_code": {"type": "categorical_100", "encoding": "angle_hash", "qubits": 1}\n}\ntotal_qubits = sum(f["qubits"] for f in dataset.values())\nprint(f"Total qubit budget: {total_qubits}")' },
+    },
+    project: {
+      description: 'Design and implement a "Quantum Data Preparation Pipeline" that automatically detects feature types in a dataset and recommends (or applies) the optimal encoding strategy for each feature given a qubit budget constraint.',
+      objectives: [
+        'Build a feature type detector that classifies features as binary, categorical, continuous, or text.',
+        'Implement automatic scaling/normalization for each encoding method.',
+        'Create an optimizer that minimizes information loss given a qubit budget constraint.',
+      ],
+      deliverables: ['Python package auto_quantum_encoder with feature detection and encoding', 'Notebook demonstrating on 3 different datasets (tabular, image, text)', 'Documentation with examples and qubit budget calculator'],
+      tools: ['Python', 'pandas for data handling', 'Qiskit for encoding circuits', 'scikit-learn for preprocessing'],
+    },
+    lab: {
+      description: 'Manually construct the quantum state corresponding to a specific 2D data point using three different encoding methods. Verify each by simulating the circuit and measuring the output statevector.',
+      setup: 'Select a 2D data point (x, y) = (0.3, 0.8). Prepare 3 separate notebooks — one for each encoding method. Use Qiskit\'s statevector_simulator for verification.',
+      steps: [
+        'Angle encoding: create a 2-qubit circuit, apply Ry(0.3π) on qubit 0 and Ry(0.8π) on qubit 1. Print the statevector.',
+        'Amplitude encoding: normalize [0.3, 0.8] to unit norm → [0.351, 0.936]. Create a 1-qubit circuit and initialize with these amplitudes. Print the statevector.',
+        'Basis encoding: discretize 0.3 → 0 (if < 0.5) and 0.8 → 1. Create a 2-qubit circuit, apply X on qubit 1 only.',
+        'For each method, compare the actual statevector with the mathematically expected one. Compute the fidelity.',
+        'Plot all three encoded states on the Bloch sphere (for 1-qubit cases) or as bar charts of basis state probabilities.',
+      ],
+      expectedOutput: 'All three encoding methods should produce states with fidelity > 0.999. The angle encoding produces a separable product state. The amplitude encoding produces a single-qubit superposition. The basis encoding produces a computational basis state.',
+      challenge: 'Create a fourth encoding method yourself: encode (x, y) into a single qubit using both Rx and Ry rotations. The first feature becomes the Rx angle, the second becomes the Ry angle. Compare this "dense angle" encoding with the three standard methods in terms of qubit efficiency and expressibility.',
+    },
   },
 
   'module7-topic3': {
@@ -328,6 +423,54 @@ const module7Data: Record<string, TopicData> = {
       'The linear qubit scaling problem motivates more sophisticated encoding methods like amplitude encoding.',
       'Choose basis encoding when qubits are abundant and data is naturally binary.',
     ],
+    story: 'Basis encoding is the simplest and most intuitive way to load data into a quantum computer — it is the quantum equivalent of writing binary numbers. Each classical bit (0 or 1) maps directly to a qubit in the |0⟩ or |1⟩ state. If your data point is 1011 in binary, you create a 4-qubit state |1011⟩ by applying Pauli-X gates on qubits 1, 3, and 4. It is straightforward, easy to implement, and requires no complicated circuits. However, its simplicity comes at a cost: for every bit of classical information, you need one qubit, making it impractical for large datasets on today\'s limited NISQ hardware.',
+    concepts: [
+      { type: 'text', text: 'Basis encoding maps each classical bit directly to a qubit: |0⟩ for 0, |1⟩ for 1. It is implemented using Pauli-X gates on qubits that should be |1⟩. With n qubits, you can encode n bits. Best for binary features and one-hot encoded categorical data. Main limitation: linear qubit scaling.' },
+      { type: 'math', formula: '|b_1 b_2 \\ldots b_n\\rangle = |b_1\\rangle \\otimes |b_2\\rangle \\otimes \\cdots \\otimes |b_n\\rangle, \\quad b_i \\in \\{0, 1\\}' },
+      { type: 'diagram', chart: 'graph LR; A[Data: 1 0 1 1] --> B[Qubit 0: X]; B --> C[|1>]; A --> D[Qubit 1: -]; D --> E[|0>]; A --> F[Qubit 2: X]; F --> G[|1>]; A --> H[Qubit 3: X]; H --> I[|1>];' },
+      { type: 'code', code: { language: 'python', code: 'def basis_encode(binary_string):\n    n = len(binary_string)\n    qc = QuantumCircuit(n)\n    for i, bit in enumerate(binary_string):\n        if bit == "1":\n            qc.x(i)\n    return qc\n\n# Example: encode 1011\nqc = basis_encode("1011")\nprint(qc.draw())\nprint(Statevector(qc))' } },
+      { type: 'list', title: 'Basis Encoding Use Cases', items: ['Binary features: gender (M/F), true/false flags, yes/no indicators', 'One-hot encoded categories: 10 categories → 10 qubits', 'Discretized continuous data: split into bins, assign binary codes', 'Binarized image pixels: threshold to black/white'] },
+    ],
+    activity: {
+      description: 'Take a small dataset of 10 samples with 3 binary features each, implement basis encoding for each sample in Qiskit, and verify the encoded states are correct by simulating and checking the statevector.',
+      steps: [
+        'Create a dataset: [[1,0,1], [0,1,1], [1,1,0], [0,0,1], [1,0,0], [0,1,0], [1,1,1], [0,0,0], [1,0,1], [0,1,0]].',
+        'Write a function basis_encode(bits) that returns a QuantumCircuit with X gates applied where bits are 1.',
+        'Loop through all 10 samples, build the circuit, simulate with statevector_simulator, and print the resulting state label.',
+        'Verify that |101⟩ has 100% probability for the first sample, |011⟩ for the second, etc.',
+        'Calculate the total qubits used (3) and compare with what angle encoding would need for the same samples.',
+      ],
+      discussionQuestions: [
+        'How would you encode a 10-class categorical variable using basis encoding? How many qubits?',
+        'What happens if a feature has 3 possible values (not binary)? How would you adapt basis encoding?',
+      ],
+      materials: ['Qiskit environment', 'Pre-printed binary dataset cards', 'Pen and paper for manual verification'],
+      codetask: { language: 'python', code: 'def verify_basis_encoding():\n    samples = [[1,0,1], [0,1,1], [1,1,0]]\n    for bits in samples:\n        qc = QuantumCircuit(3)\n        for i, b in enumerate(bits):\n            if b: qc.x(i)\n        sv = Statevector(qc)\n        label = "".join(str(b) for b in bits)\n        prob = sv.probabilities()[int(label, 2)]\n        print(f"|{label}>: prob = {prob:.2f}")\n\nverify_basis_encoding()' },
+    },
+    project: {
+      description: 'Create a "Basis Encoding Utility Library" that provides functions for converting various data types (integers, floats, categories, binary) into basis-encoded quantum circuits. Include visualization of the resulting quantum states.',
+      objectives: [
+        'Implement converters: int_to_basis, float_to_basis (with configurable precision), category_to_basis (one-hot).',
+        'Create a visualizer that shows the binary representation alongside the quantum circuit and state probabilities.',
+        'Build a qubit budget estimator that calculates how many qubits are needed for a given dataset and precision.',
+      ],
+      deliverables: ['Python module basis_encoding_utils.py', 'Jupyter notebook demonstrating all converters', 'API documentation'],
+      tools: ['Python', 'Qiskit', 'Matplotlib'],
+    },
+    lab: {
+      description: 'Apply basis encoding to a real-world dataset: the UCI Adult Census Income dataset (or a subset). Convert categorical features (gender, education, marital status) to one-hot encoding and then to basis-encoded quantum states. Analyze the qubit requirements.',
+      setup: 'Download the Adult dataset or use a small subset with 50 samples. Select 5 binary/categorical features. Preprocess using pandas get_dummies for one-hot encoding.',
+      steps: [
+        'Load and clean the dataset. Select features: gender (binary), education (4 categories), marital_status (2 categories), income_binary (target).',
+        'Apply one-hot encoding to categorical features. Count the total number of binary features created.',
+        'Design a basis encoding circuit that uses 1 qubit per binary feature.',
+        'Circuit depth analysis: how many X gates per sample on average? What is the maximum circuit depth?',
+        'Write a function that takes a sample row and returns the basis-encoded circuit. Apply it to all 50 samples.',
+        'Discussion: with 127 qubits on IBM Brisbane, how many one-hot features could you encode?',
+      ],
+      expectedOutput: 'The total qubit count for the selected features should be computed. For example, if one-hot encoding produces 8 binary features, basis encoding needs 8 qubits. The circuit depth should be equal to the number of features with value 1.',
+      challenge: 'Implement a compressed basis encoding using QRAM-inspired addressing: encode the position of 1s rather than the full bitstring. For a one-hot vector with k ones, compare the qubit cost of standard basis encoding (n qubits) vs compressed encoding (log₂(n) × k qubits).',
+    },
   },
 
   'module7-topic4': {
@@ -437,6 +580,56 @@ const module7Data: Record<string, TopicData> = {
       'The Bloch sphere provides a beautiful geometric intuition for how angle encoding works.',
       'Understanding the qubit-feature trade-off is essential for designing scalable QML solutions.',
     ],
+    story: 'Imagine a compass needle that can point in any direction — the angle of the needle encodes information. In quantum computing, the Bloch sphere is like a 3D compass, and rotation gates (Rx, Ry, Rz) are the hands that move the needle. Angle encoding takes each classical feature value and converts it into a rotation angle, positioning the qubit state on the Bloch sphere. A feature value of 0.5 might become a Ry(0.5π) rotation, placing the qubit somewhere between |0⟩ and |1⟩. This intuitive geometric mapping makes angle encoding the most popular method for continuous data in QML.',
+    concepts: [
+      { type: 'text', text: 'Angle encoding maps each classical feature value to a rotation gate angle. Using Ry, a feature value x produces the state cos(x/2)|0⟩ + sin(x/2)|1⟩. Features must be scaled to [0, π] or [0, 2π]. Each qubit encodes one feature, giving linear qubit scaling. Dense angle encoding can pack up to 3 features per qubit.' },
+      { type: 'math', formula: 'R_y(\\theta) = \\begin{pmatrix} \\cos(\\theta/2) & -\\sin(\\theta/2) \\\\ \\sin(\\theta/2) & \\cos(\\theta/2) \\end{pmatrix}, \\quad R_y(\\theta)|0\\rangle = \\cos(\\theta/2)|0\\rangle + \\sin(\\theta/2)|1\\rangle' },
+      { type: 'diagram', chart: 'graph LR; A[x=0.3] --> B[Ry(0.3pi)]; B --> C[|0> -> 0.59|0> + 0.81|1>]; D[x=0.8] --> E[Ry(0.8pi)]; E --> F[|0> -> 0.31|0> + 0.95|1>]; C --> G[Bloch sphere]; F --> G;' },
+      { type: 'code', code: { language: 'python', code: 'def angle_encode(features):\n    n = len(features)\n    qc = QuantumCircuit(n)\n    for i, x in enumerate(features):\n        qc.ry(x * np.pi, i)  # scale features to [0, pi]\n    return qc\n\n# Example\nfeatures = [0.2, 0.5, 0.9]\nqc = angle_encode(features)\nsv = Statevector(qc)\nprint("Probabilities:", sv.probabilities())' } },
+      { type: 'list', title: 'Angle Encoding Characteristics', items: ['Qubit efficiency: 1 feature per qubit (linear scaling)', 'Handles continuous data naturally without discretization', 'Requires feature scaling to angular range [0, π]', 'Circuit depth: 1 gate per feature (very shallow)', 'Dense variant: up to 3 features/qubit using Rx, Ry, Rz'] },
+    ],
+    activity: {
+      description: 'Using a Bloch sphere visualizer (either Qiskit\'s plot_bloch_multivector or an online simulator), encode different feature values and observe how the qubit state moves on the sphere. Learn to predict the final state given a feature value.',
+      steps: [
+        'Open Qiskit\'s Bloch sphere visualizer or use qutip\'s Bloch sphere.',
+        'Encode feature value x = 0.0 using Ry(0) and note the state (should be |0⟩, north pole).',
+        'Encode x = 1.0 using Ry(π) and note the state (should be |1⟩, south pole).',
+        'Encode x = 0.5 using Ry(π/2) — the state should be on the equator (|+⟩).',
+        'Try x = 0.25 (Ry(π/4)), x = 0.75 (Ry(3π/4)). For each, predict the state before simulating.',
+        'Repeat using Rx instead of Ry. How does the path on the Bloch sphere differ?',
+      ],
+      discussionQuestions: [
+        'Why does the Bloch sphere path differ between Rx and Ry for the same feature value?',
+        'How would you encode a 2D feature vector (x, y) on a single qubit using both Rx and Ry?',
+      ],
+      materials: ['Jupyter notebook with Bloch sphere plotting', 'Qiskit or QuTip', 'Pre-calculated angle table'],
+      codetask: { language: 'python', code: 'from qiskit.visualization import plot_bloch_multivector\n\nfeatures = [0.0, 0.25, 0.5, 0.75, 1.0]\nfor x in features:\n    qc = QuantumCircuit(1)\n    qc.ry(x * np.pi, 0)\n    sv = Statevector(qc)\n    print(f"x={x:.2f}: state = {sv.data}")' },
+    },
+    project: {
+      description: 'Build an interactive Bloch sphere explorer that visualizes angle encoding. Users input feature values, choose rotation axes (Rx, Ry, Rz), and see the qubit state move on the Bloch sphere in real-time with probability readouts.',
+      objectives: [
+        'Create an interactive widget with sliders for up to 3 feature values.',
+        'Display the resulting qubit state on a 3D Bloch sphere with animation.',
+        'Show the probability of measuring |0⟩ vs |1⟩ and the state vector components.',
+        'Include an "auto-encode" mode that cycles through feature values to show the full range of motion.',
+      ],
+      deliverables: ['Jupyter notebook with ipywidgets or Streamlit app', 'Bloch sphere visualization code', 'User guide'],
+      tools: ['Qiskit visualization', 'ipywidgets or Streamlit', 'Plotly or matplotlib for 3D'],
+    },
+    lab: {
+      description: 'Implement angle encoding for the Iris dataset (4 features) and compare two classification approaches: (1) use the angle-encoded states directly as features for a classical classifier, and (2) use them as input to a quantum kernel method.',
+      setup: 'Load the Iris dataset, select 4 features (sepal length/width, petal length/width), scale to [0, π]. Create angle encoding circuits for each sample.',
+      steps: [
+        'Filter Iris to two classes (Versicolor vs Virginica), select all 4 features.',
+        'Scale features to [0, π] using MinMaxScaler.',
+        'Build 4-qubit angle encoding circuits for all 100 samples.',
+        'Approach 1: use the resulting Bloch coordinates (θ, φ for each qubit) as classical features. Train an SVM.',
+        'Approach 2: use the angle-encoded states with a fidelity quantum kernel. Train a QSVM.',
+        'Compare accuracies and discuss what the quantum kernel captures that the classical features miss.',
+      ],
+      expectedOutput: 'Both approaches should achieve > 85% accuracy. The QSVM approach may show marginal improvement if the quantum kernel captures correlations that the classical features (Bloch coordinates) miss.',
+      challenge: 'Extend the experiment: repeat with 2, 4, 6, and 8 features (adding derived features). Does the quantum kernel\'s relative performance improve as dimensionality increases? This tests the advantage of accessing the full Hilbert space vs classical coordinates.',
+    },
   },
 
   'module7-topic5': {
@@ -546,6 +739,54 @@ const module7Data: Record<string, TopicData> = {
       'The exponential circuit depth for state preparation is the hidden cost of exponential qubit savings.',
       'Amplitude encoding embodies the fundamental trade-off in quantum computing: qubits vs circuit depth.',
     ],
+    story: 'Imagine trying to pack an entire encyclopedia set into a single suitcase. With amplitude encoding, this is possible — the 2ⁿ amplitudes of an n-qubit quantum state can represent exponentially many classical values. A 10-qubit state can encode 1024 features, while angle encoding would need 1024 qubits. But there is a catch: packing the suitcase takes time. Preparing an arbitrary amplitude-encoded state requires exponentially deep circuits, and extracting the values requires many measurements due to shot noise. Amplitude encoding embodies the fundamental trade-off of quantum computing: massive compression at the cost of preparation and readout complexity.',
+    concepts: [
+      { type: 'text', text: 'Amplitude encoding maps an N-feature vector to the amplitudes of n = log₂(N) qubits. It is exponentially efficient in qubit count but requires deep state preparation circuits and suffers from shot noise during readout. The vector must be normalized (Σ|xi|² = 1) and zero-padded if N is not a power of 2.' },
+      { type: 'math', formula: '|\\psi\\rangle = \\sum_{i=0}^{2^n-1} x_i |i\\rangle, \\quad \\sum_{i=0}^{2^n-1} |x_i|^2 = 1, \\quad n = \\lceil \\log_2 N \\rceil' },
+      { type: 'diagram', chart: 'graph LR; A[8 features] --> B[Need log2(8)=3 qubits]; B --> C[State Prep Circuit]; C --> D[|psi> = x0|000>+...+x7|111>]; D --> E[Measurement]; E --> F[Shot noise limited];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nimport numpy as np\n\nfeatures = np.array([0.1, 0.3, 0.5, 0.7, 0.2, 0.4, 0.6, 0.8])\nnorm_features = features / np.linalg.norm(features)\n\nqc = QuantumCircuit(3)\nqc.initialize(norm_features, [0, 1, 2])\n\nprint(f"Depth: {qc.depth()} gates: {qc.size()}")' } },
+      { type: 'list', title: 'Amplitude Encoding Trade-offs', items: ['Qubit efficiency: exponential (2ⁿ features in n qubits)', 'Circuit depth: exponential (hard to prepare large states)', 'Readout precision: limited by shot noise (σ ∝ 1/√(shots))', 'Preprocessing: normalization + zero-padding required', 'Best for: small n, high-dimensional data, simulators'] },
+    ],
+    activity: {
+      description: 'Compare amplitude encoding with angle encoding by encoding the same 8-feature vector using both methods and measuring qubit count, circuit depth, gate count, and readout precision.',
+      steps: [
+        'Create an 8-element feature vector [0.1, 0.3, 0.5, 0.7, 0.2, 0.4, 0.6, 0.8].',
+        'Amplitude encoding: normalize, initialize a 3-qubit circuit (log₂(8) = 3), record depth and gate count.',
+        'Angle encoding: scale features to [0, π], create an 8-qubit circuit with Ry gates, record depth and gate count.',
+        'Simulate both circuits and measure each 1000 times (shots=1000). Compute the precision of the recovered feature values.',
+        'Repeat with shots=100, 1000, 10000, 100000. Plot precision vs shots for both methods.',
+      ],
+      discussionQuestions: [
+        'For a 1024-feature dataset, how many qubits does each method need? What about circuit depth?',
+        'When would you accept the depth cost of amplitude encoding for the qubit savings?',
+      ],
+      materials: ['Qiskit environment', 'numpy for analysis', 'matplotlib for plotting'],
+      codetask: { language: 'python', code: 'import matplotlib.pyplot as plt\n\nshots_list = [100, 1000, 10000, 100000]\nprecisions = []\nfor shots in shots_list:\n    result = execute(qc, backend, shots=shots).result()\n    counts = result.get_counts()\n    # Reconstruct amplitudes from counts\n    reconstructed = reconstruct_amplitudes(counts, shots)\n    error = np.linalg.norm(reconstructed - true_amplitudes)\n    precisions.append(error)\n\nplt.loglog(shots_list, precisions, marker="o")\nplt.xlabel("Shots"); plt.ylabel("Reconstruction error")\nplt.show()' },
+    },
+    project: {
+      description: 'Implement a classical simulator that analyzes the trade-offs between angle and amplitude encoding for a given dataset. The tool should recommend the optimal encoding method based on qubit budget, depth limits, and desired precision.',
+      objectives: [
+        'Build a cost model that computes qubit count, circuit depth, and expected readout precision for both encoding methods.',
+        'Given constraints (max qubits, max depth, min precision), determine which encoding is feasible.',
+        'Visualize the trade-off space as a 3D plot with qubits, depth, and precision axes.',
+      ],
+      deliverables: ['encoding_optimizer.py tool', 'Jupyter notebook with analysis on 3 datasets', 'Trade-off visualization plots'],
+      tools: ['Python', 'numpy', 'matplotlib', 'Qiskit for circuit estimation'],
+    },
+    lab: {
+      description: 'Implement a quantum version of the nearest-neighbor classifier using amplitude encoding. Encode all training points as quantum states, compute fidelities with a test point, and classify based on the most similar training point.',
+      setup: 'Use the Iris dataset (2 features only for simplicity). Normalize features. Use 3 qubits (amplitude encoding for 8 features, pad if needed).',
+      steps: [
+        'Prepare the dataset: select 2 features from Iris (petal length, petal width), normalize each sample to unit norm.',
+        'Since each sample has only 2 features, use 1-qubit amplitude encoding (pad with zeros to get 2 amplitudes).',
+        'For each training sample, create an amplitude-encoded circuit. Store the statevectors (simulator).',
+        'For a test point, create its amplitude-encoded state. Compute fidelity with each training state: F = |⟨ψ_test|ψ_train⟩|².',
+        'Classify the test point as the class of the training point with maximum fidelity.',
+        'Compute accuracy on the test set and compare with classical nearest-neighbor (k=1) using Euclidean distance.',
+      ],
+      expectedOutput: 'The quantum nearest-neighbor classifier should achieve accuracy comparable to classical 1-NN (~90-95% on 2-feature Iris). The fidelity-based distance and Euclidean distance should produce similar rankings.',
+      challenge: 'Scale to 4 features using 2-qubit amplitude encoding. Compare the quantum NN accuracy with classical NN. Then add noise to the amplitude encoding circuit (depolarizing noise) and measure how accuracy degrades with increasing noise. At what noise level does the quantum classifier become unusable?',
+    },
   },
 
   'module7-topic6': {
@@ -655,6 +896,54 @@ const module7Data: Record<string, TopicData> = {
       'The interplay of rotation gates and entanglement in encoding is what makes quantum feature spaces truly unique.',
       'Mastering dense encoding is the gateway to designing efficient QML models for NISQ devices.',
     ],
+    story: 'Think of dense encoding as a master chef making the most of every ingredient. If angle encoding uses one ingredient (qubit) per dish (feature), dense encoding is the chef who combines multiple flavors in each dish — a rotation around the x-axis for one feature, around the y-axis for another, and around the z-axis for a third, all on the same qubit. By using all three rotation axes, a single qubit can encode up to three features. Add entanglement between qubits, and you can also encode feature interactions. The cost? A deeper, more complex circuit — but when qubits are scarce, this is a trade-off worth making.',
+    concepts: [
+      { type: 'text', text: 'Dense encoding maximizes qubit efficiency by using multiple rotation axes per qubit (Rx, Ry, Rz for up to 3 features/qubit) and entangling gates to encode feature interactions. Repeated layers of rotations and entanglement create increasingly expressive quantum states, analogous to deep neural network layers.' },
+      { type: 'math', formula: 'U_{\\text{layer}}(x) = \\left(\\bigotimes_{i=1}^n R_{z_i}(x_{3i}) R_{y_i}(x_{3i+1}) R_{z_i}(x_{3i+2})\\right) \\cdot U_{\\text{entanglement}}' },
+      { type: 'diagram', chart: 'graph TD; A[6 features] --> B[2 qubits]; B --> C[Q0: Rx(x0) Ry(x1) Rz(x2)]; B --> D[Q1: Rx(x3) Ry(x4) Rz(x5)]; C --> E[CNOT(0,1)]; D --> E; E --> F[Encoded state];' },
+      { type: 'code', code: { language: 'python', code: 'def dense_angle_encode(features, num_qubits):\n    qc = QuantumCircuit(num_qubits)\n    f = 0\n    for q in range(num_qubits):\n        if f < len(features):\n            qc.rx(features[f] * np.pi, q); f += 1\n        if f < len(features):\n            qc.ry(features[f] * np.pi, q); f += 1\n        if f < len(features):\n            qc.rz(features[f] * np.pi, q); f += 1\n    # Add entanglement\n    for q in range(num_qubits - 1):\n        qc.cx(q, q + 1)\n    return qc\n\nqc = dense_angle_encode([0.1,0.2,0.3,0.4,0.5,0.6], 2)\nprint(qc.draw())' } },
+      { type: 'list', title: 'Dense Encoding Strategies', items: ['Dense angle: 3 features/qubit using Rx, Ry, Rz', 'Entangled encoding: add CNOTs to create feature correlations', 'Repeated layers: apply rotation+entanglement multiple times', 'Hybrid dense: combine dense angle with amplitude encoding for specific qubits'] },
+    ],
+    activity: {
+      description: 'Design an encoding scheme for a 12-dimensional feature vector using only 4 qubits. Compare your dense encoding approach with standard angle encoding (12 qubits) and amplitude encoding (4 qubits) across multiple metrics.',
+      steps: [
+        'Design a dense encoding scheme: 12 features on 4 qubits = 3 features per qubit using Rx, Ry, Rz.',
+        'Implement: standard angle encoding (12 qubits), amplitude encoding (log₂12 ≈ 4 qubits), and your dense scheme (4 qubits).',
+        'For each, measure: qubit count, circuit depth, gate count, and number of entangling operations.',
+        'Simulate all three circuits and verify they produce valid quantum states (normalized).',
+        'Plot the metrics in a bar chart and discuss which encoding you would choose for different scenarios.',
+      ],
+      discussionQuestions: [
+        'If you had 4 qubits and needed to encode 12 features, would you use dense angle or amplitude encoding? Why?',
+        'How does the presence of entanglement in dense encoding affect the feature space geometry compared to amplitude encoding?',
+      ],
+      materials: ['Qiskit', 'numpy', 'matplotlib for bar charts'],
+      codetask: { language: 'python', code: 'def count_operations(qc):\n    ops = qc.count_ops()\n    depth = qc.depth()\n    qubits = qc.num_qubits\n    return qubits, depth, ops\n\nencodings = {\n    "angle_12q": angle_encode_12qubit(data),\n    "dense_4q": dense_angle_encode(data, 4),\n    "amplitude_4q": amplitude_encode_12feat(data)\n}\nfor name, qc in encodings.items():\n    q, d, ops = count_operations(qc)\n    print(f"{name}: {q}qubits, depth={d}, ops={ops}")' },
+    },
+    project: {
+      description: 'Create an "Encoding Method Selector" that, given a dataset and hardware constraints (max qubits, max depth, noise tolerance), recommends the optimal dense encoding strategy and provides a cost-benefit analysis.',
+      objectives: [
+        'Implement a constraint solver that evaluates all encoding strategies against hardware limits.',
+        'Incorporate a noise model that estimates circuit fidelity based on depth and gate count.',
+        'Provide a ranked list of recommended encoding methods with trade-off explanations.',
+      ],
+      deliverables: ['encoding_selector.py tool', 'Web interface (Streamlit)', 'Documentation with examples'],
+      tools: ['Python', 'Qiskit for circuit estimation', 'Streamlit for UI'],
+    },
+    lab: {
+      description: 'Implement a complete dense encoding pipeline for a synthetic 6-dimensional dataset using only 2 qubits. Build a classifier using the dense-encoded states and a quantum kernel, and compare performance with standard angle encoding (6 qubits).',
+      setup: 'Generate a synthetic dataset with 6 features and 2 classes using sklearn\'s make_classification. 200 samples, split 70/30 train/test.',
+      steps: [
+        'Dense encoding: encode 6 features on 2 qubits using Rx, Ry, Rz on each qubit. Add CNOT entanglement.',
+        'Standard angle encoding: encode 6 features on 6 qubits using Ry only (no entanglement in encoding layer).',
+        'For both methods, compute the quantum kernel matrix using FidelityQuantumKernel.',
+        'Train an SVM with precomputed kernel for both encoding methods.',
+        'Compare: accuracy, training time, kernel matrix visualization (heatmap), and qubit usage.',
+        'Repeat with different random seeds to assess variance in results.',
+      ],
+      expectedOutput: 'Both encodings should produce viable classifiers. Dense encoding uses 2 qubits vs 6 for standard angle encoding, but may show slightly lower accuracy due to information mixing on each qubit. The kernel heatmap for dense encoding should show richer structure due to entanglement.',
+      challenge: 'Add a noisy hardware simulation: repeat the experiment with 1% depolarizing noise per gate. Does the dense encoding (deeper circuit) suffer more from noise than the shallow angle encoding? Plot accuracy vs noise level for both methods and find the crossover point where the shallower circuit becomes preferable despite using more qubits.',
+    },
   },
 
   'module7-topic7': {
@@ -765,6 +1054,54 @@ const module7Data: Record<string, TopicData> = {
       'A well-designed feature map can make a linearly inseparable problem separable in Hilbert space.',
       'The art of QML lies in designing feature maps that capture problem structure with minimal quantum resources.',
     ],
+    story: 'In classical machine learning, the kernel trick allows SVMs to find non-linear decision boundaries by implicitly mapping data to a higher-dimensional space. Quantum feature maps take this concept to the next level — they explicitly map data into the exponentially large Hilbert space of n qubits using quantum circuits. A 2-qubit feature map can access a 4-dimensional complex space, a 10-qubit map accesses 1024 dimensions, and a 20-qubit map accesses over a million. By carefully designing these circuits — choosing rotation gates, entanglement patterns, and the number of repeated layers — we can create feature spaces where complex patterns become linearly separable.',
+    concepts: [
+      { type: 'text', text: 'Quantum feature maps are circuits that map classical data into quantum Hilbert space. They are the quantum analog of the classical kernel trick φ(x). Key design parameters: rotation gates (encoding), entangling gates (feature interactions), number of layers (expressibility). A good feature map makes data separable in Hilbert space while keeping circuits shallow enough for NISQ.' },
+      { type: 'math', formula: 'K(x, z) = |\\langle\\phi(x)|\\phi(z)\\rangle|^2, \\quad |\\phi(x)\\rangle = U_{\\text{feat}}(x)|0\\rangle^{\\otimes n}' },
+      { type: 'diagram', chart: 'graph TD; A[Data x] --> B[Ry(x0) Ry(x1)]; B --> C[CNOT(0,1)]; C --> D[Layer 1]; D --> E[Ry(x0) Ry(x1)]; E --> F[CNOT(0,1)]; F --> G[Layer 2]; G --> H[|phi(x)>];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.circuit.library import ZZFeatureMap\n\n# Create a 2-qubit feature map with 2 layers\nfeature_map = ZZFeatureMap(\n    feature_dimension=2,\n    reps=2,\n    entanglement="linear"\n)\nprint(feature_map.draw())\nprint(f"Depth: {feature_map.decompose().depth()}")' } },
+      { type: 'list', title: 'Feature Map Design Parameters', items: ['Feature dimension: number of qubits = number of features', 'Rotation gates: Rx, Ry, Rz, or combinations', 'Entanglement pattern: linear, circular, full, or custom', 'Repeated layers (reps): more layers = more expressibility', 'Gate set: single-qubit rotations + two-qubit entangling gates'] },
+    ],
+    activity: {
+      description: 'Compare three feature maps (ZZFeatureMap, PauliFeatureMap, and a custom one you design) on a simple 2D classification problem. Visualize the resulting kernel matrices and assess which creates better class separation.',
+      steps: [
+        'Generate a 2D concentric circles dataset (make_circles) — this is not linearly separable in 2D.',
+        'Create three feature maps: ZZFeatureMap(2, reps=1), PauliFeatureMap(2, reps=1), and your own custom design.',
+        'For each feature map, compute the 50×50 kernel matrix for the first 50 data points.',
+        'Plot the kernel matrices as heatmaps, with rows/columns sorted by class label.',
+        'Score each kernel: compute the average intra-class kernel value vs inter-class kernel value. A good kernel has high intra-class and low inter-class similarity.',
+      ],
+      discussionQuestions: [
+        'Which feature map produced the best separation? Why do you think that is?',
+        'How does the entanglement pattern affect the kernel matrix structure?',
+      ],
+      materials: ['Qiskit', 'scikit-learn', 'matplotlib/seaborn for heatmaps'],
+      codetask: { language: 'python', code: 'from sklearn.datasets import make_circles\nimport seaborn as sns\n\nX, y = make_circles(n_samples=50, noise=0.1, factor=0.5)\n\nfor name, fm in feature_maps.items():\n    kernel = FidelityQuantumKernel(feature_map=fm)\n    K = kernel.evaluate(X)\n    # Sort by class label\n    idx = np.argsort(y)\n    K_sorted = K[idx][:, idx]\n    \n    plt.figure()\n    sns.heatmap(K_sorted, cmap="RdBu", vmin=0, vmax=1)\n    plt.title(f"Kernel: {name}")\n    plt.show()' },
+    },
+    project: {
+      description: 'Build a "Feature Map Designer" tool that lets users visually construct quantum feature maps by dragging and dropping gates onto a circuit canvas, then evaluates the resulting kernel quality on a sample dataset.',
+      objectives: [
+        'Create a drag-and-drop circuit builder interface (using e.g., Streamlit or a web framework).',
+        'Allow configuration of feature dimension, reps, entanglement pattern, and gate types.',
+        'Show the resulting circuit diagram, kernel matrix heatmap, and a kernel quality score.',
+      ],
+      deliverables: ['Interactive feature map designer web app', 'Source code', 'User guide'],
+      tools: ['Streamlit or React with Qiskit backend', 'matplotlib for heatmaps', 'Qiskit for circuit simulation'],
+    },
+    lab: {
+      description: 'Design and test quantum feature maps of increasing complexity (varying reps and entanglement patterns) on a real-world dataset. Determine experimentally which feature map gives the best classification accuracy when used with a QSVM.',
+      setup: 'Load the Wine dataset (178 samples, 13 features) from sklearn. Scale features to [0, π]. Split 70/30 train/test.',
+      steps: [
+        'Create feature maps with reps=1, 2, 4, 8 for both ZZFeatureMap and PauliFeatureMap on 2 features (use PCA to reduce to 2 dimensions for feasibility).',
+        'For each feature map, compute the kernel matrix on the training set using qiskit\'s FidelityQuantumKernel.',
+        'Train an SVC with kernel="precomputed" on each kernel matrix.',
+        'Record accuracy, precision, recall, and F1 score for each feature map configuration.',
+        'Plot accuracy vs number of layers (reps) for both ZZFeatureMap and PauliFeatureMap.',
+        'Also plot training time vs reps — note the cost of deeper feature maps.',
+      ],
+      expectedOutput: 'Accuracy should initially increase with more layers, then plateau or decrease (due to kernel concentration or overfitting). Training time should increase linearly or quadratically with reps.',
+      challenge: 'Repeat the experiment using all 13 features (13 qubits) but only for reps=1,2 (deeper circuits would be too expensive on a simulator). Compare the accuracy with the 2-feature PCA version. Does the full-dimensional feature map outperform PCA-reduced one, or does the exponential Hilbert space compensate for fewer features?',
+    },
   },
 
   'module7-topic8': {
@@ -876,6 +1213,55 @@ const module7Data: Record<string, TopicData> = {
       'The ability to verify quantum circuits by simulation is one of QML\'s most powerful debugging tools.',
       'Real data never fits perfectly — normalization, zero-padding, and feature selection are practical skills.',
     ],
+    story: 'Theory meets practice in this lab session. You have learned about basis, angle, amplitude, and dense encoding — now it is time to implement them. Starting with real data from the Iris dataset, you will preprocess features, build encoding circuits, verify them against expected states, and observe how encoding choices affect measurement outcomes. This lab transforms abstract mathematical concepts into tangible quantum circuits that you can run, test, and debug. By the end, you will have practical experience with every encoding method, ready to apply them in full QML pipelines.',
+    concepts: [
+      { type: 'text', text: 'This lab brings together all encoding methods. You will preprocess real data, implement basis encoding with X gates, angle encoding with Ry gates, amplitude encoding with circuit initialization, and dense encoding with multi-axis rotations. Verification using statevector simulation confirms correctness. The lab uses the Iris dataset.' },
+      { type: 'math', formula: 'F(\\rho, \\sigma) = \\text{Tr}\\left(\\sqrt{\\sqrt{\\rho} \\sigma \\sqrt{\\rho}}\\right)^2, \\quad \\text{Fidelity of encoding}' },
+      { type: 'diagram', chart: 'graph LR; A[Iris Dataset] --> B[Select Features]; B --> C[Scale/Normalize]; C --> D[Encoding Circuit]; D --> E[Statevector Sim]; E --> F{Match Expected?}; F -->|Yes| G[Proceed to Kernel]; F -->|No| H[Debug Circuit];' },
+      { type: 'code', code: { language: 'python', code: 'def run_encoding_lab(dataset, encoding="angle"):\n    # Preprocess\n    scaler = MinMaxScaler(feature_range=(0, np.pi))\n    X_scaled = scaler.fit_transform(dataset.data)\n    \n    # Encode first sample\n    qc = QuantumCircuit(4)\n    for i in range(4):\n        qc.ry(X_scaled[0, i], i)\n    \n    # Verify\n    sv = Statevector(qc)\n    expected = ry_state(X_scaled[0])\n    fidelity = np.abs(sv.inner(expected))**2\n    print(f"Encoding fidelity: {fidelity:.4f}")\n    return qc' } },
+      { type: 'list', title: 'Lab Checklist', items: ['Load and preprocess Iris dataset', 'Implement basis encoding on binarized Iris features', 'Implement angle encoding with Ry gates', 'Implement amplitude encoding with normalize + initialize', 'Verify each encoding with statevector simulation', 'Compare circuit depth and qubit counts across methods', 'Visualize measurement outcomes as histograms'] },
+    ],
+    activity: {
+      description: 'Implement all four encoding methods on the same Iris data sample, then run a comprehensive comparison: verify correctness, measure resource usage (qubits, depth, gates), and test readout precision at different shot counts.',
+      steps: [
+        'Load Iris dataset, select first sample, preprocess as needed for each encoding method.',
+        'Implement: basis encoding (binarize features → X gates), angle encoding (scale → Ry gates), amplitude encoding (normalize → initialize), dense encoding (split across Rx,Ry,Rz on 2 qubits).',
+        'For each, simulate the statevector and verify against the mathematically expected state (compute fidelity).',
+        'Record: qubit count, circuit depth, number of gates, and simulation time.',
+        'Add measurements and run each circuit with shots=100, 1000, 10000. Measure how precisely the original features can be recovered from measurement statistics.',
+        'Create a comparison table and discuss trade-offs.',
+      ],
+      discussionQuestions: [
+        'Which encoding method gave the best fidelity? Which used the fewest qubits?',
+        'Why does the readout precision improve with more shots, and what are the practical limits?',
+      ],
+      materials: ['Qiskit environment', 'Iris dataset (built into sklearn)', 'Pre-lab worksheet with expected states'],
+      codetask: { language: 'python', code: '# Encoding comparison table\nresults = {\n    "Method": ["Basis", "Angle", "Amplitude", "Dense"],\n    "Qubits": [8, 4, 2, 2],\n    "Depth": [4, 4, 12, 8],\n    "Fidelity": [1.0, 0.999, 1.0, 0.999],\n    "Precision@100": [0.92, 0.88, 0.45, 0.82]\n}\nimport pandas as pd\nprint(pd.DataFrame(results).to_markdown())' },
+    },
+    project: {
+      description: 'Build a "Quantum Encoder Benchmark Suite" that automates the comparison of encoding methods across multiple datasets, generating standardized reports with resource usage, accuracy, and fidelity metrics.',
+      objectives: [
+        'Implement all encoding methods as reusable classes with a common interface.',
+        'Create a benchmark runner that tests each encoding on multiple datasets and metrics.',
+        'Generate PDF reports with comparison tables, circuit diagrams, and accuracy plots.',
+      ],
+      deliverables: ['Python package quantum_encoder_benchmark', 'Example benchmark reports (PDF/HTML)', 'API documentation'],
+      tools: ['Python', 'Qiskit', 'pandas', 'matplotlib', 'ReportLab or Jinja2 for PDF'],
+    },
+    lab: {
+      description: 'The culminating lab: implement basis, angle, amplitude, and dense encoding on the Iris dataset, verify each with statevector simulation, then use each encoding to build a QSVM classifier and compare accuracy.',
+      setup: 'Load the Iris dataset, select 4 features. Filter to binary classification (Versicolor vs Virginica). Split 70/30. Prepare preprocessing functions for each encoding method.',
+      steps: [
+        'Preprocess data 4 ways: binarized (for basis), scaled to [0,π] (for angle), normalized (for amplitude), split into Rx/Ry/Rz triples (for dense on 2 qubits).',
+        'Implement 4 encoding circuit builders. Verify each with statevector simulation on the first sample.',
+        'For each encoding, compute the kernel matrix using FidelityQuantumKernel with the corresponding feature map.',
+        'Train an SVC with precomputed kernel for each encoding. Test on held-out data.',
+        'Create a table: encoding method, qubits used, circuit depth, accuracy, training time.',
+        'Write a short analysis: which encoding would you recommend for Iris, and why?',
+      ],
+      expectedOutput: 'A comparison table showing all four encoding methods. Expect accuracies in the 85-98% range depending on the encoding. Angle and dense encoding should perform well with modest qubit usage. Basis encoding may suffer from binarization information loss.',
+      challenge: 'Test on a harder dataset: the Breast Cancer Wisconsin dataset (30 features). How do the encoding methods compare when the feature count is much higher? Can you use PCA to reduce features before encoding, and does this affect the relative ranking of encoding methods?',
+    },
   },
 };
 

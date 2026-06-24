@@ -3,6 +3,59 @@ import type { TopicData } from '../../types';
 const module14Data: Record<string, TopicData> = {
   'module14-topic1': {
     topicId: 'module14-topic1',
+    story: 'In 2020, a collaboration between Cleveland Clinic and IBM Quantum set out to apply quantum machine learning to healthcare data. Their goal was not to cure diseases with quantum computers but to use quantum feature maps to find patterns in patient data that classical methods missed. They discovered that quantum kernel methods could capture interactions between genomic markers that classical kernels could not — potentially enabling earlier diagnosis of hereditary conditions. While the work was preliminary, it opened the door to a vision: a future where a patient\'s genome, proteome, and medical history are analyzed through a quantum lens, revealing health insights invisible to classical analysis.',
+    concepts: [
+      { type: 'text', content: 'Healthcare data is uniquely complex: genomic data (20,000+ genes), medical imaging (millions of pixels), electronic health records (thousands of variables per patient), and time-series (vital signs over time). Quantum kernel methods can capture high-order interactions in this data via the Hilbert space representation.' },
+      { type: 'math', content: 'K_{\\text{quantum}}(x_i, x_j) = |\\langle \\phi(x_i) | \\phi(x_j) \\rangle|^2, \\quad \\text{where } \\phi \\text{ encodes patient features into quantum states}' },
+      { type: 'chart', content: 'graph TD\n  A[Patient Data] --> B[Genomics\n  ~20000 genes]\n  A --> C[EHR\n  ~1000 variables]\n  A --> D[Imaging\n  ~10^6 pixels]\n  B --> E[Quantum Feature Map]\n  C --> E\n  D --> E\n  E --> F[Hilbert Space\n  Representation]\n  F --> G[Quantum Kernel\n  Patient Similarity]\n  G --> H[Diagnosis/\n  Risk Prediction]' },
+      { type: 'code', content: '# Conceptual: quantum kernel for patient similarity\nfrom qiskit.circuit.library import ZZFeatureMap\nfrom qiskit_machine_learning.kernels import QuantumKernel\n\n# Patient features: genomic markers, lab results, vital signs\npatient_features = [...]  # 8 features after dimensionality reduction\n\nfeature_map = ZZFeatureMap(feature_dimension=8, reps=2)\nquantum_kernel = QuantumKernel(feature_map=feature_map)\n\n# Kernel matrix reveals patient-patient similarities\nkernel_matrix = quantum_kernel.evaluate(x_vec=patient_data)' },
+      { type: 'list', content: ['Healthcare data is high-dimensional: genomics, imaging, EHR, wearables', 'Quantum kernel methods capture complex feature interactions via entanglement', 'Privacy regulations (HIPAA/GDPR) require privacy-preserving QML approaches', 'Quantum federated learning trains across hospitals without sharing patient data', 'Class imbalance is severe in healthcare (rare diseases) — recall is the critical metric'] },
+      { type: 'flipcard', content: { front: 'Why might quantum kernel methods be particularly suited for genomic data?', back: 'Genomic data involves complex interactions between genes (epistasis) that are hard for classical models. Quantum kernels compute similarity in an exponentially large Hilbert space that can naturally capture these higher-order gene-gene interactions.' } },
+    ],
+    activity: {
+      description: 'Analyze a healthcare dataset and design a QML approach considering the unique challenges of high-dimensionality, privacy, and class imbalance.',
+      steps: [
+        'Select a healthcare dataset (e.g., from UCI ML Repository: Heart Disease, Diabetes, Breast Cancer)',
+        'Analyze: data dimensionality, class distribution, missing values, data types (categorical, numerical, text)',
+        'Design a quantum encoding strategy for the selected features — justify the choice',
+        'Identify privacy concerns and propose a mitigation (federated learning, differential privacy)',
+        'Sketch a complete QML pipeline from raw data to prediction with privacy-preserving components',
+      ],
+      discussionQuestions: [
+        'How would you explain a quantum model\'s diagnosis recommendation to a patient or doctor?',
+        'What are the ethical implications of a quantum model making mistakes on minority populations?',
+      ],
+      materials: ['Healthcare dataset', 'Pen/paper or digital whiteboard for pipeline sketch'],
+      codetask: 'Write a function that takes a healthcare dataset, analyzes its characteristics (dimensions, class balance, feature types), and outputs recommendations for: encoding strategy, QML model type, privacy techniques, and evaluation metrics.',
+    },
+    project: {
+      description: 'Develop a privacy-preserving QML pipeline for healthcare analytics that incorporates quantum federated learning and differential privacy principles.',
+      objectives: [
+        'Design and implement a simulation of quantum federated learning across distributed healthcare nodes',
+        'Demonstrate privacy preservation: raw patient data never leaves local nodes',
+        'Compare model quality (accuracy/F1) between centralized and federated quantum approaches',
+      ],
+      deliverables: [
+        'Working quantum federated learning simulation with 3+ hospital nodes',
+        'Privacy analysis report quantifying information leakage (or lack thereof)',
+        'Performance comparison: centralized vs federated quantum models on healthcare data',
+      ],
+      tools: ['Qiskit, PennyLane, PyTorch', 'Synthetic healthcare data generator'],
+    },
+    lab: {
+      description: 'Build a quantum kernel-based classifier for a healthcare dataset, handling class imbalance and evaluating with healthcare-appropriate metrics.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib imbalanced-learn',
+      steps: [
+        'Load the Heart Disease dataset and analyze class distribution',
+        'Apply SMOTE (synthetic minority oversampling) to balance the classes',
+        'Encode patient features using ZZFeatureMap on 4 qubits',
+        'Build a QSVM classifier with the quantum kernel',
+        'Evaluate using recall (most important for healthcare), precision, F1, and confusion matrix',
+        'Compare against classical SVM (RBF) on the same data',
+      ],
+      expectedOutput: 'A comparison report showing that the QSVM achieves competitive recall on the minority class compared to classical SVM, with analysis of the precision-recall trade-off in the healthcare context.',
+      challenge: 'Simulate a "rare disease" scenario: create an artificially imbalanced version of the dataset (95:5 ratio). Compare QSVM, classical SVM with class weights, and a baseline "always predict majority" model. Which handles the extreme imbalance best?',
+    },
     prerequisites: [
       'Module 6: QML Foundations — understanding of QML workflow and components',
       'Module 9: QSVM — basic quantum classification capability',
@@ -111,6 +164,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic2': {
     topicId: 'module14-topic2',
+    story: 'In 2018, researchers at the University of Toronto trained a quantum variational classifier on the Breast Cancer Wisconsin dataset and achieved accuracy comparable to classical SVMs. The result was modest — no quantum advantage — but it opened a crucial conversation. The quantum model used only 4 qubits while the classical SVM used hundreds of support vectors. The quantum model was simpler. This observation — that quantum models can match classical performance with fewer parameters — is the quiet promise of QML for medical diagnosis. In a field where model simplicity aids interpretability and regulatory approval, "comparable but simpler" is a meaningful win.',
+    concepts: [
+      { type: 'text', content: 'Medical diagnosis with QML typically uses quantum kernel methods or variational quantum classifiers on patient features. The Hilbert space representation may capture subtle biomarkers invisible to classical models. Key metrics: recall (sensitivity) is prioritized over accuracy for rare disease detection.' },
+      { type: 'math', content: '\\text{Sensitivity (Recall)} = \\frac{TP}{TP+FN}, \\quad \\text{Specificity} = \\frac{TN}{TN+FP}, \\quad \\text{In diagnosis, maximize sensitivity first}' },
+      { type: 'chart', content: 'graph TD\n  A[Patient Features] --> B[Quantum Feature Map\n  Encodes to Hilbert Space]\n  B --> C[Quantum Kernel / VQC]\n  C --> D[Disease Probability]\n  D --> E{Threshold}\n  E -->|> 0.5| F[Diagnosis: Positive]\n  E -->|< 0.5| G[Diagnosis: Negative]' },
+      { type: 'code', content: 'from qiskit.circuit.library import ZZFeatureMap\nfrom qiskit_machine_learning.algorithms import VQC\n\n# Medical diagnosis with Variational Quantum Classifier\nfeature_map = ZZFeatureMap(feature_dimension=4, reps=2)\nvqc = VQC(feature_map=feature_map, optimizer=COBYLA())\n\nvqc.fit(X_train, y_train)\ny_pred = vqc.predict(X_test)\n\n# In medical diagnosis, check sensitivity carefully\nfrom sklearn.metrics import recall_score\nsensitivity = recall_score(y_test, y_pred)\nprint(f"Sensitivity (recall): {sensitivity:.3f}")' },
+      { type: 'list', content: ['Quantum kernel methods compute patient similarity in Hilbert space for diagnosis', 'VQC provides end-to-end quantum classification with parameterized circuits', 'Recall (sensitivity) is the critical metric — missing a diagnosis is catastrophic', 'Multi-class diagnosis: one-vs-all VQCs or multi-qubit measurement strategies', 'Data heterogeneity across hospitals (different equipment, populations) requires robust QML models'] },
+      { type: 'flipcard', content: { front: 'Why might a simplified quantum model be preferred in medical diagnosis over a more accurate but complex classical model?', back: 'Regulatory bodies (FDA, EMA) require model interpretability. A simpler quantum model with comparable accuracy is easier to audit, explain, and validate — critical factors for clinical deployment.' } },
+    ],
+    activity: {
+      description: 'Train and evaluate a VQC on a medical diagnosis dataset with a focus on recall (sensitivity) and understanding the consequences of false negatives.',
+      steps: [
+        'Load a medical diagnosis dataset (e.g., Pima Indians Diabetes, Heart Disease)',
+        'Analyze class balance and identify why recall matters for this specific disease',
+        'Train a VQC with appropriate feature encoding for the number of features',
+        'Compute confusion matrix and highlight: TP, FP, FN, TN with medical interpretations',
+        'Compare: what does a false negative mean in this medical context? What does a false positive mean?',
+      ],
+      discussionQuestions: [
+        'If the quantum model achieves 90% sensitivity but 70% specificity, would you deploy it? What if the numbers were reversed?',
+        'How would you explain a false positive or false negative to a patient affected by the model\'s decision?',
+      ],
+      materials: ['Medical diagnosis dataset', 'Qiskit for VQC training'],
+      codetask: 'Write a function that takes a trained medical diagnosis model and test data, generates a confusion matrix, and outputs a "clinical report" explaining each cell in plain language with medical consequences.',
+    },
+    project: {
+      description: 'Build a comparative study of quantum vs classical classifiers for multi-class disease diagnosis, analyzing per-class performance and error patterns.',
+      objectives: [
+        'Implement OvA (one-vs-all) VQC for multi-class diagnosis (e.g., 3 types of diabetes)',
+        'Compare against classical multi-class SVM and Random Forest',
+        'Analyze which disease classes are most confused by quantum vs classical models',
+      ],
+      deliverables: [
+        'Multi-class QML diagnosis pipeline with 3+ disease classes',
+        'Per-class precision, recall, F1 comparison between quantum and classical models',
+        'Confusion matrix analysis showing which disease pairs are most confused',
+        'Report on whether quantum methods show advantage for specific disease types',
+      ],
+      tools: ['Qiskit, sklearn, matplotlib, seaborn', 'Multi-class medical dataset'],
+    },
+    lab: {
+      description: 'Build a QSVM-based medical diagnosis system, focusing on achieving high recall for the positive (disease) class and handling class imbalance.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib imbalanced-learn',
+      steps: [
+        'Load the Breast Cancer dataset, scale features, create stratified train-test split',
+        'Train a QSVM with ZZFeatureMap(reps=2) on 4 selected features',
+        'Apply class_weight="balanced" to handle class imbalance',
+        'Compute: recall (sensitivity), specificity, precision, F1, confusion matrix',
+        'Plot the ROC curve and compute AUC-ROC',
+        'Compare against classical SVM with class_weight="balanced"',
+      ],
+      expectedOutput: 'A side-by-side comparison table and ROC curves for QSVM vs classical SVM on the medical diagnosis task, with a clinical interpretation of the results (e.g., "QSVM achieves 0.95 sensitivity, missing only 5% of positive cases").',
+      challenge: 'Design a "diagnostic threshold optimization": given that a false negative costs $10,000 (missed cancer) and a false positive costs $500 (unnecessary biopsy), find the optimal decision threshold for QSVM that minimizes total cost on the test set.',
+    },
     prerequisites: [
       '14.1 Healthcare Analytics — general healthcare QML context',
       'Module 9: QSVM and Module 11: QNN — classification models applicable to diagnosis',
@@ -219,6 +326,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic3': {
     topicId: 'module14-topic3',
+    story: 'In 2021, JPMorgan Chase established a quantum computing research group focused on financial applications. Their first target was not stock prediction but risk assessment — specifically, using Quantum Amplitude Estimation (QAE) to accelerate Value at Risk (VaR) calculations. QAE offers a quadratic speedup over classical Monte Carlo methods, meaning a calculation that takes a bank 24 hours could be done in under an hour. This potential speedup, combined with quantum kernel methods for credit risk classification, makes finance one of the most near-term practical applications of QML. The challenge is not just accuracy but regulatory compliance: financial models must be explainable.',
+    concepts: [
+      { type: 'text', content: 'Financial risk assessment uses QML for: (1) credit risk classification (quantum kernels for default prediction), (2) portfolio optimization (QAOA for asset allocation), (3) market risk estimation (QAE for VaR). Regulatory requirements mandate model interpretability — a key challenge for quantum black-box models.' },
+      { type: 'math', content: '\\text{VaR}_{\\alpha} = \\inf\\{l \\in \\mathbb{R} : P(L > l) \\leq 1-\\alpha\\}, \\quad \\text{QAE estimates } P(L > l) \\text{ quadratically faster}' },
+      { type: 'chart', content: 'graph TD\n  A[Financial Data] --> B[Credit Risk\n  QSVM Classification]\n  A --> C[Market Risk\n  QAE VaR Estimation]\n  A --> D[Portfolio\n  QAOA Optimization]\n  B --> E[Risk Score +\n  Explanation]\n  C --> E\n  D --> E' },
+      { type: 'code', content: '# Conceptual: QAE for Value at Risk\n# Classical: requires O(1/epsilon^2) Monte Carlo samples\n# Quantum: requires O(1/epsilon) via QAE\n\ndef classical_var(portfolio, alpha=0.95, n_samples=10000):\n    # Classical Monte Carlo\n    losses = [simulate_loss(portfolio) for _ in range(n_samples)]\n    return np.percentile(losses, (1 - alpha) * 100)\n\n# Quantum: QAE provides quadratic speedup\n# In practice, implemented via Qiskit Algorithms\nfrom qiskit_algorithms import AmplitudeEstimation' },
+      { type: 'list', content: ['Credit risk: quantum kernel methods for default prediction with explainability requirements', 'Market risk: QAE offers quadratic speedup for VaR and CVaR estimation', 'Portfolio optimization: QAOA for mean-variance optimization with cardinality constraints', 'Regulatory compliance: models must be interpretable (ECOA, Basel III) — XAI for QML is essential', 'Time-series: encoding sequential financial data requires quantum RNN or quantum attention mechanisms'] },
+      { type: 'flipcard', content: { front: 'How does QAE provide a quadratic speedup for risk estimation?', back: 'Classical Monte Carlo estimates probabilities with error ε using O(1/ε²) samples. QAE uses quantum superposition and amplitude amplification to achieve the same precision with only O(1/ε) circuit evaluations — a quadratic speedup.' } },
+    ],
+    activity: {
+      description: 'Design a QML-based credit risk scoring system that balances predictive accuracy with the need for explainable decisions for regulatory compliance.',
+      steps: [
+        'Explore a credit risk dataset (e.g., German Credit, Lending Club subset)',
+        'Identify which features contribute most to credit risk using classical feature importance',
+        'Design a quantum feature map that encodes these key features',
+        'Sketch a pipeline: quantum features → classical explainable model (e.g., logistic regression → SHAP explanations)',
+        'Write a mock "adverse action notice" (required by ECOA) explaining why a loan was denied based on the quantum-classical model',
+      ],
+      discussionQuestions: [
+        'If a quantum model denies a loan, what specific reasons must it provide? How does this constrain QML architecture?',
+        'Should quantum methods be used in credit scoring at all, given fairness and transparency concerns?',
+      ],
+      materials: ['Credit risk dataset', 'Regulatory guidelines (ECOA, GDPR)'],
+      codetask: 'Write a function that takes a trained QML credit model and a customer\'s data, and generates an explainable adverse action letter with the top 3 reasons for denial derived from the quantum feature space (using feature importance or SHAP values from the classical component).',
+    },
+    project: {
+      description: 'Develop a quantum-enhanced credit risk assessment system that combines quantum feature extraction with explainable classical models, complying with regulatory requirements.',
+      objectives: [
+        'Build a credit scoring pipeline: quantum feature extraction → explainable classical classifier (logistic regression or decision tree)',
+        'Demonstrate that quantum-extracted features improve AUC-ROC over classical features alone',
+        'Ensure model explainability: generate feature importance and individual prediction explanations',
+      ],
+      deliverables: [
+        'Working credit scoring pipeline with quantum feature extraction',
+        'AUC-ROC comparison: quantum-enhanced vs purely classical models',
+        'Explainability report with SHAP/feature importance analysis for quantum-derived features',
+        'Mock regulatory compliance documentation for the model',
+      ],
+      tools: ['Qiskit, sklearn, SHAP, pandas', 'Credit dataset (German Credit, Give Me Some Credit)'],
+    },
+    lab: {
+      description: 'Build and evaluate a credit risk classifier using quantum kernel methods, with a focus on the precision-recall trade-off and regulatory explainability.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib shap',
+      steps: [
+        'Load the German Credit dataset, preprocess categorical variables, and scale numerical features',
+        'Train a QSVM with ZZFeatureMap on the 5 most important features (determined via mutual information)',
+        'Train a classical baseline: Logistic Regression with L1 regularization',
+        'Compare AUC-ROC, precision, recall, and F1 for both models',
+        'Use the classical classifier\'s coefficients to explain the importance of each quantum-derived feature (this satisfies regulatory explainability)',
+        'Generate a loan decision explanation for 3 sample customers',
+      ],
+      expectedOutput: 'A comparison table of QSVM vs Logistic Regression, plus sample adverse action notices explaining loan decisions based on quantum-extracted features with classical interpretability.',
+      challenge: 'Implement a "fairness-aware" version: compute the demographic parity and equal opportunity metrics for both models. Does the QSVM show different bias patterns than the classical model? If so, propose a mitigation strategy (e.g., adversarial debiasing for quantum models).',
+    },
     prerequisites: [
       'Module 9: QSVM — quantum classification methods applicable to risk scoring',
       'Module 13: Model Evaluation — risk assessment requires careful metric selection',
@@ -327,6 +488,61 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic4': {
     topicId: 'module14-topic4',
+    story: 'In 2019, PayPal processed 12.4 billion transactions. Fraudsters try to hide among them, making up perhaps 0.1% of all transactions. A classical ML model with 99.9% accuracy might still miss every single fraudulent transaction — because 99.9% accuracy is the baseline of "predict legitimate for everything." This extreme class imbalance makes fraud detection one of the hardest ML problems. QML researchers believe that quantum feature maps, which can encode complex feature interactions through entanglement, might capture the subtle, non-linear patterns that distinguish fraudulent transactions from legitimate ones. The adversarial nature of fraud (fraudsters adapt to detection methods) adds another layer of complexity that QML architectures must address.',
+    concepts: [
+      { type: 'text', content: 'Fraud detection is characterized by extreme class imbalance (~0.1% fraud), adversarial adaptation (fraudsters evolve), and high-dimensional transaction features. QML methods aim to capture subtle fraud signatures via quantum feature maps, while concept drift requires frequent model adaptation.' },
+      { type: 'math', content: '\\text{Precision@k} = \\frac{\\text{True frauds in top } k \\text{ alerts}}{k}, \\quad \\text{Critical metric: } \\text{Recall} = \\frac{TP}{TP+FN}' },
+      { type: 'chart', content: 'graph TD\n  A[Transaction Features] --> B[Quantum Feature Map\n  Entangling Encoding]\n  B --> C[QSVM / VQC\n  Fraud Classifier]\n  C --> D[Fraud Score]\n  D --> E{Threshold Tuned\n  for Recall vs Precision}\n  E -->|> Threshold| F[Flag for Review]\n  E -->|< Threshold| G[Approve]' },
+      { type: 'code', content: '# Fraud detection: extreme class imbalance handling\nfrom sklearn.utils.class_weight import compute_class_weight\n\n# Compute balanced class weights\nweights = compute_class_weight("balanced", classes=[0, 1], y=y_train)\n\n# QSVM with balanced weights\nfrom qiskit_machine_learning.kernels import QuantumKernel\nfrom sklearn.svm import SVC\n\nquantum_kernel = QuantumKernel(feature_map=ZZFeatureMap(4))\nqsvm = SVC(kernel=quantum_kernel.evaluate, class_weight={0: weights[0], 1: weights[1]})\n\n# Evaluate using recall and precision at k\nfrom sklearn.metrics import recall_score, precision_score' },
+      { type: 'list', content: ['Extreme imbalance (~0.1% fraud): accuracy is meaningless, use recall, precision@k, AUC-PR', 'Quantum feature maps may capture subtle non-linear fraud patterns via entanglement', 'Concept drift: fraud patterns evolve — QML retraining cost is a practical concern', 'Adversarial robustness: fraudsters probe and evade detectors — quantum models may be harder to reverse-engineer', 'Quantum generative models can augment the minority class with synthetic fraud samples'] },
+      { type: 'flipcard', content: { front: 'Why might quantum feature maps help with fraud detection when classical methods already achieve high recall?', back: 'Classical methods often rely on manually engineered features. Quantum feature maps can automatically generate exponentially many feature interactions via entanglement, potentially capturing novel fraud patterns that are invisible to fixed classical features.' } },
+    ],
+    activity: {
+      description: 'Build and evaluate a fraud detection pipeline with extreme class imbalance, using QSVM and comparing against classical methods with appropriate metrics.',
+      steps: [
+        'Load a credit card fraud dataset (Kaggle: ~0.17% fraud rate)',
+        'Apply random undersampling or SMOTE to create a training set with 10% fraud rate',
+        'Train a QSVM with ZZFeatureMap on 4 PCA-reduced features',
+        'Train classical baselines: Logistic Regression, Random Forest, XGBoost',
+        'Compare models using: recall, precision@100, AUC-PR (NOT accuracy!)',
+        'Plot precision-recall curves for all models',
+      ],
+      discussionQuestions: [
+        'A model with 50% precision and 90% recall flags 9 out of 10 frauds but generates many false alarms. Is this acceptable? How would you tune the threshold?',
+        'Fraudsters analyze detection systems to evade them. How would a quantum model\'s decision boundary be harder to reverse-engineer than a classical model\'s?',
+      ],
+      materials: ['Credit card fraud dataset', 'Qiskit, sklearn, imbalanced-learn'],
+      codetask: 'Write a function that simulates concept drift in fraud detection: train a QSVM on "old" fraud patterns and test on "new" evolved patterns. Measure the accuracy drop and propose a retraining schedule.',
+    },
+    project: {
+      description: 'Build an adaptive fraud detection system using quantum generative models to augment the minority class and handle concept drift via periodic retraining.',
+      objectives: [
+        'Implement a Quantum GAN (QGAN) to generate synthetic fraud samples for class balancing',
+        'Build a QSVM detector trained on real + synthetic fraud samples',
+        'Demonstrate that quantum-augmented training improves recall compared to classical augmentation methods (SMOTE, ADASYN)',
+      ],
+      deliverables: [
+        'QGAN implementation for generating synthetic fraud transaction features',
+        'Fraud detection pipeline: quantum augmentation → QSVM → evaluation',
+        'Comparison report: recall, precision, AUC-PR for quantum-augmented vs SMOTE-augmented vs no augmentation',
+        'Concept drift analysis: performance over time with periodic retraining',
+      ],
+      tools: ['Qiskit (for QGAN circuit)', 'PennyLane (alternative QGAN)', 'sklearn, imbalanced-learn'],
+    },
+    lab: {
+      description: 'Build a fraud detection QSVM that handles extreme class imbalance and is evaluated with appropriate metrics (recall, precision@k, AUC-PR).',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib imbalanced-learn',
+      steps: [
+        'Load the Credit Card Fraud dataset, apply PCA to reduce to 4 dimensions',
+        'Create training set with SMOTE to achieve 10% fraud rate (leave test set imbalanced)',
+        'Train QSVM with ZZFeatureMap and class_weight="balanced"',
+        'Evaluate on the imbalanced test set: compute recall, precision, F1, and precision@100',
+        'Plot precision-recall curve and compute AUC-PR',
+        'Compare against Random Forest and XGBoost with the same SMOTE preprocessing',
+      ],
+      expectedOutput: 'A precision-recall comparison plot across models, a table of recall/precision/F1/AUC-PR, and analysis of which model catches the most fraud at the lowest false alarm rate.',
+      challenge: 'Implement a "cost-sensitive" evaluation where a missed fraud costs $500 and a false alarm costs $10. Find the decision threshold that minimizes total cost for each model. Which model achieves the lowest total cost?',
+    },
     prerequisites: [
       '14.3 Financial Risk Assessment — financial data understanding',
       'Module 9: QSVM and Module 11: QNN — classification models for anomaly detection',
@@ -435,6 +651,59 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic5': {
     topicId: 'module14-topic5',
+    story: 'In 2016, the Mirai botnet attacked the internet infrastructure of Liberia, taking large portions of the country offline. The attack was detected only after significant damage because traditional signature-based intrusion detection systems failed to recognize the novel attack pattern. This is the zero-day problem: unknown attacks with no known signature. Quantum ML offers a fundamentally different approach: instead of looking for known attack signatures, quantum anomaly detection models learn the distribution of "normal" network traffic in Hilbert space. Any traffic that deviates significantly from this learned distribution — even a never-before-seen attack — can be flagged as anomalous. This shift from signature-based to behavior-based detection is QML\'s promise for cybersecurity.',
+    concepts: [
+      { type: 'text', content: 'Quantum cybersecurity analytics uses: (1) quantum anomaly detection (flagging deviations from learned normal traffic distribution in Hilbert space), (2) quantum kernel methods for malware classification, (3) quantum feature extraction for network flow analysis. Real-time constraints require hybrid architectures.' },
+      { type: 'math', content: '\\text{Anomaly Score}(x) = \\|\\phi(x) - \\mu_{\\phi}\\|^2_{\\text{Hilbert}}, \\quad \\text{where } \\mu_{\\phi} = \\frac{1}{N}\\sum_i \\phi(x_i) \\text{ is the mean embedding}' },
+      { type: 'chart', content: 'graph TD\n  A[Network Traffic] --> B[Feature Extraction\n  Packet Features, Flow Stats]\n  B --> C[Dimensionality\n  Reduction PCA]\n  C --> D[Quantum Encoding\n  Normal Traffic Distribution]\n  D --> E[Anomaly Detection\n  in Hilbert Space]\n  E --> F{Deviation > Threshold?}\n  F -->|Yes| G[Flag: Potential\n  Zero-Day Attack]\n  F -->|No| H[Allow Traffic]' },
+      { type: 'code', content: '# Quantum anomaly detection: one-class classification in Hilbert space\nfrom qiskit.circuit.library import ZZFeatureMap\nfrom sklearn.svm import OneClassSVM\n\n# Use quantum kernel with OneClassSVM\nfeature_map = ZZFeatureMap(feature_dimension=4, reps=2)\nquantum_kernel = QuantumKernel(feature_map=feature_map)\n\n# Train on normal traffic only\ndetector = OneClassSVM(kernel=quantum_kernel.evaluate, nu=0.1)\ndetector.fit(normal_traffic)\n\n# Predict: +1 = normal, -1 = anomaly (potential attack)\npredictions = detector.predict(new_traffic)' },
+      { type: 'list', content: ['Quantum anomaly detection: one-class classification in Hilbert space learns "normal" only', 'Zero-day detection: flag traffic that deviates from normal distribution — no signature needed', 'High-dimensional network data (80+ features/flow) needs PCA before quantum encoding', 'Real-time constraints: quantum inference latency (ms-s) vs network line rate (μs) — hybrid architecture needed', 'QKD + QML: quantum-secure communication + quantum-enhanced threat detection'] },
+      { type: 'flipcard', content: { front: 'Why does quantum anomaly detection have potential advantages over classical anomaly detection?', back: 'Quantum feature maps encode data into an exponentially larger Hilbert space, where subtle anomalies may become more separated from normal data. Classical anomaly detection is limited by the curse of dimensionality in the original feature space.' } },
+    ],
+    activity: {
+      description: 'Design a quantum anomaly detection system for network intrusion detection, comparing against classical methods and analyzing the real-time constraints.',
+      steps: [
+        'Load a network intrusion dataset (NSL-KDD or CIC-IDS-2017)',
+        'Select 6 key network features and apply PCA to reduce to 4 dimensions',
+        'Train a Quantum OneClassSVM on "normal" traffic only',
+        'Test on a mix of normal and attack traffic — compute recall and false positive rate',
+        'Compare against classical OneClassSVM (RBF kernel) and Isolation Forest',
+      ],
+      discussionQuestions: [
+        'A high false positive rate in intrusion detection causes alert fatigue. How would you tune the quantum anomaly threshold to balance detection and false alarms?',
+        'Network traffic patterns change over time (seasonal effects, new services). How would you handle this distribution drift in a quantum anomaly detector?',
+      ],
+      materials: ['Network intrusion dataset', 'Qiskit, sklearn'],
+      codetask: 'Write a function that simulates the latency of a quantum anomaly detection system. Assume quantum inference takes 100ms per sample. Given 10,000 packets/second, what fraction of traffic can be inspected by the quantum model? Propose a hybrid architecture for the rest.',
+    },
+    project: {
+      description: 'Build a hybrid quantum-classical intrusion detection system where the quantum model handles zero-day detection (offline or on sampled traffic) while a classical model handles high-volume real-time detection.',
+      objectives: [
+        'Implement quantum anomaly detection for identifying novel (zero-day) attack patterns',
+        'Design a hybrid architecture: classical model for real-time filtering, quantum model for deep analysis of suspicious traffic',
+        'Demonstrate that the hybrid system catches more zero-day attacks than a purely classical system',
+      ],
+      deliverables: [
+        'Hybrid intrusion detection pipeline: classical (real-time) + quantum (deep analysis)',
+        'Benchmark comparing detection rates for known and zero-day attacks across: classical-only, quantum-only, hybrid',
+        'Latency analysis and architecture recommendation for production deployment',
+      ],
+      tools: ['Qiskit, sklearn, pandas, matplotlib', 'Network traffic datasets (CIC-IDS-2017, UNSW-NB15)'],
+    },
+    lab: {
+      description: 'Build a quantum one-class classifier for network anomaly detection and evaluate its ability to detect zero-day (unseen) attacks.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib',
+      steps: [
+        'Load NSL-KDD dataset, select numerical features, apply StandardScaler',
+        'Use PCA to reduce to 4 dimensions (from ~36 features)',
+        'Train a Quantum OneClassSVM on KDDTrain+ "normal" class only',
+        'Test on a mix of normal and novel attack types (from KDDTest+)',
+        'Compute: recall of novel attacks, false positive rate, AUC-ROC',
+        'Compare against classical OneClassSVM (RBF) and Isolation Forest',
+      ],
+      expectedOutput: 'A comparison table and ROC curves showing how well each detector catches novel (zero-day) attacks vs their false positive rate. Analysis of whether quantum encoding provides better separation of unseen attacks.',
+      challenge: 'Create a "true zero-day" scenario: hold out entire attack families (e.g., R2L and U2R) from training. Can the quantum anomaly detector flag these completely unseen attack types better than classical methods? What does this imply about the Hilbert space representation of network traffic?',
+    },
     prerequisites: [
       '14.4 Fraud Detection — related security analytics context',
       'Basic understanding of cybersecurity concepts (intrusion detection, malware analysis, network traffic)',
@@ -542,6 +811,61 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic6': {
     topicId: 'module14-topic6',
+    story: 'A major automotive manufacturer produces one car every 30 seconds. Each car passes through 1000+ quality checkpoints generating terabytes of sensor data. Detecting a defect early — before the car is fully assembled — saves thousands of dollars per vehicle. Classical ML already helps, but the complex, non-linear relationships between sensor readings across different manufacturing stages challenge traditional methods. Quantum feature maps, with their ability to encode cross-sensor correlations through entanglement, could capture the subtle signatures of impending failures before they become detectable by classical means. BMW, Volkswagen, and Airbus have all launched quantum computing initiatives focused on manufacturing optimization.',
+    concepts: [
+      { type: 'text', content: 'Smart manufacturing QML applications: predictive maintenance (sensor data → failure prediction), quality control (vision + sensor → defect detection), supply chain optimization (QAOA for routing and scheduling). Key challenge: real-time IoT data streams require low-latency hybrid architectures.' },
+      { type: 'math', content: '\\text{Failure Score}(s_t) = f_{\\text{quantum}}(s_t, s_{t-1}, \\dots, s_{t-w}), \\text{ where } s_t \\text{ is multi-sensor reading at time } t' },
+      { type: 'chart', content: 'graph TD\n  A[IoT Sensors] --> B[Edge Processor\n  Real-Time Data Collection]\n  B --> C[Classical Model\n  Edge: Fast Inference]\n  B --> D[Quantum Cloud\n  Batch: Deep Analysis]\n  C --> E[Real-Time Alert\n  Pass/Fail Decision]\n  D --> F[Model Retraining\n  Complex Optimization]' },
+      { type: 'code', content: '# Predictive maintenance with quantum feature extraction\nfrom qiskit.circuit.library import ZZFeatureMap\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.pipeline import Pipeline\n\n# Sensor readings: vibration, temperature, pressure, current\nsensor_features = [vibration, temp, pressure, current]\n\nclass QuantumFeatureExtractor:\n    def __init__(self, num_qubits=4):\n        self.feature_map = ZZFeatureMap(num_qubits, reps=2)\n\n    def transform(self, X):\n        # Encode and measure each sample\n        return np.array([self._get_features(x) for x in X])\n\npipeline = Pipeline([\n    ("quantum_features", QuantumFeatureExtractor()),\n    ("classifier", RandomForestClassifier())\n])' },
+      { type: 'list', content: ['Predictive maintenance: multi-sensor time-series → quantum feature extraction → failure prediction', 'Quality control: quantum feature maps amplify subtle defect signatures through entanglement', 'Supply chain: QAOA for vehicle routing, job scheduling, inventory optimization', 'Hybrid edge-cloud: classical for real-time decisions, quantum for complex optimization', 'Time-series encoding: sliding windows of sensor data fed as features to quantum circuits'] },
+      { type: 'flipcard', content: { front: 'Why is the hybrid edge-cloud architecture critical for manufacturing QML?', back: 'Manufacturing requires microsecond decisions on the production line (edge), but quantum inference has millisecond-to-second latency. The hybrid approach uses classical models for real-time decisions and quantum for offline optimization and model retraining.' } },
+    ],
+    activity: {
+      description: 'Design a predictive maintenance system using quantum feature extraction on multi-sensor time-series data from manufacturing equipment.',
+      steps: [
+        'Load a predictive maintenance dataset (e.g., NASA Turbofan, AI4I 2020)',
+        'Engineer features: sliding window statistics (mean, std, trend) of sensor readings',
+        'Apply quantum feature extraction (ZZFeatureMap) on the engineered features',
+        'Train a classifier to predict failure within the next N cycles',
+        'Compare: quantum-enhanced features + Random Forest vs raw features + Random Forest',
+      ],
+      discussionQuestions: [
+        'Predictive maintenance is about predicting failure BEFORE it happens. How does the time horizon affect the required quantum feature map expressivity?',
+        'Sensor data is noisy. How might quantum measurement noise interact with sensor noise — could they amplify each other?',
+      ],
+      materials: ['Predictive maintenance dataset', 'Qiskit, sklearn, pandas'],
+      codetask: 'Write a function that creates sliding window features from time-series sensor data (window_size, step_size, statistics_to_compute) and then applies quantum feature extraction (ZZFeatureMap) on each window. Return the feature matrix.',
+    },
+    project: {
+      description: 'Build a comprehensive smart manufacturing QML system that performs predictive maintenance and quality control, deployed in a simulated factory environment.',
+      objectives: [
+        'Implement predictive maintenance using quantum feature extraction on multi-sensor data',
+        'Implement visual quality control using quantum convolutional features',
+        'Optimize production scheduling using QAOA',
+        'Integrate all components into a simulated factory dashboard',
+      ],
+      deliverables: [
+        'Predictive maintenance module: quantum-enhanced failure prediction with lead time estimation',
+        'Quality control module: quantum vision-based defect detection',
+        'Scheduling module: QAOA-based production line optimization',
+        'Integrated dashboard showing factory status, alerts, and optimization recommendations',
+      ],
+      tools: ['Qiskit, PennyLane, sklearn, dash/streamlit for dashboard', 'Simulated sensor data generator'],
+    },
+    lab: {
+      description: 'Build a predictive maintenance classifier using quantum feature extraction on multi-sensor industrial data.',
+      setup: 'pip install qiskit qiskit-aer scikit-learn pandas matplotlib',
+      steps: [
+        'Load the AI4I 2020 Predictive Maintenance dataset',
+        'Create sliding window features (window=5) from the sensor readings',
+        'Reduce to 4 features using PCA',
+        'Build a quantum-enhanced pipeline: PCA → ZZFeatureMap → Random Forest',
+        'Build a classical baseline: PCA → Random Forest',
+        'Compare recall (catching failures), precision, and F1',
+      ],
+      expectedOutput: 'A comparison table and bar chart showing that quantum-enhanced features improve failure detection recall compared to using raw PCA features alone, with analysis of which sensor interactions the quantum map captures.',
+      challenge: 'Implement a "lead time" metric: for each correctly predicted failure, compute how many cycles before actual failure the model raised the alarm. A good model catches failures early. Does the quantum-enhanced model predict failures earlier than the classical model?',
+    },
     prerequisites: [
       'Module 10: VQC and Module 16.2: QAOA — optimization algorithms applicable to manufacturing',
       'Basic understanding of manufacturing processes (quality control, supply chain, predictive maintenance)',
@@ -649,6 +973,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic7': {
     topicId: 'module14-topic7',
+    story: 'In 2023, pharmaceutical company Boehringer Ingelheim partnered with Google Quantum AI to explore quantum computing for drug discovery. Their focus: molecular dynamics simulations that classical computers find intractable for realistically sized drug molecules. The drug discovery pipeline is uniquely suited for quantum computing because molecules are quantum systems — simulating them on classical computers requires exponential resources as molecule size grows. VQE (Variational Quantum Eigensolver) is the leading NISQ algorithm for estimating molecular ground state energies, but current devices are limited to toy molecules like LiH and H₂. Despite these limitations, quantum ML models for predicting drug properties (toxicity, solubility, binding affinity) are making progress on real problems.',
+    concepts: [
+      { type: 'text', content: 'Drug discovery QML spans: (1) VQE for molecular simulation (finding ground state energies), (2) QML classifiers for ADMET prediction (toxicity, solubility, absorption), (3) quantum kernel methods for virtual screening (ranking drug candidates). Drug molecules are inherently quantum — making this a natural QML application.' },
+      { type: 'math', content: 'E_{\\text{ground}} = \\min_{\\theta} \\langle \\psi(\\theta) | H | \\psi(\\theta) \\rangle, \\quad \\text{VQE finds molecular ground state energy via hybrid optimization}' },
+      { type: 'chart', content: 'graph TD\n  A[Drug Discovery Pipeline] --> B[Target Identification\n  Quantum: not yet]\n  A --> C[Lead Discovery\n  Virtual Screening: QSVM]\n  A --> D[Lead Optimization\n  Molecular Simulation: VQE]\n  A --> E[ADMET Prediction\n  Properties: QNN]\n  A --> F[Clinical Trials\n  Quantum: not yet]\n  C --> G[Quantum Kernel\n  Scoring]\n  D --> H[VQE\n  Ground State Energy]\n  E --> I[Quantum Classifier\n  Toxicity Prediction]' },
+      { type: 'code', content: '# VQE for molecular ground state energy (simplified)\nfrom qiskit_nature.second_q.drivers import PySCFDriver\nfrom qiskit_nature.second_q.mappers import JordanWignerMapper\nfrom qiskit_algorithms import VQE\nfrom qiskit_algorithms.optimizers import SPSA\n\n# Define molecule\ndriver = PySCFDriver(atom="H .0 .0 .0; H .0 .0 .74")\nproblem = driver.run()\n\n# Map to qubits\nmapper = JordanWignerMapper()\n\n# VQE with classical optimizer\nvqe = VQE(estimator, ansatz, SPSA())\nresult = vqe.compute_minimum_eigenvalue(problem.hamiltonian)\nprint(f"Ground state energy: {result.eigenvalue}")' },
+      { type: 'list', content: ['VQE: hybrid quantum-classical algorithm for molecular ground state energies', 'Current NISQ limitation: can only handle small molecules (10-20 qubits)', 'QML for ADMET: classifiers predict drug properties from molecular fingerprints', 'QSVM for virtual screening: rank millions of candidates against a protein target', 'Future: fault-tolerant quantum computers needed for truly useful drug discovery'] },
+      { type: 'flipcard', content: { front: 'Why is drug discovery called a "killer app" for quantum computing?', back: 'Because molecules follow quantum mechanics, and simulating them classically scales exponentially with atom count. Quantum computers can represent molecular states with qubits naturally, potentially offering exponential speedup for molecular simulation.' } },
+    ],
+    activity: {
+      description: 'Explore how VQE simulates a small molecule and how QML can predict molecular properties from simplified features.',
+      steps: [
+        'Run a VQE simulation for H₂ molecule using Qiskit Nature (simplified or conceptual)',
+        'Visualize the energy convergence over VQE optimization iterations',
+        'Explore a molecular property dataset (e.g., Lipophilicity, solubility)',
+        'Train a QSVM to predict whether a molecule has high or low solubility from molecular fingerprints',
+        'Compare QSVM accuracy vs Random Forest on the molecular property prediction task',
+      ],
+      discussionQuestions: [
+        'Given current NISQ limitations, which part of the drug discovery pipeline is most ready for QML: molecular simulation or property prediction?',
+        'How many qubits would be needed to simulate a pharmaceutical-sized molecule (100+ atoms)? What does this imply for the timeline of quantum drug discovery?',
+      ],
+      materials: ['Qiskit Nature (can be conceptual)', 'Molecular property dataset (MoleculeNet)'],
+      codetask: 'Write a function that takes SMILES strings (molecular representations), converts them to Morgan fingerprints (or similar), and creates a quantum feature map. Then train a QSVM to predict a binary property (e.g., active/inactive against a target).',
+    },
+    project: {
+      description: 'Build a complete quantum-enhanced virtual screening pipeline that takes molecular libraries, encodes them as quantum features, and ranks them against a protein target.',
+      objectives: [
+        'Implement molecular fingerprint → quantum feature map → QSVM virtual screening pipeline',
+        'Compare quantum screening against classical screening (RF, XGBoost, SVM) on a benchmark dataset',
+        'Analyze which molecular features the quantum model weights most heavily in its predictions',
+      ],
+      deliverables: [
+        'Virtual screening pipeline: SMILES → fingerprint → quantum encoding → QSVM → ranking',
+        'Benchmark results on the DUD-E or DEKOIS dataset (or simulated)',
+        'Feature importance analysis: which molecular properties drive quantum model decisions?',
+        'Report: does quantum virtual screening improve early enrichment factor over classical methods?',
+      ],
+      tools: ['Qiskit, RDKit, sklearn', 'Molecular datasets (MoleculeNet, DUD-E)'],
+    },
+    lab: {
+      description: 'Build a QML classifier that predicts molecular properties (e.g., solubility, toxicity) from molecular fingerprints, comparing against classical baselines.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib rdkit',
+      steps: [
+        'Load a molecular property dataset (e.g., ESOL solubility dataset)',
+        'Convert SMILES to Morgan fingerprints (1024-bit → PCA to 4 features)',
+        'Train a QSVM with ZZFeatureMap to classify high vs low solubility',
+        'Train classical baselines: SVM (RBF), Random Forest',
+        'Compare accuracy, F1, and AUC-ROC',
+        'Analyze: does the quantum kernel provide advantage for molecular property prediction?',
+      ],
+      expectedOutput: 'Comparison of QSVM vs classical models on molecular property prediction, with analysis of whether the quantum kernel captures molecular structure similarity differently than classical kernels.',
+      challenge: 'Implement a "quantum kernel for molecular similarity": instead of using fingerprints, design a quantum circuit that directly encodes molecular structure (bond lengths, angles, atom types) and computes kernel values. Compare this to the fingerprint-based quantum kernel. Does the structure-based kernel perform better?',
+    },
     prerequisites: [
       'Module 4: Quantum Fundamentals — understanding of quantum mechanics for molecular simulation',
       'Module 16.1: VQE — VQE for molecular ground state estimation',
@@ -697,7 +1075,7 @@ const module14Data: Record<string, TopicData> = {
         question: 'What is the role of QML in the drug discovery pipeline beyond molecular simulation?',
         options: [
           { label: 'A', text: 'QML can only simulate molecules, nothing else' },
-          { label: 'B', text: 'QML can predict drug-target interactions, ADMET properties (absorption, distribution, metabolism, excretion, toxicity), and drug-protein binding affinities using quantum classifiers' },
+          { label: 'B', text: 'QML can predict drug-target interactions, ADMET properties, and drug-protein binding affinities using quantum classifiers' },
           { label: 'C', text: 'QML replaces all biological experiments' },
           { label: 'D', text: 'QML has no role beyond simulation' },
         ],
@@ -757,6 +1135,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic8': {
     topicId: 'module14-topic8',
+    story: 'Netflix recommends movies, Amazon recommends products, Spotify recommends songs — recommendation systems are the invisible engines of the modern internet. They face two fundamental challenges: cold-start (what to recommend to a new user with no history?) and privacy (users don\'t want their tastes exposed). Quantum ML offers creative solutions to both. Quantum matrix factorization could find better latent representations of users and items. Quantum generative models could synthesize interaction histories for cold-start users. And quantum federated learning could train recommendation models without centralizing sensitive user data. While these remain active research areas, companies like Spotify have already started exploring quantum approaches to recommendation.',
+    concepts: [
+      { type: 'text', content: 'Recommendation systems use QML for: (1) collaborative filtering via quantum kernel similarity, (2) matrix factorization via VQE for latent factor discovery, (3) cold-start mitigation via quantum generative models, (4) privacy via quantum federated learning. The massive scale (millions of users/items) requires dimensionality reduction before quantum processing.' },
+      { type: 'math', content: 'R \\approx U V^T, \\quad \\text{Quantum matrix factorization: } \\min_{U,V} \\|R - UV^T\\|_F \\text{ via VQE optimization}' },
+      { type: 'chart', content: 'graph TD\n  A[User-Item Matrix] --> B[Dimensionality\n  Reduction]\n  B --> C[Quantum Encoding\n  User/Item Features]\n  C --> D[Quantum Kernel\n  Similarity Computing]\n  C --> E[VQE Matrix\n  Factorization]\n  D --> F[User-User\n  Similarity]\n  E --> G[Latent Factors]\n  F --> H[Recommendations]\n  G --> H' },
+      { type: 'code', content: '# Quantum kernel collaborative filtering (conceptual)\ndef quantum_user_similarity(user_i, user_j, feature_map):\n    """Compute similarity between two users via quantum kernel."""\n    kernel_value = quantum_kernel.evaluate(user_i.reshape(1,-1), user_j.reshape(1,-1))\n    return kernel_value[0][0]\n\n# Use quantum similarity in k-NN recommendation\nuser_features = [...]  # e.g., PCA-reduced interaction history\nquantum_kernel = QuantumKernel(feature_map=ZZFeatureMap(4))\nsimilarity_matrix = quantum_kernel.evaluate(x_vec=user_features)' },
+      { type: 'list', content: ['Quantum collaborative filtering: user-user/item-item similarity in Hilbert space', 'Quantum matrix factorization: VQA decomposes user-item matrix into latent factors', 'Cold-start: quantum generative models (QGANs) synthesize interaction histories for new users', 'Scale challenge: millions of users/items are infeasible — requires sampling or dimensionality reduction', 'Privacy: quantum federated learning trains models without centralizing user data'] },
+      { type: 'flipcard', content: { front: 'How can quantum generative models help with the cold-start problem?', back: 'For new users with no interaction history, a Quantum GAN can generate plausible interaction profiles conditioned on demographic data. These synthetic histories serve as initialization for the recommendation model, enabling immediate personalized recommendations.' } },
+    ],
+    activity: {
+      description: 'Design a quantum-enhanced collaborative filtering system for a small recommendation dataset, comparing quantum similarity against classical similarity measures.',
+      steps: [
+        'Load a small recommendation dataset (e.g., MovieLens 100K)',
+        'Create user profiles from their item interaction history',
+        'Reduce dimensionality to 4 features using PCA or SVD',
+        'Compute user-user similarity matrix using: (1) cosine similarity, (2) quantum kernel fidelity',
+        'Use k-NN (k=5) to recommend items: which similarity measure gives better recommendations?',
+      ],
+      discussionQuestions: [
+        'User privacy is a major concern in recommendation systems. How would quantum federated learning change the architecture of a recommendation system?',
+        'Would users trust quantum-enhanced recommendations more or less than classical ones? How would you explain the difference?',
+      ],
+      materials: ['MovieLens 100K dataset', 'Qiskit, sklearn, pandas'],
+      codetask: 'Write a function that implements quantum kernel collaborative filtering: given user-item matrix, PCA to 4 dims, compute quantum kernel matrix, and return top-N item recommendations for a given user using k-NN.',
+    },
+    project: {
+      description: 'Build a privacy-preserving recommendation system using quantum federated learning, where user data never leaves the local device.',
+      objectives: [
+        'Simulate quantum federated learning across multiple user nodes for recommendation model training',
+        'Demonstrate privacy preservation: only quantum model parameters (not user-item interactions) are shared',
+        'Compare recommendation quality of federated quantum model vs centralized classical model',
+      ],
+      deliverables: [
+        'Quantum federated learning simulation for recommendation with 20+ user nodes',
+        'Privacy analysis: what information, if any, leaks from the shared quantum parameters?',
+        'Performance comparison: recommendation accuracy (RMSE, precision@k) for federated vs centralized',
+        'Architecture document describing how such a system would be deployed in production',
+      ],
+      tools: ['PennyLane (for QFL simulation)', 'PyTorch, sklearn', 'MovieLens dataset'],
+    },
+    lab: {
+      description: 'Build a quantum kernel-based collaborative filtering recommendation system and evaluate its precision@k compared to classical cosine similarity.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib',
+      steps: [
+        'Load MovieLens 100K, create user-item matrix (943 users × 1682 items)',
+        'Apply TruncatedSVD to reduce user profiles to 4 latent features',
+        'Compute user-user similarity using quantum kernel (ZZFeatureMap, 4 qubits)',
+        'Compute user-user similarity using classical cosine similarity',
+        'For each user, recommend top-5 unseen items based on most similar users\' preferences',
+        'Compare precision@5 and recall@5 for quantum vs classical similarity',
+      ],
+      expectedOutput: 'A comparison of precision@5 and recall@5 for quantum kernel vs cosine similarity collaborative filtering, with analysis of whether quantum similarity captures different user relationships.',
+      challenge: 'Implement a hybrid similarity: combine classical cosine similarity and quantum kernel similarity with a weight parameter α. Find the optimal α that maximizes recommendation precision@10. Does the hybrid outperform either pure method?',
+    },
     prerequisites: [
       'Module 11: QNN — understanding of quantum models for prediction tasks',
       'Understanding of recommendation systems (collaborative filtering, content-based filtering, matrix factorization)',
@@ -863,6 +1295,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic9': {
     topicId: 'module14-topic9',
+    story: 'In 2020, Bob Coecke and his team at Cambridge Quantum announced a surprising result: the grammatical structure of a sentence can be mapped directly to a quantum circuit. This is not an analogy — it is a mathematical equivalence rooted in category theory. Words become quantum states, grammatical composition becomes quantum gates, and the meaning of a sentence is the result of a quantum measurement. This field, called Quantum Natural Language Processing (QNLP), treats language as a quantum system. The lambeq library, released in 2022, makes this concrete: it takes a sentence like "a cat chases a mouse" and produces a quantum circuit that, when executed, gives the sentence\'s meaning vector. While currently limited to short sentences, QNLP represents one of the most elegant and intellectually exciting frontiers of QML.',
+    concepts: [
+      { type: 'text', content: 'QNLP uses the DisCoCat (Distributional Compositional Categorical) framework, which maps grammatical parse trees to quantum circuits. Words are encoded as quantum states (density matrices or pure states), and grammatical composition becomes tensor contraction — naturally implemented as quantum gates. The lambeq library converts sentences to circuits.' },
+      { type: 'math', content: '\\text{Sentence Meaning} = \\text{Measure}\\left( \\bigotimes_{\\text{words}} \\text{WordState}_{\\text{word}} \\circ \\text{GrammarGates} \\right)' },
+      { type: 'chart', content: 'graph TD\n  A["A cat chases a mouse"] --> B[Parse Tree\n  Grammatical Structure]\n  B --> C[DisCoCat Diagram\n  Category Theory]\n  C --> D[Quantum Circuit\n  Words = Qubits\n  Grammar = Gates]\n  D --> E[Measurement]\n  E --> F[Sentence Meaning\n  Vector]' },
+      { type: 'code', content: 'import lambeq\n\n# Convert sentence to quantum circuit\nsentence = "A cat chases a mouse"\n\n# Parse and convert to DisCoCat diagram\ndiagram = lambeq.sentence2diagram(sentence)\n\n# Convert to quantum circuit\ncircuit = lambeq.diagram2circuit(diagram)\n\nprint(circuit)\n# Output: Quantum circuit with qubits for each word\n# and gates representing grammatical composition' },
+      { type: 'list', content: ['DisCoCat: category theory framework linking language structure to quantum circuits', 'lambeq: Python library for QNLP — sentence → parse tree → quantum circuit', 'Current limitation: each sentence length/grammar produces a different circuit, limiting scalability', 'Current task: binary sentiment classification on tiny datasets (20-100 short sentences)', 'Future vision: quantum language understanding beyond classical word vectors'] },
+      { type: 'flipcard', content: { front: 'Why does the grammatical structure of a sentence naturally map to a quantum circuit?', back: 'Both grammar and quantum circuits are compositional: meanings of words combine according to grammatical rules, just as quantum states transform according to gate operations. This structural similarity is formalized through category theory in the DisCoCat framework.' } },
+    ],
+    activity: {
+      description: 'Convert simple sentences into quantum circuits using the lambeq library and observe how different grammatical structures produce different circuits.',
+      steps: [
+        'Install lambeq and explore its basic API',
+        'Convert 5 sentences with different grammatical structures (simple, compound, questions) to quantum circuits',
+        'Compare the circuit diagrams: how does sentence complexity affect circuit size?',
+        'Count qubits and gates — what is the scaling law?',
+        'Identify which grammatical constructions would be infeasible on current NISQ hardware',
+      ],
+      discussionQuestions: [
+        'A 10-word sentence with complex grammar might need 20+ qubits. Is this feasible on current hardware? What does this imply for QNLP\'s near-term prospects?',
+        'QNLP processes sentences one at a time. How would you extend this to paragraph-level understanding?',
+      ],
+      materials: ['lambeq library', 'Example sentences for testing'],
+      codetask: 'Write a function that takes a sentence string, returns a lambeq quantum circuit, and outputs the qubit count and gate count. Also compute the circuit depth. Then categorize the sentence as "NISQ-feasible" or "NISQ-infeasible" based on these metrics.',
+    },
+    project: {
+      description: 'Build a QNLP sentiment classifier using lambeq, training it on a small dataset and analyzing the relationship between sentence structure and classification performance.',
+      objectives: [
+        'Implement a complete QNLP pipeline: sentence → lambeq circuit → quantum execution → sentiment prediction',
+        'Train on a small sentiment dataset (e.g., 50 movie reviews)',
+        'Analyze: which grammatical structures does the model handle well vs poorly?',
+      ],
+      deliverables: [
+        'lambeq-based sentiment classifier pipeline',
+        'Training results on the "Merry-Go-Round" or similar small QNLP dataset',
+        'Analysis of grammatical structure impact on classification accuracy',
+        'Comparison against classical bag-of-words + SVM baseline',
+      ],
+      tools: ['lambeq, Qiskit, PennyLane', 'Small QNLP dataset'],
+    },
+    lab: {
+      description: 'Use lambeq to build a quantum circuit for a sentence and perform sentiment classification on a small dataset.',
+      setup: 'pip install lambeq qiskit pennylane scikit-learn numpy',
+      steps: [
+        'Install lambeq and explore the conversion: "I love this movie" → circuit',
+        'Create a small dataset of 10 positive and 10 negative movie reviews (1 sentence each)',
+        'Convert all sentences to circuits using lambeq\'s default parser',
+        'Use PennyLane\'s default.qubit to simulate each circuit and extract measurement probabilities',
+        'Train a simple classical classifier (logistic regression) on the measurement outputs',
+        'Evaluate accuracy on held-out test sentences',
+      ],
+      expectedOutput: 'A trained QNLP sentiment classifier on a very small dataset, with analysis of how sentence structure maps to quantum circuit structure and how the measurement outputs correlate with sentiment.',
+      challenge: 'Compare the lambeq-based quantum encoding against a classical bag-of-words encoding. Use the same classifier (logistic regression) on both feature sets. Which encoding preserves more sentiment information? For which types of sentences does the quantum encoding excel?',
+    },
     prerequisites: [
       'Module 7: Data Encoding — encoding sequential text data as quantum states',
       'Basic understanding of NLP concepts (word embeddings, bag-of-words, sequence models)',
@@ -971,6 +1457,60 @@ const module14Data: Record<string, TopicData> = {
 
   'module14-topic10': {
     topicId: 'module14-topic10',
+    story: 'In 2019, a team at Zapata Computing showed that a quantum convolutional neural network (QCNN) could classify handwritten digits from the MNIST dataset. The QCNN used only 6 qubits and achieved accuracy comparable to a classical CNN with thousands of parameters. The key insight: the hierarchical structure of QCNNs — where each layer reduces the number of qubits through controlled operations and pooling — mirrors classical CNN architecture while operating in a fundamentally different computational space. The challenge, however, is encoding: a 28×28 pixel MNIST image has 784 features, far more than the qubits available. Hybrid approaches, where classical CNNs extract features and quantum layers process them, have become the dominant paradigm for quantum computer vision.',
+    concepts: [
+      { type: 'text', content: 'Quantum computer vision faces the encoding challenge: high-dimensional images require dimensionality reduction before quantum processing. QCNNs use hierarchical qubit reduction (like classical pooling). Hybrid architectures use classical CNNs for feature extraction, then quantum layers for feature refinement. Amplitude encoding is efficient (log₂ N qubits for N pixels) but needs deep circuits.' },
+      { type: 'math', content: 'I_{\\text{image}} \\in \\mathbb{R}^{H \\times W \\times C} \\xrightarrow{\\text{classical CNN}} \\text{latent features} \\in \\mathbb{R}^d \\xrightarrow{\\text{angle encoding}} d \\text{ qubits}' },
+      { type: 'chart', content: 'graph TD\n  A[Input Image\n  28x28=784 pixels] --> B[Classical CNN\n  Feature Extractor]\n  B --> C[Latent Features\n  4-16 dims]\n  C --> D[Quantum Encoding\n  Angle/Amplitude]\n  D --> E[Quantum Layers\n  QCNN / VQC]\n  E --> F[Measurement]\n  F --> G[Classification]' },
+      { type: 'code', content: '# Hybrid quantum-classical computer vision (conceptual)\nimport torch\nimport pennylane as qml\n\n# Classical feature extractor (using PyTorch)\nclass ClassicalEncoder(torch.nn.Module):\n    def __init__(self):\n        super().__init__()\n        self.conv = torch.nn.Conv2d(1, 4, 3)\n        self.pool = torch.nn.MaxPool2d(2)\n        self.fc = torch.nn.Linear(4 * 13 * 13, 4)\n\n# Quantum layer\n@qml.qnode(dev, interface="torch")\ndef quantum_layer(features, weights):\n    qml.AngleEmbedding(features, wires=range(4))\n    qml.BasicEntanglerLayers(weights, wires=range(4))\n    return [qml.expval(qml.PauliZ(i)) for i in range(4)]' },
+      { type: 'list', content: ['Encoding challenge: images have thousands of pixels — direct encoding infeasible on NISQ devices', 'Hybrid approach: classical CNN → latent vector → quantum processing → classification', 'QCNN: hierarchical structure with qubit reduction layers, analogous to classical CNN pooling', 'Amplitude encoding: log₂(N) qubits for N pixels, but requires deep state preparation', 'Quantum edge detection: exploit superposition for parallel gradient computation'] },
+      { type: 'flipcard', content: { front: 'Why is the hybrid approach (classical CNN + quantum layer) the dominant paradigm for quantum computer vision?', back: 'Classical CNNs are excellent at extracting spatial features from images but limited in handling high-order feature interactions. Quantum layers can process these extracted features in Hilbert space, capturing interactions that classical layers miss — combining the best of both worlds.' } },
+    ],
+    activity: {
+      description: 'Build a hybrid classical-quantum image classifier using a classical CNN for feature extraction and a quantum layer for classification.',
+      steps: [
+        'Load a small image dataset (e.g., MNIST binary: 3s vs 7s)',
+        'Define a classical CNN that extracts 4 latent features from each image',
+        'Define a 4-qubit quantum variational layer using PennyLane',
+        'Combine: CNN → quantum layer → linear classifier',
+        'Train the hybrid model and compare against a purely classical CNN of similar parameter count',
+      ],
+      discussionQuestions: [
+        'Where would you insert a quantum layer in a deep CNN — early (near pixels), middle, or late (near classification)? How does placement affect what the quantum layer "sees"?',
+        'Quantum edge detection uses superposition to compute gradients in multiple directions. How would this change image preprocessing for downstream quantum models?',
+      ],
+      materials: ['PennyLane, PyTorch or TensorFlow', 'MNIST subset or similar small image dataset'],
+      codetask: 'Write a function that takes an image, applies a classical CNN to extract 4 features, encodes those features onto 4 qubits using angle encoding, runs a variational quantum circuit, and returns measurement probabilities from 4 qubits (16 classes).',
+    },
+    project: {
+      description: 'Build and benchmark multiple hybrid quantum-classical vision architectures, comparing different placements of quantum layers and different encoding strategies.',
+      objectives: [
+        'Implement 3 hybrid architectures: quantum early (near input), quantum middle, quantum late (near classification)',
+        'Compare against a purely classical CNN with similar parameter count',
+        'Determine which architecture configuration gives the best accuracy/complexity trade-off',
+      ],
+      deliverables: [
+        'Collection of hybrid vision models with configurable quantum layer placement',
+        'Benchmark results on MNIST, Fashion-MNIST, and CIFAR-10 (downsampled)',
+        'Analysis: does quantum processing help more for certain types of visual features?',
+        'Recommendation guide for hybrid vision architecture design',
+      ],
+      tools: ['PennyLane, PyTorch/TensorFlow, Qiskit', 'Image datasets'],
+    },
+    lab: {
+      description: 'Build a hybrid quantum-classical image classifier using a classical autoencoder for dimensionality reduction and a VQC for classification.',
+      setup: 'pip install pennylane torch torchvision numpy matplotlib',
+      steps: [
+        'Load Fashion-MNIST, select 2 classes (T-shirt vs Sneaker), downsample to 16×16',
+        'Train a classical autoencoder to compress images to 4 latent features',
+        'Define a 4-qubit VQC with AngleEmbedding and 2 variational layers',
+        'Build the full pipeline: autoencoder → VQC → softmax',
+        'Train the hybrid model and compare against a classical MLP with 4 hidden neurons',
+        'Compare test accuracy and parameter count',
+      ],
+      expectedOutput: 'A trained hybrid vision model with comparison to classical baseline, showing whether the quantum layer provides benefit on the reduced latent features.',
+      challenge: 'The autoencoder + VQC approach uses classical compression before quantum processing. Design an end-to-end quantum approach: use a quantum circuit that directly processes patches of the image via amplitude encoding. Compare: does the "more quantum" approach outperform the hybrid approach? At what cost in circuit depth and qubits?',
+    },
     prerequisites: [
       'Module 11: QNN — quantum models for image classification',
       'Module 7: Data Encoding — encoding image pixels as quantum states',

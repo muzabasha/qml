@@ -108,6 +108,55 @@ const module4Data: Record<string, TopicData> = {
       'The paradigm shift from bits to qubits is as significant as the shift from abacus to transistors.',
       'We are still in the early days — equivalent to the 1950s of classical computing.',
     ],
+    story: 'The journey from abacus to quantum computer spans thousands of years, but the most revolutionary leap is happening now. In 1981, Richard Feynman asked a provocative question: why build classical computers to simulate quantum physics when nature itself is quantum? His insight launched a new field. From Shor\'s 1994 algorithm that threatened RSA encryption to Google\'s 2019 claim of quantum supremacy, the evolution has been breathtaking. We now stand at a threshold where quantum computing is transitioning from theoretical physics to practical engineering — much like classical computing in the 1950s when the first transistors were replacing vacuum tubes.',
+    concepts: [
+      { type: 'text', text: 'Quantum computing evolved from Feynman\'s 1981 insight that simulating quantum mechanics requires a quantum computer. Shor\'s algorithm (1994) proved exponential speedup for factoring, sparking global investment.' },
+      { type: 'math', formula: '\\text{Classical: } O(e^{n^{1/3}}) \\quad \\text{Shor: } O((\\log n)^3)' },
+      { type: 'diagram', chart: 'graph LR; A[1981: Feynman] --> B[1994: Shor]; B --> C[2001: First 7-Qubit]; C --> D[2019: Sycamore]; D --> E[2023: 1000+ Qubits]; E --> F[Future: Error-Corrected];' },
+      { type: 'code', code: { language: 'python', code: '# Timeline of quantum milestones\nmilestones = {\n    1981: "Feynman proposes quantum computing",\n    1994: "Shor\'s factoring algorithm",\n    2001: "IBM 7-qubit quantum computer",\n    2019: "Google Sycamore quantum supremacy",\n    2023: "IBM 1121-qubit Condor"\n}\nfor year, event in sorted(milestones.items()):\n    print(f"{year}: {event}")' } },
+      { type: 'list', title: 'Quantum Milestones', items: ['1981 — Feynman: "Nature isn\'t classical, dammit"', '1994 — Shor: exponential speedup for factoring', '2001 — First 7-qubit quantum computer (NMR)', '2019 — Google Sycamore: quantum supremacy claim', '2023 — IBM Condor: 1121 superconducting qubits'] },
+      { type: 'flip-card', title: 'Evolution of Computing', cards: [
+        { front: 'Who proposed quantum computing and when?', back: 'Richard Feynman in 1981. He argued that classical computers cannot efficiently simulate quantum systems, so we should build quantum computers.' },
+        { front: 'What was Google Sycamore\'s 2019 achievement?', back: 'Sycamore (53 qubits) performed a random circuit sampling task in 200 seconds, estimated to take a classical supercomputer 10,000 years.' },
+      ] },
+    ],
+    activity: {
+      description: 'Create a timeline poster of computing evolution from mechanical calculators to quantum processors, highlighting key breakthroughs and paradigm shifts.',
+      steps: [
+        'Research major milestones: abacus, mechanical calculator, Babbage engine, vacuum tubes, transistor, integrated circuit, microprocessor, quantum computer.',
+        'Place each milestone on a timeline with year and key innovator.',
+        'For each paradigm shift, note: What limit did it overcome?',
+        'Present your timeline to the class and explain how quantum fits into the broader story.',
+      ],
+      discussionQuestions: [
+        'What patterns do you see in the history of computing? Are paradigm shifts accelerating?',
+        'What would a "quantum transistor" equivalent look like — the breakthrough that makes quantum computing practical?',
+      ],
+      materials: ['Poster paper', 'Markers', 'Research references'],
+    },
+    project: {
+      description: 'Research and write a biographical sketch of one key figure in quantum computing history (Feynman, Shor, Grover, Deutsch, Bennett, or DiVincenzo) and their contribution.',
+      objectives: [
+        'Understand the historical development of quantum computing ideas',
+        'Connect individual contributions to the broader field',
+        'Communicate technical concepts in an engaging narrative',
+      ],
+      deliverables: ['Biographical sketch (2–3 pages)', 'Timeline of the scientist\'s key contributions', 'Presentation (5 min)'],
+      tools: ['Research databases', 'Google Docs'],
+    },
+    lab: {
+      description: 'Write a Qiskit program that demonstrates the evolution of computing concepts by building a simple classical logic gate circuit, then comparing it to a quantum circuit.',
+      setup: 'pip install qiskit qiskit-aer matplotlib',
+      steps: [
+        'Create a classical simulation of a half-adder using Python bitwise operations.',
+        'Now build a quantum circuit with 2 qubits that simulates a controlled-NOT (XOR).',
+        'Extend: Create a quantum full-adder using Toffoli (CCX) gates.',
+        'Compare the circuit diagrams of classical vs quantum adders.',
+        'Run the quantum adder on AerSimulator and verify the truth table.',
+      ],
+      expectedOutput: 'A verified quantum half-adder truth table matching classical expectations, with circuit diagrams showing the quantum implementation.',
+      challenge: 'Implement a quantum ripple-carry adder with 4 qubits and verify addition of two 2-bit numbers.',
+    },
   },
 
   'module4-topic2': {
@@ -216,6 +265,56 @@ const module4Data: Record<string, TopicData> = {
       'A qubit is not just a probabilistic bit — the complex amplitudes enable quantum interference, the magic behind quantum computing.',
       'The measurement problem: rich quantum information collapses to a single classical bit — designing algorithms around this is the art of quantum computing.',
     ],
+    story: 'A classical bit is like a light switch — definitely ON or definitely OFF. A qubit is more like a spinning coin: while it is spinning, it is in a superposition of heads and tails, but when you catch it (measure it), it becomes definitively one or the other. But qubits are far stranger than spinning coins — their probability amplitudes are complex numbers that can be negative or imaginary, enabling quantum interference. This fundamental difference between bits and qubits is not just philosophical; it is the source of quantum computing\'s power. The notation |ψ⟩ = α|0⟩ + β|1⟩, with the normalization condition |α|² + |β|² = 1, is the language used to describe this uniquely quantum reality.',
+    concepts: [
+      { type: 'text', text: 'A classical bit is either 0 or 1. A qubit |ψ⟩ = α|0⟩ + β|1⟩ can exist in a superposition of both states. Complex amplitudes α, β satisfy |α|² + |β|² = 1.' },
+      { type: 'math', formula: '|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle \\quad \\text{where } \\alpha, \\beta \\in \\mathbb{C}, \\; |\\alpha|^2 + |\\beta|^2 = 1' },
+      { type: 'diagram', chart: 'graph TD; A[Classical Bit] --> B[0 or 1]; C[Qubit] --> D[α|0⟩ + β|1⟩]; D --> E[Superposition]; D --> F[Interference]; D --> G[Entanglement];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.quantum_info import Statevector\n\n# Qubit states\nket0 = Statevector([1, 0])\nket1 = Statevector([0, 1])\nplus = Statevector([1, 1]) / 2**0.5\n\nprint(f"|0⟩ = {ket0}")\nprint(f"|1⟩ = {ket1}")\nprint(f"|+⟩ = {plus}")' } },
+      { type: 'list', title: 'Bit vs Qubit', items: ['Classical bit: 0 XOR 1 (mutually exclusive)', 'Qubit: α|0⟩ + β|1⟩ (superposition possible)', 'Measurement: qubit collapses to 0 or 1 probabilistically', 'Key: negative amplitudes enable interference, the engine of quantum algorithms'] },
+      { type: 'flip-card', title: 'Bits & Qubits', cards: [
+        { front: 'How many classical bits does one qubit carry?', back: 'Potentially infinite information in amplitudes, but only 1 classical bit upon measurement. This is the paradox of quantum information.' },
+        { front: 'What makes a qubit different from a probabilistic classical bit?', back: 'Qubits have complex amplitudes (can be negative/imaginary), enabling quantum interference where amplitudes cancel constructively or destructively.' },
+      ] },
+    ],
+    activity: {
+      description: 'Use coins, dice, or a physical spinner to model the difference between a classical probabilistic bit and a quantum qubit (with interference).',
+      steps: [
+        'Flip a coin 100 times and record heads/tails counts — this models a classical probabilistic bit.',
+        'Now simulate a qubit: use a spinner with complex number sectors (can point in any direction with phase).',
+        'Show that the qubit spinner can have "negative" probability regions — impossible classically.',
+        'Demonstrate interference: two qubit spinners can cancel each other (destructive interference).',
+        'Discuss: How does interference enable quantum algorithms to amplify correct answers and cancel wrong ones?',
+      ],
+      discussionQuestions: [
+        'If qubits carry so much information in their amplitudes, why is extracting it so limited?',
+        'How might quantum interference help in pattern recognition or optimization?',
+      ],
+      materials: ['Coin', 'Paper spinner with complex plane', 'Recording sheet'],
+    },
+    project: {
+      description: 'Create an interactive visualization (using Python or JavaScript) that compares a classical probabilistic bit to a quantum qubit, showing the Bloch sphere, amplitude evolution, and measurement outcomes.',
+      objectives: [
+        'Model both classical probability and quantum amplitude evolution',
+        'Visualize how gates transform qubit states',
+        'Demonstrate the difference between probabilistic and quantum behavior',
+      ],
+      deliverables: ['Interactive visualization (web or notebook)', 'User guide explaining the physics', 'Comparison of classical vs quantum behavior'],
+      tools: ['Python (plotly, ipywidgets) or JavaScript (three.js, d3.js)'],
+    },
+    lab: {
+      description: 'Use Qiskit to create and visualize single qubit states, measure them, and observe the difference between statevectors and measurement statistics.',
+      setup: 'pip install qiskit qiskit-aer matplotlib pylatexenc',
+      steps: [
+        'Create a 1-qubit circuit initialized to |0⟩.',
+        'Add a Hadamard gate and use StatevectorSimulator to see the state.',
+        'Add a measurement and run with 4096 shots on AerSimulator.',
+        'Compare the exact statevector amplitudes with the measurement histogram.',
+        'Repeat with different initial states and gates.',
+      ],
+      expectedOutput: 'Statevector shows (|0⟩ + |1⟩)/√2 with amplitudes [0.707, 0.707]. Measurement histogram shows ~2048 counts each for 0 and 1.',
+      challenge: 'Create a qubit state with unequal amplitudes (e.g., using a parameterized rotation gate) and verify Born\'s rule empirically.',
+    },
   },
 
   'module4-topic3': {
@@ -325,6 +424,56 @@ const module4Data: Record<string, TopicData> = {
       'The power comes not from superposition alone, but from combining it with interference and entanglement.',
       'Learning to think in amplitudes (not just probabilities) is the quantum mind-shift.',
     ],
+    story: 'Schrödinger\'s cat is famous for being both alive and dead — but superposition is far stranger and more precisely defined than this popular analogy suggests. A qubit in superposition is not "both 0 and 1" at the same time; it exists in a well-defined quantum state that, when measured, yields 0 or 1 with specific probabilities determined by its complex amplitudes. The Hadamard gate is the master of superposition — it transforms a definite |0⟩ into the equal superposition (|0⟩ + |1⟩)/√2, the quantum equivalent of a perfect coin flip. But the real magic happens when superposition combines with interference: two Hadamard gates in sequence cancel each other out (HH = I), demonstrating how quantum algorithms use interference to steer probability toward correct answers.',
+    concepts: [
+      { type: 'text', text: 'Superposition: |ψ⟩ = α|0⟩ + β|1⟩. The Hadamard gate H creates equal superposition: H|0⟩ = (|0⟩ + |1⟩)/√2. Two H gates cancel: HH = I, demonstrating quantum interference.' },
+      { type: 'math', formula: 'H|0\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle + |1\\rangle) \\quad H|1\\rangle = \\frac{1}{\\sqrt{2}}(|0\\rangle - |1\\rangle)' },
+      { type: 'diagram', chart: 'graph TD; A[|0⟩] --> B[H Gate]; B --> C[(|0⟩+|1⟩)/√2]; C --> D[H Gate]; D --> E[|0⟩]; C --> F[Measure: 50% 0, 50% 1];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\nqc = QuantumCircuit(1, 1)\nqc.h(0)        # Hadamard: create superposition\nqc.measure(0, 0)\n\nresult = AerSimulator().run(qc, shots=1024).result()\ncounts = result.get_counts()\nprint(counts)  # ~{"0": 512, "1": 512}' } },
+      { type: 'list', title: 'Superposition Facts', items: ['H|0⟩ = (|0⟩ + |1⟩)/√2 — equal superposition', 'H|1⟩ = (|0⟩ - |1⟩)/√2 — superposition with phase', 'HH = I — two Hadamards cancel (interference)', 'n qubits in superposition: 2ⁿ basis states'] },
+      { type: 'flip-card', title: 'Superposition', cards: [
+        { front: 'What does H|0⟩ = (|0⟩ + |1⟩)/√2 mean in practice?', back: 'The qubit is in an equal superposition — measuring gives 0 with 50% probability and 1 with 50% probability. Both outcomes are equally likely.' },
+        { front: 'Why does HH = I? What does this show?', back: 'It demonstrates quantum interference: the first H creates superposition, the second H causes amplitudes to interfere and cancel back to |0⟩. This interference is the key mechanism in quantum algorithms.' },
+      ] },
+    ],
+    activity: {
+      description: 'Use a physical simulation with waves on a string or a ripple tank to demonstrate constructive and destructive interference, then map this to quantum superposition.',
+      steps: [
+        'Create two waves on a string (or use a simulation app) at the same frequency.',
+        'Observe constructive interference (waves align → larger amplitude).',
+        'Shift one wave by 180° and observe destructive interference (waves cancel).',
+        'Map this to qubits: |0⟩ + |1⟩ (constructive) vs |0⟩ - |1⟩ (destructive).',
+        'Discuss: How does interference help quantum algorithms select correct answers?',
+      ],
+      discussionQuestions: [
+        'What would happen if we could only use positive probabilities (like classical bits) instead of amplitudes?',
+        'How might superposition and interference together provide computational advantage over classical methods?',
+      ],
+      materials: ['Slinky or rope for wave demonstration', 'Or web-based wave interference simulator'],
+    },
+    project: {
+      description: 'Build an interactive Jupyter notebook that visualizes superposition states on the Bloch sphere and allows users to apply gates and observe state evolution.',
+      objectives: [
+        'Understand how gates transform superposition states',
+        'Visualize quantum states as vectors on the Bloch sphere',
+        'Connect mathematical formalism to geometric intuition',
+      ],
+      deliverables: ['Interactive Bloch sphere notebook', 'Step-by-step tutorial guide', 'Challenge exercises with solutions'],
+      tools: ['Python, qiskit, ipywidgets, matplotlib'],
+    },
+    lab: {
+      description: 'Create superposition states using Hadamard gates, verify them with statevector simulation, and observe quantum interference with sequential Hadamards.',
+      setup: 'pip install qiskit qiskit-aer matplotlib',
+      steps: [
+        'Create a 1-qubit circuit and apply H gate to |0⟩.',
+        'Use StatevectorSimulator to view the resulting statevector.',
+        'Verify: amplitudes are [1/√2, 1/√2], probabilities [0.5, 0.5].',
+        'Add a second H gate and observe the state returns to |0⟩ (HH = I).',
+        'Now try H|1⟩: first apply X gate, then H, observe (|0⟩ - |1⟩)/√2.',
+      ],
+      expectedOutput: 'Statevectors: H|0⟩ = [0.707, 0.707], HH|0⟩ = [1, 0] (back to |0⟩), HX|0⟩ = [0.707, -0.707] (phase difference).',
+      challenge: 'Create a superposition state with amplitudes 0.6 and 0.8 using a Ry rotation gate, verify |α|² + |β|² = 1.',
+    },
   },
 
   'module4-topic4': {
@@ -434,6 +583,56 @@ const module4Data: Record<string, TopicData> = {
       'Entanglement + measurement = powerful computational resource, not faster-than-light communication.',
       'The correlations entanglement enables may be the key to quantum advantage in ML.',
     ],
+    story: 'Einstein called it "spooky action at a distance," but entanglement is not magic — it is a mathematically precise form of correlation stronger than any possible classical correlation. When two qubits are entangled, measuring one instantly determines the outcome of the other, regardless of the distance between them. The Bell state |Φ⁺⟩ = (|00⟩ + |11⟩)/√2 is the simplest example: if you measure |0⟩ on the first qubit, the second MUST be |0⟩; if |1⟩, then |1⟩. Entanglement is not just a curiosity — it is a computational resource that enables quantum algorithms to encode exponentially complex correlations between variables, potentially revealing patterns in data that classical models cannot capture.',
+    concepts: [
+      { type: 'text', text: 'Entanglement creates non-classical correlations between qubits. The Bell state (|00⟩ + |11⟩)/√2 is maximally entangled: measuring one qubit instantly determines the other, no matter the distance.' },
+      { type: 'math', formula: '|\\Phi^+\\rangle = \\frac{1}{\\sqrt{2}}(|00\\rangle + |11\\rangle)' },
+      { type: 'diagram', chart: 'graph LR; A[Qubit 0: |0⟩] --> B[H Gate]; B --> C[|0⟩+|1⟩]/√2; C --> D[CNOT Control]; E[Qubit 1: |0⟩] --> F[CNOT Target]; D --> G[(|00⟩+|11⟩)/√2]; F --> G;' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\n# Bell state circuit\nqc = QuantumCircuit(2, 2)\nqc.h(0)      # Hadamard on qubit 0\nqc.cx(0, 1)  # CNOT: control=0, target=1\nqc.measure([0, 1], [0, 1])\n\nresult = AerSimulator().run(qc, shots=1024).result()\nprint(result.get_counts())  # Only "00" and "11"' } },
+      { type: 'list', title: 'Entanglement Facts', items: ['Bell state: (|00⟩ + |11⟩)/√2 — perfect correlation', 'Created by: H + CNOT gate sequence', 'CNOT: flips target if control = |1⟩', 'Entanglement enables correlations impossible classically'] },
+      { type: 'flip-card', title: 'Entanglement', cards: [
+        { front: 'Why did Einstein call entanglement "spooky"?', back: 'Because it appears to allow instantaneous influence between distant particles. However, it cannot transmit information faster than light (no-signaling theorem preserves relativity).' },
+        { front: 'How does entanglement benefit ML?', back: 'Entanglement allows quantum models to encode complex feature correlations that classical models cannot efficiently represent. This may provide advantage for pattern recognition.' },
+      ] },
+    ],
+    activity: {
+      description: 'Use a pair of correlated coins or cards to simulate classical correlation, then compare with quantum entanglement using a Bell state simulator.',
+      steps: [
+        'Take two coins: whenever you flip both, record both outcomes. Are they correlated? (Probably not.)',
+        'Now take two cards from the same suit: if one is hearts, the other must be hearts too. This is like a correlated classical system.',
+        'Run the Bell state circuit in Qiskit: observe that only "00" and "11" appear — perfect correlation.',
+        'Measure qubit 0 while leaving qubit 1 unmeasured. Check if qubit 1\'s state is determined.',
+        'Discuss: How is quantum entanglement different from classical correlation? (Bell\'s theorem)',
+      ],
+      discussionQuestions: [
+        'Can entanglement be used for faster-than-light communication? Why or why not?',
+        'If you had unlimited entanglement, what ML problems might become easier?',
+      ],
+      materials: ['Two coins', 'Playing cards', 'Qiskit notebook for Bell state'],
+    },
+    project: {
+      description: 'Implement a quantum teleportation circuit in Qiskit — the protocol that uses entanglement to transfer a quantum state from one qubit to another.',
+      objectives: [
+        'Understand the teleportation protocol (Alice sends a state to Bob)',
+        'Implement entanglement, Bell measurement, and classical feed-forward',
+        'Verify that the teleported state matches the original',
+      ],
+      deliverables: ['Quantum teleportation circuit', 'Verification notebook', 'Explanation of each step'],
+      tools: ['Python, Qiskit, AerSimulator'],
+    },
+    lab: {
+      description: 'Create Bell states, GHZ states, and measure their correlations to verify entanglement.',
+      setup: 'pip install qiskit qiskit-aer matplotlib',
+      steps: [
+        'Create the Bell state |Φ⁺⟩ = (|00⟩ + |11⟩)/√2 using H + CNOT.',
+        'Measure both qubits and show only "00" and "11" appear — 50% each.',
+        'Create the GHZ state with 3 qubits: (|000⟩ + |111⟩)/√2.',
+        'Measure all 3 qubits and verify only "000" and "111" appear.',
+        'Check the CHSH inequality violation using the Bell state.',
+      ],
+      expectedOutput: 'Bell state counts: ~512 "00" and ~512 "11" (no "01" or "10"). GHZ state: ~512 "000" and ~512 "111".',
+      challenge: 'Create the |Ψ⁺⟩ = (|01⟩ + |10⟩)/√2 Bell state (anti-correlated) and compare the measurement pattern.',
+    },
   },
 
   'module4-topic5': {
@@ -543,6 +742,56 @@ const module4Data: Record<string, TopicData> = {
       'The probabilistic nature of measurement is not a bug — it is a feature that quantum algorithms exploit.',
       'Fewer measurements = faster quantum algorithms. Designing measurement-efficient algorithms is a key research goal.',
     ],
+    story: 'In the quantum world, the act of looking changes reality. When you measure a qubit in superposition, it irrevocably collapses to a definite state — |0⟩ or |1⟩ — destroying the delicate quantum information encoded in its amplitudes. This is not a limitation of our measurement devices; it is a fundamental law of nature encoded in Born\'s rule: the probability of measuring |0⟩ is |α|², where α is the complex amplitude. This probabilistic nature means quantum experiments must be repeated many times (shots) to reveal the underlying probability distribution. Measurement is the irreversible bridge between the quantum and classical worlds — and quantum algorithm designers work hard to minimize it.',
+    concepts: [
+      { type: 'text', text: 'Measurement collapses a qubit from superposition to a definite state. Born\'s rule: P(|0⟩) = |α|², P(|1⟩) = |β|². Measurement is irreversible — quantum information is destroyed.' },
+      { type: 'math', formula: 'P(|0\\rangle) = |\\alpha|^2 \\quad P(|1\\rangle) = |\\beta|^2 \\quad \\text{(Born\'s Rule)}' },
+      { type: 'diagram', chart: 'graph TD; A[Superposition] --> B[Measurement]; B --> C[Collapse to |0⟩]; B --> D[Collapse to |1⟩]; C --> E[Classical 0]; D --> F[Classical 1]; style B fill:#f96;' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\nqc = QuantumCircuit(1, 1)\nqc.h(0)       # superposition\nqc.measure(0, 0)\n\n# Run multiple shots\nresult = AerSimulator().run(qc, shots=8192).result()\ncounts = result.get_counts()\nprint(f"P(0) = {counts[\'0\']/8192:.3f}")  # ~0.5\nprint(f"P(1) = {counts[\'1\']/8192:.3f}")  # ~0.5' } },
+      { type: 'list', title: 'Measurement Essentials', items: ['Collapse: superposition → definite state', 'Born\'s rule: probability = |amplitude|²', 'Shots: repeated measurements for statistics', 'Irreversible: cannot undo measurement'] },
+      { type: 'flip-card', title: 'Measurement', cards: [
+        { front: 'Why must quantum experiments use many shots?', back: 'A single measurement gives a random 0 or 1. To estimate probability distribution (|α|², |β|²), repeat many times and count frequencies. More shots = better estimates.' },
+        { front: 'What does measure_all() do in Qiskit?', back: 'It adds measurement operations for all qubits, mapping results to a classical register. Without measurement, a circuit produces no classical output.' },
+      ] },
+    ],
+    activity: {
+      description: 'Simulate quantum measurement by repeatedly "measuring" a prepared physical system (e.g., a spinner) and building up a probability distribution.',
+      steps: [
+        'Create a spinner divided into sectors proportional to target probabilities.',
+        'Spin it 50 times and record outcomes. Compute observed frequencies.',
+        'Compare observed frequencies to the true sector areas.',
+        'Now repeat with 200 spins and observe convergence (law of large numbers).',
+        'Map this to quantum: sector areas = |α|², spins = shots, convergence = law of large numbers.',
+      ],
+      discussionQuestions: [
+        'If measurement destroys quantum information, how can quantum computers perform useful computations?',
+        'What strategies might reduce the number of measurements needed in a quantum algorithm?',
+      ],
+      materials: ['Paper spinner or wheel', 'Recording sheet'],
+    },
+    project: {
+      description: 'Write a report on the "measurement problem" in quantum foundations — why different interpretations of quantum mechanics (Copenhagen, Many-Worlds, Pilot-Wave) disagree on what measurement really means.',
+      objectives: [
+        'Understand different interpretations of quantum measurement',
+        'Compare how each interpretation addresses the collapse postulate',
+        'Distinguish philosophical questions from practical quantum computing',
+      ],
+      deliverables: ['Report (3–5 pages)', 'Comparison table of interpretations', 'Oral presentation'],
+      tools: ['Research papers', 'Stanford Encyclopedia of Philosophy'],
+    },
+    lab: {
+      description: 'Demonstrate Born\'s rule empirically by measuring qubits in various superposition states with increasing shot counts and observing convergence.',
+      setup: 'pip install qiskit qiskit-aer matplotlib numpy',
+      steps: [
+        'Create 4 circuits: |0⟩, |1⟩, H|0⟩, and Ry(π/3)|0⟩ (unequal superposition).',
+        'For each, run with 100, 1000, and 10,000 shots.',
+        'For each circuit and shot count, compute P(0) = count_0 / total_shots.',
+        'Plot P(0) vs shot count for each circuit, with theoretical value as horizontal line.',
+        'Observe: higher shot count → closer to theoretical value.',
+      ],
+      expectedOutput: 'Convergence plots showing measurement statistics approaching theoretical probabilities as shot count increases from 100 to 10,000.',
+      challenge: 'Design a circuit where measurement statistics reveal quantum interference (e.g., H then Z then H and compare to H alone).',
+    },
   },
 
   'module4-topic6': {
@@ -652,6 +901,56 @@ const module4Data: Record<string, TopicData> = {
       'Every single-qubit gate is a rotation on the Bloch sphere — learning gate operations becomes geometry.',
       'The Bloch sphere\'s limitation for multiple qubits hints at the complexity of quantum systems.',
     ],
+    story: 'Every qubit state can be visualized as a point on a sphere — the Bloch sphere — where the north pole is |0⟩, the south pole is |1⟩, and the equator represents equal superpositions. This beautiful geometric representation turns abstract quantum algebra into intuitive 3D visualization. The |+⟩ state = (|0⟩ + |1⟩)/√2 lives on the positive X-axis, while |-⟩ = (|0⟩ - |1⟩)/√2 lives on the negative X-axis. Quantum gates become rotations on this sphere: Pauli-X rotates 180° around the X-axis (flipping |0⟩↔|1⟩), Pauli-Z rotates 180° around the Z-axis (flipping the phase). Understanding the Bloch sphere transforms quantum computing from algebraic manipulation into spatial reasoning.',
+    concepts: [
+      { type: 'text', text: 'The Bloch sphere maps all single-qubit states to points on a unit sphere. North pole = |0⟩, south pole = |1⟩, equator = equal superpositions. Gates are rotations about X, Y, Z axes.' },
+      { type: 'math', formula: '|\\psi\\rangle = \\cos\\frac{\\theta}{2}|0\\rangle + e^{i\\phi}\\sin\\frac{\\theta}{2}|1\\rangle' },
+      { type: 'diagram', chart: 'graph TD; A[Bloch Sphere] --> B[|0⟩ North Pole]; A --> C[|1⟩ South Pole]; A --> D[|+⟩ +X Axis]; A --> E[|-⟩ -X Axis]; B --> F[θ=0]; C --> G[θ=π]; D --> H[θ=π/2, φ=0];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.visualization import plot_bloch_multivector\nfrom qiskit.quantum_info import Statevector\n\n# State |+⟩ = (|0⟩ + |1⟩)/√2\nstate = Statevector([1, 1]) / 2**0.5\nplot_bloch_multivector(state)  # Shows vector on +X' } },
+      { type: 'list', title: 'Bloch Sphere Coordinates', items: ['θ (polar): 0 = |0⟩, π = |1⟩, π/2 = equator', 'φ (azimuth): 0 = +X axis, π = -X axis, π/2 = +Y', 'Pauli-X: 180° rotation around X-axis (NOT gate)', 'Pauli-Z: 180° rotation around Z-axis (phase flip)'] },
+      { type: 'flip-card', title: 'Bloch Sphere', cards: [
+        { front: 'Where is |+⟩ = (|0⟩ + |1⟩)/√2 on the Bloch sphere?', back: 'On the positive X-axis (equator, θ = π/2, φ = 0). The |-⟩ state is on the negative X-axis (θ = π/2, φ = π).' },
+        { front: 'Why can\'t the Bloch sphere represent multi-qubit states?', back: 'A 2-qubit state requires 4 complex amplitudes → 8 real parameters. The Bloch sphere has only 3 dimensions. Multi-qubit states need higher-dimensional representations.' },
+      ] },
+    ],
+    activity: {
+      description: 'Use a physical globe or ball to map qubit states and visualize gate operations as rotations on the Bloch sphere.',
+      steps: [
+        'Mark north pole as |0⟩ and south pole as |1⟩ on a ball.',
+        'Place a sticker at the |+⟩ state (equator, +X direction).',
+        'Rotate the ball 180° around the N-S axis — this is a Z gate.',
+        'Rotate 180° around the X-axis (through |+⟩ and |-⟩) — this is an X gate.',
+        'Map each gate operation as a physical rotation and observe how the state moves.',
+      ],
+      discussionQuestions: [
+        'What does a 90° rotation around Y correspond to? What gate would that be?',
+        'If the Bloch sphere only works for single qubits, how do we visualize multi-qubit operations?',
+      ],
+      materials: ['Globe or ball', 'Markers', 'Stickers'],
+    },
+    project: {
+      description: 'Build a 3D interactive Bloch sphere visualization using Python (plotly) or JavaScript (three.js) that allows users to apply gates and see the state vector move in real-time.',
+      objectives: [
+        'Understand the mapping between quantum states and spherical coordinates',
+        'Visualize gate operations as rotations',
+        'Create an educational tool for quantum intuition',
+      ],
+      deliverables: ['Interactive 3D Bloch sphere', 'Gate control panel', 'User documentation'],
+      tools: ['Python (plotly, ipywidgets) or JavaScript (three.js)'],
+    },
+    lab: {
+      description: 'Use Qiskit\'s plot_bloch_multivector to visualize how different gates transform qubit states on the Bloch sphere.',
+      setup: 'pip install qiskit qiskit-aer matplotlib pylatexenc',
+      steps: [
+        'Create a 1-qubit circuit initialized to |0⟩ and visualize on Bloch sphere (should be north pole).',
+        'Apply X gate and visualize: state flips to south pole (|1⟩).',
+        'Apply H gate to |0⟩ and visualize: state moves to +X axis (|+⟩).',
+        'Apply Z gate to |+⟩ and visualize: state moves to -X axis (|-⟩).',
+        'Apply S gate to |+⟩ and visualize: state rotates around Z by 90° to +Y axis.',
+      ],
+      expectedOutput: 'Bloch sphere animations showing: |0⟩ (north) → X → |1⟩ (south); |0⟩ → H → |+⟩ (+X); |+⟩ → Z → |-⟩ (-X); |+⟩ → S → |i+⟩ (+Y).',
+      challenge: 'Find a sequence of gates that moves the state from |0⟩ to any arbitrary point (θ=π/3, φ=π/4) on the Bloch sphere.',
+    },
   },
 
   'module4-topic7': {
@@ -762,6 +1061,56 @@ const module4Data: Record<string, TopicData> = {
       'Unitarity (reversibility) is what makes quantum computing fundamentally different from classical computing.',
       'With H, CNOT, and T gates, you can build any quantum algorithm — they form a universal gate set.',
     ],
+    story: 'If qubits are the nouns of quantum computing, gates are the verbs — they transform qubit states and orchestrate computation. The Pauli gates are the foundation: X (quantum NOT), Z (phase flip), and Y (combination of both). But the real workhorses are the Hadamard (creating superposition), CNOT (creating entanglement), and the parameterized rotation gates (Rx, Ry, Rz) that form the building blocks of variational quantum algorithms. Every quantum gate must be unitary — meaning it is reversible and preserves total probability (U†U = I). This reversibility is a fundamental departure from classical computing, where gates like NAND are irreversible.',
+    concepts: [
+      { type: 'text', text: 'Quantum gates are unitary operators (U†U = I) that transform qubit states. Single-qubit gates: X, Y, Z, H, S, T. Two-qubit gates: CNOT, SWAP. Three-qubit: Toffoli (CCX).' },
+      { type: 'math', formula: 'X = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix} \\quad Z = \\begin{bmatrix} 1 & 0 \\\\ 0 & -1 \\end{bmatrix} \\quad H = \\frac{1}{\\sqrt{2}}\\begin{bmatrix} 1 & 1 \\\\ 1 & -1 \\end{bmatrix}' },
+      { type: 'diagram', chart: 'graph TD; A[Single-Qubit Gates] --> B[Pauli: X, Y, Z]; A --> C[Hadamard: H]; A --> D[Phase: S, T]; A --> E[Rotation: Rx, Ry, Rz]; F[Multi-Qubit] --> G[CNOT]; F --> H[SWAP]; F --> I[Toffoli];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(2)\nqc.h(0)      # Hadamard on qubit 0\nqc.cx(0, 1)  # CNOT: control=0, target=1\nqc.ry(0.5, 0)  # Rotation around Y by 0.5 rad\nqc.x(1)      # Pauli-X on qubit 1\nprint(qc.draw())' } },
+      { type: 'list', title: 'Gate Quick Reference', items: ['X — Pauli-X (NOT): flips |0⟩↔|1⟩, 180° around X-axis', 'Z — Pauli-Z (phase): flips sign of |1⟩ amplitude', 'H — Hadamard: creates superposition', 'CNOT — Controlled-NOT: creates entanglement', 'Ry(θ) — Rotation around Y by angle θ'] },
+      { type: 'flip-card', title: 'Quantum Gates', cards: [
+        { front: 'Why must quantum gates be unitary (U†U = I)?', back: 'Unitarity preserves norm (probabilities sum to 1) and ensures reversibility. Every quantum gate has an inverse U⁻¹ = U†, unlike classical irreversible gates like NAND.' },
+        { front: 'What is the Toffoli (CCX) gate?', back: 'A 3-qubit gate: 2 controls, 1 target. Target flips only if BOTH controls are |1⟩. It is universal for reversible classical computation.' },
+      ] },
+    ],
+    activity: {
+      description: 'Work through gate operation exercises on paper: compute the output state for a sequence of gates applied to |0⟩.',
+      steps: [
+        'Start with |0⟩ and apply X gate — what is the resulting state? (Answer: |1⟩)',
+        'Then apply H to |1⟩ — what state do you get? (Answer: (|0⟩ - |1⟩)/√2)',
+        'Then apply Z gate — what happens? (Answer: (|0⟩ + |1⟩)/√2 = |+⟩)',
+        'Verify all answers using Qiskit\'s StatevectorSimulator.',
+        'Create your own 4-gate sequence and challenge a partner to compute the output.',
+      ],
+      discussionQuestions: [
+        'Why is reversibility (unitarity) important for quantum computing? What would irreversible gates enable or prevent?',
+        'How does the gate set differ for different quantum hardware platforms (superconducting, trapped ion, photonic)?',
+      ],
+      materials: ['Gate reference card', 'Paper and pen', 'Qiskit notebook'],
+    },
+    project: {
+      description: 'Create a "Quantum Gate Reference" cheat sheet (one-page) with matrix representations, Bloch sphere rotations, and truth tables for all standard gates.',
+      objectives: [
+        'Memorize the matrix and action of all standard gates',
+        'Understand gate decompositions',
+        'Build a reference tool for future QML work',
+      ],
+      deliverables: ['Gate reference poster (one-page PDF)', 'Qiskit demonstration notebook', 'Self-quiz flashcards'],
+      tools: ['LaTeX or Google Docs for reference', 'Python with Qiskit'],
+    },
+    lab: {
+      description: 'Verify gate properties by applying them to test states and checking the outputs using statevector simulation.',
+      setup: 'pip install qiskit qiskit-aer matplotlib',
+      steps: [
+        'Verify X|0⟩ = |1⟩ and X|1⟩ = |0⟩ using StatevectorSimulator.',
+        'Verify H² = I by applying two H gates and checking the state returns to original.',
+        'Verify CNOT truth table: test all 4 input basis states (|00⟩, |01⟩, |10⟩, |11⟩).',
+        'Show that CNOT creates entanglement: H + CNOT on |00⟩ gives Bell state.',
+        'Test gate commutativity: does XZ = ZX? Check with statevectors.',
+      ],
+      expectedOutput: 'Verified truth tables for X, H, CNOT. Demonstration that H² = I (reversibility). Bell state confirmed. Non-commutativity of X and Z shown.',
+      challenge: 'Decompose a SWAP gate using CNOTs: show that SWAP = CNOT(0,1) CNOT(1,0) CNOT(0,1).',
+    },
   },
 
   'module4-topic8': {
@@ -871,6 +1220,56 @@ const module4Data: Record<string, TopicData> = {
       'Circuit depth directly impacts noise susceptibility on NISQ hardware.',
       'The art of quantum algorithm design is achieving the desired computation with minimal depth and qubits.',
     ],
+    story: 'A quantum circuit is a recipe for quantum computation — a sequence of gates applied to qubits, followed by measurement. Just as a classical program is a sequence of instructions for a CPU, a quantum circuit is a sequence of gate operations on qubits. The three stages are universal: initialize qubits to |0⟩, apply gates (the algorithm), then measure. Circuit depth — the number of sequential gate layers — is a critical metric because qubits decohere over time, making deep circuits more error-prone on NISQ hardware. Transpilation (compilation) is the hidden art that optimizes and maps logical circuits to the specific gate sets and qubit topologies of real quantum devices.',
+    concepts: [
+      { type: 'text', text: 'Quantum circuits have three stages: Initialize → Apply Gates → Measure. Circuit depth = sequential gate layers. Transpilation optimizes circuits for specific hardware backends.' },
+      { type: 'math', formula: '\\text{Circuit Depth} = \\text{max parallel gate layers}' },
+      { type: 'diagram', chart: 'graph LR; A[q0: |0⟩] --> B[H]; B --> C[CNOT]; C --> D[Measure]; E[q1: |0⟩] --> F[I]; F --> G[CNOT]; G --> H[Measure];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\n# Bell state circuit\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure([0, 1], [0, 1])\n\n# Transpile for a specific backend\nfrom qiskit.providers.fake_provider import FakeManila\nbackend = FakeManila()\ntranspiled = transpile(qc, backend)\nprint(f"Depth: {transpiled.depth()}")' } },
+      { type: 'list', title: 'Circuit Concepts', items: ['Depth — number of sequential gate layers (affects noise)', 'Width — number of qubits used', 'Barrier — compiler directive preventing optimization across it', 'Transpilation — maps logical to physical, optimizes depth'] },
+      { type: 'flip-card', title: 'Circuits', cards: [
+        { front: 'What is circuit depth and why does it matter?', back: 'Depth = number of time steps (layers) of gates. On NISQ hardware, deeper circuits = more decoherence = more errors. Minimizing depth is a key optimization goal.' },
+        { front: 'What does transpilation do?', back: 'Transpilation converts a logical circuit into one that runs on a specific backend: decomposes gates into native gates, optimizes depth, maps qubits to physical topology.' },
+      ] },
+    ],
+    activity: {
+      description: 'Design quantum circuit diagrams on paper for specific tasks (Bell state, GHZ state, quantum teleportation) and verify them using Qiskit.',
+      steps: [
+        'Draw the circuit diagram for creating a Bell state: H on q0 → CNOT(q0, q1).',
+        'Draw the circuit for a GHZ state with 3 qubits.',
+        'Draw a circuit that measures the parity of 3 qubits (XOR of all three).',
+        'Implement each circuit in Qiskit and verify the outputs.',
+        'Compare your hand-drawn diagrams with Qiskit\'s qc.draw("mpl") output.',
+      ],
+      discussionQuestions: [
+        'How would you design a circuit to compute the AND of 2 qubits? (Hint: use Toffoli)',
+        'Why might a circuit that works on a simulator fail on real hardware? What factors matter?',
+      ],
+      materials: ['Paper and pen', 'Qiskit notebook'],
+    },
+    project: {
+      description: 'Design a quantum circuit for a simple algorithm (e.g., Deutsch-Jozsa or Bernstein-Vazirani), implement it in Qiskit, transpile for a real backend, and analyze its depth/width.',
+      objectives: [
+        'Understand the structure of a quantum algorithm as a circuit',
+        'Implement and verify correctness using simulation',
+        'Analyze transpilation effects on circuit depth and gate counts',
+      ],
+      deliverables: ['Circuit implementation notebook', 'Transpilation analysis', 'Visualization of logical vs transpiled circuit'],
+      tools: ['Python, Qiskit, AerSimulator, fake backends'],
+    },
+    lab: {
+      description: 'Build, transpile, and run quantum circuits on different backends, analyzing how transpilation changes the circuit.',
+      setup: 'pip install qiskit qiskit-aer qiskit-ibm-runtime pylatexenc',
+      steps: [
+        'Create a Bell state circuit and draw it using qc.draw("mpl").',
+        'Transpile for a specific fake backend (e.g., FakeManila) using transpile().',
+        'Draw the transpiled circuit and note differences.',
+        'Compare the depth and gate count of original vs transpiled circuit.',
+        'Run on both AerSimulator and a fake backend and compare results.',
+      ],
+      expectedOutput: 'The transpiled circuit shows different gates (native to the backend) and potentially higher depth due to SWAP insertion for connectivity constraints.',
+      challenge: 'Design a circuit that performs a specific task on a given backend topology, then manually optimize it to reduce depth by at least 20%.',
+    },
   },
 
   'module4-topic9': {
@@ -981,6 +1380,56 @@ const module4Data: Record<string, TopicData> = {
       'Statevector vs Qasm: understanding this distinction is crucial for debugging quantum programs.',
       'From this lab onward, you are not just learning about quantum — you are programming quantum.',
     ],
+    story: 'Theory becomes real when you write your first quantum circuit and see it execute. In this hands-on lab, you will build circuits for Bell states, GHZ states, and quantum teleportation — the three canonical examples that demonstrate superposition, entanglement, and measurement in action. You will run these circuits on Qiskit\'s AerSimulator, visualize the results using histograms and Bloch spheres, and observe the difference between ideal statevector simulation and measurement sampling. This lab is your rite of passage from quantum learner to quantum programmer — every concept from the previous eight topics comes together in executable code.',
+    concepts: [
+      { type: 'text', text: 'This lab integrates all quantum fundamentals: creating circuits, applying gates, simulating with StatevectorSimulator, running with measurement on AerSimulator, and visualizing results.' },
+      { type: 'math', formula: '|\\text{Bell}\\rangle = \\frac{|00\\rangle + |11\\rangle}{\\sqrt{2}} \\quad |\\text{GHZ}\\rangle = \\frac{|000\\rangle + |111\\rangle}{\\sqrt{2}}' },
+      { type: 'diagram', chart: 'graph TD; A[Circuit] --> B[Initialize]; A --> C[Gates]; A --> D[Measure]; D --> E[Simulate]; E --> F[Visualize]; F --> G[Analyze];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\nfrom qiskit.visualization import plot_histogram\n\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure([0, 1], [0, 1])\n\nresult = AerSimulator().run(qc, shots=2048).result()\nplot_histogram(result.get_counts())' } },
+      { type: 'list', title: 'Lab Circuits', items: ['Bell state: H + CNOT — maximally entangled (|00⟩ + |11⟩)/√2', 'GHZ state: H + cascading CNOTs — (|000⟩ + |111⟩)/√2', 'Quantum teleportation: 3 qubits, 2 classical bits', 'Statevector visualization: plot_bloch_multivector'] },
+      { type: 'flip-card', title: 'Lab Overview', cards: [
+        { front: 'What is the difference between StatevectorSimulator and AerSimulator results?', back: 'StatevectorSimulator gives exact amplitudes (no noise). AerSimulator performs measurement shots with sampling statistics. Both should agree within statistical error.' },
+        { front: 'What is a GHZ state?', back: 'Greenberger-Horne-Zeilinger state: maximally entangled state of 3+ qubits. For 3 qubits: (|000⟩ + |111⟩)/√2. Created by H on first qubit + cascading CNOTs.' },
+      ] },
+    ],
+    activity: {
+      description: 'Complete a circuit-building challenge: given a target state or circuit diagram, implement it in Qiskit and verify correctness.',
+      steps: [
+        'Challenge 1: Create the state (|00⟩ + |11⟩)/√2 (Bell state).',
+        'Challenge 2: Create the state (|000⟩ + |111⟩)/√2 (GHZ state).',
+        'Challenge 3: Create the state (|01⟩ + |10⟩)/√2 (anti-correlated Bell state).',
+        'Challenge 4: Create a circuit that produces uniform superposition of all 4 basis states (|00⟩ + |01⟩ + |10⟩ + |11⟩)/2.',
+        'For each: verify using StatevectorSimulator, then run with AerSimulator (1024 shots) and show histogram.',
+      ],
+      discussionQuestions: [
+        'How did your understanding of circuits change when you went from drawing diagrams to writing code?',
+        'What strategies did you use to debug circuits that didn\'t produce the expected output?',
+      ],
+      materials: ['Qiskit notebook', 'Circuit diagram reference'],
+    },
+    project: {
+      description: 'Implement the quantum teleportation protocol in Qiskit — the algorithm that transfers an unknown quantum state from one qubit to another using entanglement and classical communication.',
+      objectives: [
+        'Understand the teleportation protocol end-to-end',
+        'Implement entanglement distribution, Bell measurement, and conditional corrections',
+        'Verify that the teleported state matches the original',
+      ],
+      deliverables: ['Teleportation circuit notebook', 'Verification with statevector comparison', 'Explanation document'],
+      tools: ['Python, Qiskit, AerSimulator'],
+    },
+    lab: {
+      description: 'Build and run all three canonical quantum circuits (Bell state, GHZ state, teleportation) with visualization.',
+      setup: 'pip install qiskit qiskit-aer matplotlib pylatexenc',
+      steps: [
+        'Build a Bell state circuit: H on q0, CNOT(q0, q1), measure both.',
+        'Run on AerSimulator (2048 shots), plot histogram — only "00" and "11".',
+        'Build a 3-qubit GHZ state: H on q0, CNOT(q0, q1), CNOT(q0, q2), measure all.',
+        'Build a quantum teleportation circuit (3 qubits, 2 classical bits).',
+        'Use plot_bloch_multivector to visualize the state after gate operations (before measurement).',
+      ],
+      expectedOutput: 'Bell state: histogram with ~1024 "00" and ~1024 "11". GHZ state: ~1024 "000" and ~1024 "111". Teleportation: verification that output qubit state matches input state.',
+      challenge: 'Implement the Deutsch-Jozsa algorithm for a 2-qubit oracle and determine whether the function is constant or balanced.',
+    },
   },
 };
 

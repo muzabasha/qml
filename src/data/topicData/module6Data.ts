@@ -111,6 +111,52 @@ const module6Data: Record<string, TopicData> = {
       'The hybrid paradigm acknowledges that today\'s quantum computers need classical partners to function effectively.',
       'Understanding what makes QML different — and what it shares with classical ML — is the first step to mastery.',
     ],
+    story: 'Imagine a classical computer trying to find a needle in a haystack — it examines each straw one at a time. A quantum computer, using superposition, can examine all straws simultaneously. Quantum Machine Learning (QML) applies this extraordinary parallel processing power to the core tasks of machine learning: finding patterns, making predictions, and learning from data. By encoding classical data into quantum states and processing them through parameterized quantum circuits, QML opens avenues to solve problems that may be intractable for classical computers.',
+    concepts: [
+      { type: 'text', text: 'QML sits at the intersection of quantum computing and machine learning. It leverages three key quantum phenomena: superposition allows processing multiple states simultaneously, entanglement creates correlated qubit pairs that encode complex data relationships, and interference amplifies correct outcomes while canceling errors.' },
+      { type: 'math', formula: '|\\psi\\rangle = \\alpha|0\\rangle + \\beta|1\\rangle, \\quad |\\alpha|^2 + |\\beta|^2 = 1' },
+      { type: 'diagram', chart: 'graph LR; A[Classical Data] --> B[Encoding]; B --> C[Quantum Circuit]; C --> D[Measurement]; D --> E[Classical Post-processing]; E --> F[Prediction];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit, Aer, execute\n\nqc = QuantumCircuit(2, 2)\nqc.h(0)          # superposition\nqc.cx(0, 1)      # entanglement\nqc.measure([0,1], [0,1])\n\nbackend = Aer.get_backend("qasm_simulator")\nresult = execute(qc, backend, shots=1024).result()\ncounts = result.get_counts()\nprint(counts)' } },
+    ],
+    activity: {
+      description: 'In this hands-on activity, you will build and run a simple quantum circuit that demonstrates superposition and entanglement — the core phenomena that power QML. You will observe how measurement outcomes differ from classical expectations.',
+      steps: [
+        'Create a 2-qubit quantum circuit in Qiskit with a Hadamard gate on qubit 0 and a CNOT gate controlled by qubit 0 targeting qubit 1.',
+        'Add measurement operations to both qubits and run the circuit on the qasm_simulator with 1024 shots.',
+        'Record the output counts and compute the probabilities of each basis state (|00⟩, |01⟩, |10⟩, |11⟩).',
+        'Modify the circuit: remove the CNOT gate and run again. Compare the output distribution with the entangled case.',
+        'Discuss: why does the entangled circuit only produce |00⟩ and |11⟩ outcomes? How does this relate to QML\'s ability to model correlated features?',
+      ],
+      discussionQuestions: [
+        'How does quantum superposition differ from classical probability distributions over binary states?',
+        'Why is entanglement considered a resource for machine learning tasks?',
+      ],
+      materials: ['Qiskit installed environment', 'Jupyter notebook', 'Pen and paper for sketching circuit diagrams'],
+      codetask: { language: 'python', code: '# Build a 3-qubit GHZ state circuit and measure\nfrom qiskit import QuantumCircuit, Aer, execute\n\nqc = QuantumCircuit(3, 3)\nqc.h(0)\nqc.cx(0, 1)\nqc.cx(0, 2)\nqc.measure([0,1,2], [0,1,2])\n\nbackend = Aer.get_backend("qasm_simulator")\nresult = execute(qc, backend, shots=4096).result()\nprint(result.get_counts())' },
+    },
+    project: {
+      description: 'Create an interactive demonstration that explains the three pillars of QML — superposition, entanglement, and interference — using visual circuit diagrams, Bloch sphere animations, and measurement probability plots.',
+      objectives: [
+        'Design a visual dashboard that depicts how superposition enables parallel processing of 2ⁿ states.',
+        'Demonstrate entanglement through a Bell state circuit and show how measurement outcomes correlate.',
+        'Illustrate interference by constructing a simple quantum algorithm (e.g., Deutsch-Jozsa) that shows constructive/destructive interference.',
+      ],
+      deliverables: ['A Jupyter notebook with interactive visualizations using matplotlib and ipywidgets', 'A Markdown report explaining each phenomenon and its role in QML', 'A short video (3-5 min) demonstrating the dashboard and explaining key concepts'],
+      tools: ['Qiskit', 'Matplotlib', 'Ipywidgets', 'Jupyter Notebook'],
+    },
+    lab: {
+      description: 'In this lab, you will experimentally verify the quantum phenomena underlying QML by constructing, simulating, and measuring quantum circuits that exhibit superposition, entanglement, and interference.',
+      setup: 'Open a Jupyter notebook with Qiskit installed. Import QuantumCircuit, Aer, execute, and numpy. Verify your setup by creating and measuring a single-qubit circuit with a Hadamard gate — you should see approximately 50% |0⟩ and 50% |1⟩ outcomes.',
+      steps: [
+        'Build a superposition circuit: apply H on qubit 0, measure over 4096 shots, plot the histogram.',
+        'Build an entanglement circuit: apply H on qubit 0 then CNOT(0,1), measure both qubits, verify only |00⟩ and |11⟩ appear.',
+        'Build a 3-qubit GHZ state: H on qubit 0 then CNOT(0,1) and CNOT(0,2), measure all three, verify the correlated outcomes.',
+        'Compute the expected probability distribution analytically and compare with simulation results.',
+        'Calculate the fidelity between the measured distribution and the ideal distribution.',
+      ],
+      expectedOutput: 'Histograms showing: superposition yields ~50/50 split; entanglement yields only |00⟩ and |11⟩ with ~50% each; GHZ state yields |000⟩ and |111⟩ with ~50% each. Fidelity should exceed 0.99 on a simulator.',
+      challenge: 'Design a 4-qubit circuit where qubits 0,1 are entangled and qubits 2,3 are in superposition but unentangled. Measure all four and explain the resulting probability distribution — can you predict which basis states have zero probability?',
+    },
   },
 
   'module6-topic2': {
@@ -220,6 +266,56 @@ const module6Data: Record<string, TopicData> = {
       'The synergy between AI and quantum computing is natural: both are about finding patterns in complex spaces.',
       'Today\'s quantum AI research is laying the foundation for tomorrow\'s intelligent systems.',
     ],
+    story: 'Artificial Intelligence today powers everything from recommendation engines to self-driving cars, but classical AI faces fundamental limits — training large models consumes immense energy and time, and some problems remain stubbornly out of reach. Quantum AI reimagines this landscape by leveraging qubits that can exist in superposition, enabling algorithms that explore exponentially many possibilities at once. From quantum reinforcement learning agents that simultaneously evaluate multiple strategies to quantum neural networks that process high-dimensional data in Hilbert space, the fusion of quantum computing and AI promises to unlock solutions to problems we cannot solve today.',
+    concepts: [
+      { type: 'text', text: 'Quantum AI enhances classical AI by accelerating specific subroutines: matrix operations (via HHL algorithm), sampling from probability distributions, combinatorial optimization (via QAOA), and kernel evaluation. These speedups translate to faster training and the ability to handle problems with exponential complexity.' },
+      { type: 'math', formula: '\\text{Quantum Kernel: } K(x_i, x_j) = |\\langle\\phi(x_i)|\\phi(x_j)\\rangle|^2' },
+      { type: 'diagram', chart: 'graph TD; A[Classical Data] --> B[Preprocessing]; B --> C[Quantum Feature Map]; C --> D[Hilbert Space]; D --> E[Quantum Circuit]; E --> F[Measurement]; F --> G[Classical Optimizer]; G --> C;' },
+      { type: 'list', title: 'AI Subroutines with Quantum Advantage', items: ['Linear algebra (HHL algorithm) — exponential speedup for matrix inversion', 'Sampling — quantum computers natively sample from complex distributions', 'Optimization — QAOA provides heuristic speedup for combinatorial problems', 'Kernel methods — quantum kernels access exponentially large feature spaces'] },
+      { type: 'card', cards: [
+        { front: 'What is a parameterized quantum circuit?', back: 'A quantum circuit with adjustable rotation gates (Rx, Ry, Rz) whose angles are trained via classical optimization. It is the quantum analog of a neural network layer.' },
+        { front: 'How does superposition help RL?', back: 'The agent can explore multiple states/actions simultaneously, reducing the number of environment interactions needed to learn optimal policies.' },
+      ] },
+    ],
+    activity: {
+      description: 'Compare the training time and accuracy of a classical neural network versus a parameterized quantum circuit on a synthetic binary classification dataset. Observe how the quantum model handles high-dimensional feature spaces.',
+      steps: [
+        'Generate a synthetic 2D dataset with two classes using sklearn\'s make_moons (500 samples, noise=0.2).',
+        'Train a classical neural network (1 hidden layer, 10 neurons) using PyTorch or scikit-learn\'s MLPClassifier.',
+        'Construct a 2-qubit parameterized quantum circuit with Ry and CNOT layers as a variational classifier using Qiskit\'s VQC.',
+        'Train both models and record accuracy, training time, and number of parameters.',
+        'Repeat with make_circles (non-linearly separable) and compare which model performs better and why.',
+      ],
+      discussionQuestions: [
+        'How does the number of trainable parameters compare between the classical and quantum models?',
+        'On which dataset did the quantum model show a relative advantage? What does this tell you about problems suited for QML?',
+      ],
+      materials: ['Jupyter notebook', 'Qiskit + sklearn installed', 'PyTorch or scikit-learn'],
+      codetask: { language: 'python', code: 'from sklearn.datasets import make_moons\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.neural_network import MLPClassifier\n\nX, y = make_moons(n_samples=500, noise=0.2, random_state=42)\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)\n\nclf = MLPClassifier(hidden_layer_sizes=(10,), max_iter=1000)\nclf.fit(X_train, y_train)\nprint("Classical accuracy:", clf.score(X_test, y_test))' },
+    },
+    project: {
+      description: 'Develop a comparative study report that benchmarks a classical ML algorithm against its quantum counterpart on three datasets of increasing complexity. The report should analyze accuracy, training time, parameter efficiency, and provide a decision framework for when to use quantum AI.',
+      objectives: [
+        'Benchmark classical (SVM, Neural Network) and quantum (VQC, QSVM) models on synthetic, Iris, and a higher-dimensional dataset.',
+        'Analyze the trade-offs: quantum models may need fewer parameters but require more computational overhead per parameter update.',
+        'Produce a decision flowchart that helps practitioners choose between classical and quantum AI for a given problem.',
+      ],
+      deliverables: ['Jupyter notebook with all benchmark code and visualizations', 'Report (PDF) with comparative tables, learning curves, and analysis', 'Decision flowchart (PNG/PDF) for classical vs quantum model selection'],
+      tools: ['Qiskit', 'scikit-learn', 'Matplotlib', 'Pandas'],
+    },
+    lab: {
+      description: 'In this lab you will implement a quantum reinforcement learning concept — the multi-armed bandit problem using a parameterized quantum circuit as the policy. The agent must learn which arm to pull to maximize reward using quantum exploration.',
+      setup: 'Import Qiskit, numpy, and matplotlib. Define a 2-qubit circuit where measurement outcomes correspond to choosing arm 0, 1, 2, or 3. The circuit parameters will be trained using reward feedback from the environment.',
+      steps: [
+        'Define the quantum policy circuit: encode a state, apply a layer of Ry gates with trainable parameters, entangle with CNOTs, repeat for 3 layers, measure both qubits.',
+        'Implement the bandit environment: 4 arms with hidden reward probabilities (e.g., [0.1, 0.3, 0.6, 0.8]).',
+        'Train: for each episode, run the circuit, get the action (arm choice), receive reward, and update parameters using a reinforcement signal (reward - baseline).',
+        'Track the cumulative reward over 200 episodes and compare with a classical epsilon-greedy agent.',
+        'Plot learning curves for both agents and analyze the exploration behavior of the quantum policy.',
+      ],
+      expectedOutput: 'The quantum agent should learn to prefer the arm with highest reward probability (0.8) over time. Cumulative reward curves should show improvement. The exploration pattern from quantum superposition should differ from classical epsilon-greedy.',
+      challenge: 'Modify the environment to have non-stationary reward probabilities (changing every 50 episodes). How does the quantum agent adapt compared to a classical agent with a decaying epsilon schedule? Build a visualization of the circuit parameters over time to see how they adapt.',
+    },
   },
 
   'module6-topic3': {
@@ -330,6 +426,53 @@ const module6Data: Record<string, TopicData> = {
       'The hybrid training loop is a pragmatic marriage of quantum and classical computation.',
       'Understanding the full pipeline helps identify where quantum advantage can (and cannot) be realized.',
     ],
+    story: 'Think of an assembly line in a factory — raw materials enter at one end, and finished products exit at the other. A classical ML pipeline follows this same principle: raw data is cleaned, fed into a model, and predictions emerge. The quantum ML pipeline follows a similar flow but with a crucial detour — classical data must first be transformed into quantum states through a process called encoding, processed by a quantum circuit that leverages superposition and entanglement, and then measured back into classical form for final predictions. This hybrid pipeline represents the pragmatic reality of NISQ-era quantum computing.',
+    concepts: [
+      { type: 'text', text: 'The QML pipeline adds two unique stages: data encoding (classical → quantum) and measurement (quantum → classical). The training loop is hybrid — the quantum circuit computes the cost function (forward pass) while a classical optimizer updates parameters (backward pass).' },
+      { type: 'math', formula: 'C(\\theta) = \\frac{1}{N}\\sum_{i=1}^N \\mathcal{L}(f_\\theta(x_i), y_i)' },
+      { type: 'diagram', chart: 'graph LR; A[Raw Data] --> B[Preprocess]; B --> C[Classical Model]; C --> D[Prediction]; B --> E[Quantum Encoding]; E --> F[Quantum Circuit]; F --> G[Measurement]; G --> H[Post-process]; H --> D;' },
+      { type: 'code', code: { language: 'python', code: 'def qml_training_step(circuit, params, data, labels):\n    # Quantum forward pass\n    encoded = encode_data(data, params)\n    counts = execute(circuit, backend, shots=1024).result().get_counts()\n    predictions = post_process(counts)\n    # Classical backward pass\n    loss = cross_entropy(predictions, labels)\n    updated_params = optimizer.step(loss, params)\n    return updated_params, loss' } },
+      { type: 'list', title: 'Pipeline Comparison', items: ['Classical: Data → Preprocess → Model → Evaluate', 'Quantum: Data → Preprocess → Encode → Quantum Circuit → Measure → Post-process → Evaluate', 'Shared: data cleaning, normalization, train/test split, evaluation metrics', 'Unique to QML: encoding circuits, quantum gates, measurement, shot-based statistics'] },
+    ],
+    activity: {
+      description: 'Build a visual side-by-side comparison of the classical and quantum ML pipelines using a flowchart tool. Annotate each stage with the operations performed and identify which stages are shared and which are unique to each pipeline.',
+      steps: [
+        'Draw the classical ML pipeline with at least 5 stages: data collection, preprocessing, feature engineering, model training, evaluation.',
+        'Draw the quantum ML pipeline with all stages including encoding, quantum circuit, measurement, and classical post-processing.',
+        'Color-code the stages: green for shared, blue for classical-only, purple for quantum-only.',
+        'For each quantum-only stage, write a 1-2 sentence explanation of what happens and why it is needed.',
+        'Present your diagram to a peer and explain the difference between the two pipelines.',
+      ],
+      discussionQuestions: [
+        'Why is measurement necessary in the QML pipeline but not in the classical pipeline?',
+        'How does the hybrid training loop affect the complexity of debugging compared to a purely classical pipeline?',
+      ],
+      materials: ['Paper and colored pens', 'Or digital tool (draw.io, Google Draw, Miro)', 'Reference diagram from the lecture slides'],
+      codetask: { language: 'python', code: '# Pseudocode for hybrid training loop\nfor epoch in range(max_epochs):\n    for batch in dataloader:\n        # Quantum forward pass\n        circuit.bind_parameters(batch[\'params\'])\n        job = execute(circuit, backend, shots=1024)\n        probs = job.result().get_counts()\n        # Classical backward pass\n        loss = loss_fn(probs, batch[\'labels\'])\n        optimizer.zero_grad()\n        loss.backward()\n        optimizer.step()' },
+    },
+    project: {
+      description: 'Create an interactive web-based visualization that compares the classical ML pipeline with the QML pipeline stage by stage. Users should be able to click on any stage to see a detailed explanation, code example, and relevant equations.',
+      objectives: [
+        'Implement an interactive pipeline diagram using a web framework (React or Streamlit).',
+        'Include expandable cards for each pipeline stage with explanations, code snippets, and equations.',
+        'Add a "hybrid loop" animation showing the quantum-classical feedback cycle.',
+      ],
+      deliverables: ['Working interactive web app or Streamlit dashboard', 'Source code in a GitHub repository', 'README with setup instructions and architecture overview'],
+      tools: ['Streamlit or React', 'KaTeX for equations', 'Highlight.js for code blocks'],
+    },
+    lab: {
+      description: 'Build and execute both a classical and a quantum ML pipeline on the same dataset (Iris binary classification). Measure the time spent in each stage, compare intermediate outputs, and verify that the quantum pipeline produces meaningful results.',
+      setup: 'Import sklearn, Qiskit, numpy, and time. Load the Iris dataset and filter to two classes (Setosa vs Versicolor). Preprocess data using StandardScaler. Create a classical SVM pipeline and a quantum feature map pipeline.',
+      steps: [
+        'Preprocess the Iris data: select 2 features, normalize, split 70/30 train/test.',
+        'Build a classical SVM pipeline (scikit-learn SVC with RBF kernel). Train and record accuracy.',
+        'Build a quantum pipeline: create a ZZFeatureMap(2), compute the kernel matrix using FidelityQuantumKernel, train SVC with kernel="precomputed".',
+        'Time each stage (preprocessing, encoding, kernel computation, training, testing) for both pipelines.',
+        'Compare accuracy and total execution time. Discuss the overhead introduced by quantum stages.',
+      ],
+      expectedOutput: 'Both pipelines should achieve >90% accuracy on the binary Iris task. The timing breakdown should show that quantum kernel computation dominates the runtime, while preprocessing time is identical.',
+      challenge: 'Add a third pipeline stage: noise simulation. Add depolarizing noise (10%, 20%, 50%) to the quantum circuit simulator and measure how accuracy degrades compared to the noiseless quantum pipeline and the classical pipeline.',
+    },
   },
 
   'module6-topic4': {
@@ -441,6 +584,54 @@ const module6Data: Record<string, TopicData> = {
       'The choice of ansatz, optimizer, and cost function dramatically impacts model performance.',
       'Mastering the workflow components is essential before building full QML applications.',
     ],
+    story: 'A QML workflow is like a recipe with six essential ingredients. First, data encoding transforms classical ingredients into quantum form — like converting whole vegetables into puree. Next, the variational ansatz defines the cooking method — the sequence of gates and entangling operations that will process the quantum data. The cost function acts as the taste test, measuring how good the result is. The classical optimizer is the chef who adjusts the seasoning (parameters) based on feedback. Measurement and post-processing plate the final dish. Each component can be refined independently, and the quality of the final model depends on each one working in harmony.',
+    concepts: [
+      { type: 'text', text: 'The QML workflow has six modular components. Data encoding converts classical vectors to quantum states. The variational ansatz defines the trainable circuit structure. The cost function measures performance. The classical optimizer updates parameters. Measurement extracts classical information. Post-processing converts raw counts to predictions.' },
+      { type: 'math', formula: '\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta C(\\theta_t), \\quad \\nabla_\\theta C = \\frac{C(\\theta + \\frac{\\pi}{2}) - C(\\theta - \\frac{\\pi}{2})}{2}' },
+      { type: 'diagram', chart: 'graph TD; A[Data Encoding] --> B[Variational Ansatz]; B --> C[Measurement]; C --> D[Cost Function]; D --> E[Classical Optimizer]; E -->|Update \\u03b8| B;' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.algorithms.optimizers import COBYLA\nfrom qiskit_machine_learning.algorithms import VQC\n\nvqc = VQC(\n    feature_map=ZZFeatureMap(2),\n    ansatz=TwoLocal(2, ["ry", "rz"], "cnot", reps=3),\n    optimizer=COBYLA(maxiter=100),\n    quantum_instance=Aer.get_backend("qasm_simulator")\n)\nvqc.fit(X_train, y_train)' } },
+      { type: 'list', title: 'Six Workflow Components', items: ['Data Encoding: converts classical data to quantum states', 'Variational Ansatz: defines the trainable circuit architecture', 'Cost Function: quantifies prediction error (cross-entropy, MSE)', 'Classical Optimizer: updates parameters (COBYLA, SPSA, Adam)', 'Measurement: collapses quantum states to classical bits', 'Post-processing: converts bitstrings to predictions and loss'] },
+    ],
+    activity: {
+      description: 'Create a physical card sort activity where each component of the QML workflow is written on a separate card. Arrange the cards in the correct order, then write a brief description of what each component does and how it connects to the next.',
+      steps: [
+        'Create 6 cards labeled: Data Encoding, Variational Ansatz, Measurement, Cost Function, Classical Optimizer, Post-processing.',
+        'Arrange the cards in the correct sequence of the QML workflow.',
+        'For each card, write a 1-sentence explanation of its role and a 1-sentence description of the data flow into and out of that component.',
+        'Add arrows between cards showing the feedback loop (optimizer → ansatz).',
+        'Swap cards with a partner and check each other\'s workflow for correctness.',
+      ],
+      discussionQuestions: [
+        'What would happen if you removed the classical optimizer from the workflow?',
+        'Which component do you think is most affected by quantum noise, and why?',
+      ],
+      materials: ['Index cards or sticky notes', 'Markers', 'Tape or string to show connections'],
+      codetask: { language: 'python', code: '# Map each component to its Qiskit equivalent\ncomponents = {\n    "Data Encoding": "ZZFeatureMap",\n    "Variational Ansatz": "TwoLocal or EfficientSU2",\n    "Cost Function": "CrossEntropyLoss",\n    "Optimizer": "COBYLA or SPSA",\n    "Measurement": "circuit.measure_all()",\n    "Post-processing": "result.get_counts() -> np.argmax()"\n}\nfor component, qiskit_name in components.items():\n    print(f"{component}: {qiskit_name}")' },
+    },
+    project: {
+      description: 'Design a modular QML workflow library in Python where each component (encoding, ansatz, cost, optimizer, measurement, post-processing) is a pluggable class. Users should be able to mix and match components to build custom QML pipelines.',
+      objectives: [
+        'Define abstract base classes for each of the 6 workflow components.',
+        'Implement at least 2 concrete variants for each component (e.g., ZZFeatureMap and PauliFeatureMap for encoding).',
+        'Create a Pipeline class that assembles components and runs the hybrid training loop.',
+      ],
+      deliverables: ['Python package with modular QML workflow components', 'Example notebook demonstrating 3 different pipeline configurations', 'Unit tests for each component class'],
+      tools: ['Python', 'Qiskit', 'Abstract Base Classes (abc)', 'pytest'],
+    },
+    lab: {
+      description: 'Build a complete QML workflow step by step on a synthetic dataset. At each step (encoding, ansatz, measurement, cost, optimization, post-processing), print intermediate outputs to understand how data transforms as it flows through the pipeline.',
+      setup: 'Generate a synthetic 2-class dataset with 100 samples and 2 features using make_classification. Create a 2-qubit Qiskit circuit. Prepare to inspect the quantum state at each stage using the statevector simulator.',
+      steps: [
+        'Step 1 — Encoding: apply Ry gates parameterized by the 2 feature values. Simulate and print the statevector.',
+        'Step 2 — Ansatz: add a layer of Ry/Rz rotations with random parameters, then CNOT entanglement. Print the statevector.',
+        'Step 3 — Measurement: add measurements, run 4096 shots, print the counts dictionary.',
+        'Step 4 — Cost: implement a simple cost function: minimize the probability of measuring |11⟩ for class 0, maximize it for class 1.',
+        'Step 5 — Optimization: use COBYLA to update the ansatz parameters. Run 50 iterations, printing the cost each time.',
+        'Step 6 — Post-processing: convert final measurement counts to predictions and compute accuracy.',
+      ],
+      expectedOutput: 'The printed statevectors evolve as encoding and ansatz are applied. The cost should decrease over iterations. Final accuracy should exceed 80% on the synthetic dataset.',
+      challenge: 'Add a visualization component: plot the cost vs iteration curve, the evolution of the 4 measurement probabilities over training, and the decision boundary in the 2D feature space by scanning a grid of points through the trained circuit.',
+    },
   },
 
   'module6-topic5': {
@@ -551,6 +742,53 @@ const module6Data: Record<string, TopicData> = {
       'Barren plateaus remind us that more quantum power does not automatically mean better learning.',
       'The most important research right now is understanding when and why quantum helps — not just building bigger circuits.',
     ],
+    story: 'Picture a gold rush — prospectors pour into a new territory, some striking rich, most going home empty-handed. QML research today feels similar: hundreds of papers are published each year, but definitive quantum advantage remains elusive. Researchers are actively debating fundamental questions: Do barren plateaus make variational circuits untrainable at scale? Can quantum kernel methods outperform classical ones on real-world data? Will error mitigation be enough, or do we need fault-tolerant quantum computers? The excitement is palpable, but so is the uncertainty — and that is exactly what makes this field so thrilling to be part of.',
+    concepts: [
+      { type: 'text', text: 'Current QML research focuses on four major areas: kernel methods (provable advantage for specific data distributions), variational algorithms (practical for NISQ but plagued by barren plateaus), quantum generative models (potential advantage in sampling), and error mitigation (making NISQ results reliable). No unconditional quantum advantage has been proven for ML.' },
+      { type: 'math', formula: '\\text{Var}[\\partial_\\theta C] \\propto e^{-\\alpha n}, \\quad \\text{Barren Plateau condition}' },
+      { type: 'diagram', chart: 'graph TD; A[QML Research Areas] --> B[Kernel Methods]; A --> C[Variational Algorithms]; A --> D[Quantum Generative Models]; A --> E[Error Mitigation]; B --> F[Provable advantage for specific tasks]; C --> G[Barren plateau challenge]; D --> H[Sampling advantage]; E --> I[ZNE, PEC, MCM];' },
+      { type: 'code', code: { language: 'python', code: '# Zero-noise extrapolation (ZNE) example\nfrom mitiq import zne\n\ndef noisy_circuit(params):\n    qc = QuantumCircuit(2)\n    qc.ry(params[0], 0)\n    qc.cx(0, 1)\n    qc.ry(params[1], 1)\n    return qc\n\nzne_value = zne.execute_with_zne(\n    noisy_circuit,\n    executor,\n    scale_noise=scale_noise,\n    factory=LinearFactory(scale_factors=[1, 3, 5])\n)' } },
+      { type: 'list', title: 'Open Research Problems', items: ['Barren plateaus: why gradients vanish and how to avoid them', 'Quantum advantage: proving (or disproving) speedup for ML tasks', 'Noise resilience: making QML work on real NISQ hardware', 'Expressibility: designing circuits that balance power and trainability', 'XQAI: making quantum model decisions interpretable'] },
+    ],
+    activity: {
+      description: 'Select one recent QML research paper (from a provided list), read the abstract and key results, and present a 3-minute summary to the class covering the problem, approach, findings, and limitations.',
+      steps: [
+        'Choose a paper from the curated list covering kernel methods, variational circuits, quantum generative models, or error mitigation.',
+        'Read the abstract, introduction, and conclusion (10-15 min).',
+        'Identify: (1) What problem does it solve? (2) What method does it propose? (3) What are the key results? (4) What limitations remain?',
+        'Prepare 3 slides: Problem & Motivation, Method & Results, Limitations & Future Work.',
+        'Present your 3-minute summary to a small group. Listeners should ask at least one question each.',
+      ],
+      discussionQuestions: [
+        'Do you think quantum advantage for ML will be proven in the next 5 years? Why or why not?',
+        'Which research direction (kernels, variational, generative, error mitigation) do you think is most promising?',
+      ],
+      materials: ['Curated list of 8-10 recent QML papers from arXiv', 'Slide template', 'Timer for presentations'],
+      codetask: { language: 'python', code: '# ArXiv API query for recent QML papers\nimport urllib.request\nimport xml.etree.ElementTree as ET\n\nquery = "quantum+machine+learning&sortBy=submittedDate&sortOrder=descending&max_results=10"\nurl = f"http://export.arxiv.org/api/query?search_query=all:{query}"\nresponse = urllib.request.urlopen(url).read().decode()\nroot = ET.fromstring(response)\nfor entry in root.findall("{http://www.w3.org/2005/Atom}entry"):\n    title = entry.find("{http://www.w3.org/2005/Atom}title").text.strip()\n    print(f"• {title}")' },
+    },
+    project: {
+      description: 'Write a mini-review paper (4-6 pages) on a specific QML research topic of your choice. Survey at least 5 papers, synthesize their contributions, identify open challenges, and propose a small next-step experiment.',
+      objectives: [
+        'Select a focused QML research topic (e.g., "Barren plateaus in variational quantum circuits" or "Quantum kernel methods for classification").',
+        'Survey and summarize at least 5 recent papers (2023-2025) on the topic.',
+        'Identify the main open challenges and propose a small-scale experiment that could address one of them.',
+      ],
+      deliverables: ['Mini-review paper in NeurIPS-style format (4-6 pages)', 'BibTeX bibliography of surveyed papers', 'LaTeX source files'],
+      tools: ['Overleaf or local LaTeX', 'arXiv.org for paper search', 'Google Scholar for citation tracking'],
+    },
+    lab: {
+      description: 'Reproduce a key experiment from a seminal QML paper: investigate the barren plateau phenomenon by measuring gradient variance as a function of the number of qubits and circuit depth. Verify the exponential decay predicted by theory.',
+      setup: 'Install Qiskit and mitiq. Define a function that creates a random parameterized circuit with n qubits and d layers. Use the parameter-shift rule to compute gradients of a random observable.',
+      steps: [
+        'Create circuits with n = 2, 4, 6, 8, 10 qubits, each with d = n layers of random Ry gates + linear CNOT entanglement.',
+        'For each circuit, randomly initialize parameters 50 times. For each initialization, compute the gradient of ⟨Z₀⟩ with respect to each parameter using the parameter-shift rule.',
+        'Compute the variance of the gradient components across all random initializations.',
+        'Plot gradient variance vs number of qubits on a log-linear scale. Verify the exponential decay.',
+        'Repeat with a "smart" initialization (parameters near 0) and compare the variance behavior.',
+      ],
+      expectedOutput: 'Gradient variance should decay exponentially with the number of qubits (linear on log scale). Smart initialization should show a slower decay or higher initial variance, confirming that initialization strategies can mitigate (but not eliminate) barren plateaus.',
+      challenge: 'Design a circuit ansatz that is known to avoid barren plateaus (e.g., a tree tensor network or a circuit with only local interactions). Measure its gradient variance and compare with the random circuit. Can you find a circuit structure where variance decays only polynomially?',
+    },
   },
 
   'module6-topic6': {
@@ -661,6 +899,54 @@ const module6Data: Record<string, TopicData> = {
       'Not every problem needs QML — the key is identifying where quantum offers genuine advantage.',
       'The intersection of domain expertise and QML knowledge is where the most impactful work happens.',
     ],
+    story: 'Imagine a fraud detection system that can analyze every transaction in a global banking network simultaneously, finding subtle patterns that span thousands of accounts. Or a drug discovery pipeline that simulates molecular interactions at the quantum level, cutting years off development time. These are not science fiction — they are real applications being actively researched today. From quantum kernel methods detecting financial fraud to variational circuits optimizing supply chains, QML is finding its way into healthcare, finance, cybersecurity, and climate science. The key is identifying problems where quantum\'s natural ability to handle high-dimensional, complex, and correlated data provides a genuine advantage.',
+    concepts: [
+      { type: 'text', text: 'QML applications span multiple industries. In healthcare, quantum neural networks process medical images using amplitude encoding. In finance, quantum kernels detect subtle fraud patterns. In cybersecurity, QML analyzes network traffic for anomalies. In pharma, molecular simulation accelerates drug discovery. Each leverages the exponential Hilbert space.' },
+      { type: 'math', formula: '|\\psi_{\\text{image}}\\rangle = \\sum_{i=0}^{2^n-1} p_i |i\\rangle, \\quad p_i = \\text{pixel intensity}' },
+      { type: 'diagram', chart: 'graph TD; A[QML Applications] --> B[Healthcare]; A --> C[Finance]; A --> D[Cybersecurity]; A --> E[Pharma]; B --> F[Medical Imaging]; C --> G[Fraud Detection]; D --> H[Anomaly Detection]; E --> I[Drug Discovery];' },
+      { type: 'code', code: { language: 'python', code: '# Quantum kernel for fraud detection sketch\nfrom qiskit_machine_learning.kernels import FidelityQuantumKernel\n\nfeature_map = ZZFeatureMap(feature_dimension=4, reps=2)\nquantum_kernel = FidelityQuantumKernel(feature_map=feature_map)\n\n# Compute kernel matrix for transaction data\nkernel_matrix = quantum_kernel.evaluate(x_train)\n\n# Train classical SVM on quantum kernel\nsvc = SVC(kernel="precomputed")\nsvc.fit(kernel_matrix, y_train)' } },
+      { type: 'list', title: 'Industry Applications', items: ['Pharmaceuticals: molecular simulation, drug-target interaction prediction', 'Finance: fraud detection, portfolio optimization, risk modeling', 'Cybersecurity: network anomaly detection, intrusion prevention', 'Healthcare: medical image analysis, genomics, diagnostic support', 'Manufacturing: supply chain optimization, quality control', 'Climate: weather modeling, carbon capture optimization'] },
+    ],
+    activity: {
+      description: 'In small groups, select one real-world problem from a provided list of industry challenges. Design a QML-based solution approach, identifying which QML technique is appropriate, what data is needed, what encoding to use, and how success would be measured.',
+      steps: [
+        'Form groups of 3-4. Choose one problem card from the set (e.g., "Detecting credit card fraud", "Optimizing hospital bed allocation", "Predicting protein folding").',
+        'Identify: what type of ML problem is this (classification, regression, clustering, optimization)?',
+        'Design: which QML approach would you use (quantum kernel, VQC, QNN, QAOA)? Justify your choice.',
+        'Plan: what encoding method suits the data? How many qubits would you need?',
+        'Present your solution design to the class (5 min per group). Other groups provide feedback.',
+      ],
+      discussionQuestions: [
+        'Which application do you think will see the first commercially viable QML product?',
+        'What ethical considerations should guide QML application development?',
+      ],
+      materials: ['Problem cards (8-10 industry challenges)', 'Whiteboard or digital collaboration board', 'Reference card with QML technique summaries'],
+      codetask: { language: 'python', code: '# Application problem template\napplication = {\n    "domain": "Finance",\n    "problem": "Credit card fraud detection",\n    "ml_type": "Binary classification",\n    "features": ["amount", "location", "time", "merchant_category", "frequency"],\n    "num_features": 5,\n    "qml_approach": "Quantum kernel + SVM",\n    "encoding": "Angle encoding (5 qubits)",\n    "success_metric": "F1 score > 0.95"\n}\nprint(f"Solution: {application[qml_approach]} using {application[encoding]}")' },
+    },
+    project: {
+      description: 'Identify a real-world problem in your domain of interest and write a project proposal for applying QML to solve it. Include the problem statement, proposed QML approach, data requirements, expected outcomes, and feasibility analysis.',
+      objectives: [
+        'Identify a concrete problem where QML could offer an advantage over classical methods.',
+        'Design a complete QML solution including encoding, circuit architecture, training, and evaluation.',
+        'Assess feasibility: qubit requirements, circuit depth, data availability, and hardware constraints.',
+      ],
+      deliverables: ['Project proposal (4-6 pages) in standard research proposal format', 'Slide deck for a 10-minute proposal presentation', 'Preliminary feasibility analysis with qubit and circuit depth estimates'],
+      tools: ['LaTeX for proposal', 'Python/Qiskit for feasibility estimation', 'Any domain-specific tools as needed'],
+    },
+    lab: {
+      description: 'Implement a QML-based anomaly detection system for a synthetic network traffic dataset. Use a quantum kernel method to distinguish normal traffic patterns from anomalies. Compare performance with classical anomaly detection methods.',
+      setup: 'Generate synthetic network traffic data using sklearn\'s make_classification with one class representing normal traffic (90%) and the other representing anomalies (10%). Use 6 features: packet size, duration, source port, dest port, protocol type, bytes transferred.',
+      steps: [
+        'Generate the synthetic dataset with 500 samples, 6 features, and 10% anomaly rate. Scale features to [0, π] for angle encoding.',
+        'Design a 6-qubit ZZFeatureMap with 2 layers as the quantum feature map.',
+        'Compute the quantum kernel matrix using FidelityQuantumKernel on the training set.',
+        'Train an SVM with the precomputed kernel. Evaluate precision, recall, and F1 score on the test set.',
+        'Compare with classical methods: Isolation Forest, One-Class SVM, and a standard SVM with RBF kernel.',
+        'Plot ROC curves for all methods and analyze the quantum kernel\'s performance on the minority class.',
+      ],
+      expectedOutput: 'The quantum kernel-based SVM should achieve competitive or better F1 score on the anomaly class compared to classical methods, particularly if the anomalies are embedded in a high-dimensional interaction pattern.',
+      challenge: 'Make the anomaly detection harder: add 20 irrelevant features (noise) to the dataset. Does the quantum kernel maintain its advantage better than classical methods in the presence of irrelevant features? This tests the quantum feature map\'s ability to focus on relevant structure.',
+    },
   },
 };
 

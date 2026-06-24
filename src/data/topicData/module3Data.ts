@@ -108,6 +108,56 @@ const module3Data: Record<string, TopicData> = {
       'The slowing of Moore\'s Law means we cannot simply wait for faster classical hardware.',
       'Quantum computing offers a fundamentally different approach to processing massive datasets.',
     ],
+    story: 'Every day, humanity generates 2.5 quintillion bytes of data — from social media posts and YouTube videos to scientific sensor readings and genomic sequences. This data deluge has overwhelmed classical computing infrastructure, creating a gap between our ability to generate data and our ability to extract meaningful insights from it. Machine learning models that once trained in hours now take weeks, and the trend is only accelerating. The data explosion is not just a big data problem — it is the fundamental crisis that motivates the search for entirely new computing paradigms like quantum machine learning.',
+    concepts: [
+      { type: 'text', text: 'Global data generation exceeds 2.5 exabytes per day. The 4 Vs of Big Data — Volume, Velocity, Variety, Veracity — describe challenges that classical systems struggle to handle simultaneously.' },
+      { type: 'math', formula: '1 \\text{ Exabyte} = 10^{18} \\text{ bytes} = 1,000,000 \\text{ Terabytes}' },
+      { type: 'diagram', chart: 'graph LR; A[Data Sources] --> B[IoT Sensors]; A --> C[Social Media]; A --> D[Scientific]; A --> E[Healthcare]; B --> F[Volume]; C --> G[Velocity]; D --> H[Variety]; E --> I[Veracity];' },
+      { type: 'code', code: { language: 'python', code: '# Estimate data growth\nimport math\ndata_per_day = 2.5e18  # bytes\ndata_per_year = data_per_day * 365\nprint(f"Data per year: {data_per_year:.2e} bytes")\nprint(f"Equivalent to {data_per_year / 1e12:.0f} TB per year")' } },
+      { type: 'list', title: 'The 4 Vs of Big Data', items: ['Volume — massive scale (petabytes to exabytes)', 'Velocity — real-time streaming data', 'Variety — structured, semi-structured, unstructured', 'Veracity — data quality, uncertainty, and trustworthiness'] },
+      { type: 'flip-card', title: 'Data Growth', cards: [
+        { front: 'How much data is generated globally per day?', back: '~2.5 quintillion bytes (2.5 exabytes). By 2025, global data is projected to exceed 180 zettabytes.' },
+        { front: 'What is Moore\'s Law and why is it slowing down?', back: 'Transistor density doubles every ~2 years, but at atomic scales quantum tunneling and heat dissipation limit further miniaturization.' },
+      ] },
+    ],
+    activity: {
+      description: 'Visualize the scale of data growth by calculating storage requirements for different data sources and comparing them to classical processing limits.',
+      steps: [
+        'Research: Find the approximate daily data generation for YouTube, Instagram, and Twitter.',
+        'Calculate: How many 1TB hard drives would you need to store 1 day of internet data?',
+        'Compare: How long would it take to download 1 exabyte at 1 Gbps?',
+        'Discuss: What industries are most affected by the data deluge?',
+        'Present findings: Create a poster comparing data growth vs Moore\'s Law projections.',
+      ],
+      discussionQuestions: [
+        'How does the data deluge specifically impact ML model training times?',
+        'What types of data are most challenging for classical systems to process? Why?',
+      ],
+      materials: ['Internet access', 'Calculator', 'Poster paper'],
+    },
+    project: {
+      description: 'Research and present a case study of an industry where data explosion has outpaced classical ML capabilities (e.g., genomics, particle physics, climate modeling).',
+      objectives: [
+        'Quantify data growth in a specific domain',
+        'Identify classical processing bottlenecks',
+        'Propose how quantum computing could address these bottlenecks',
+      ],
+      deliverables: ['Case study report (3–5 pages)', 'Data growth visualization', 'Presentation slides'],
+      tools: ['Research databases', 'Python for data visualization', 'Google Slides or PowerPoint'],
+    },
+    lab: {
+      description: 'Simulate the data deluge by generating progressively larger synthetic datasets and measuring how classical ML training time scales.',
+      setup: 'pip install scikit-learn numpy pandas matplotlib',
+      steps: [
+        'Generate synthetic classification data with varying sample sizes: 100, 1K, 10K, 100K, 1M.',
+        'Train an SVM on each dataset and measure training time using timeit.',
+        'Plot training time vs dataset size on a log-log scale.',
+        'Fit a polynomial to estimate complexity (O(n²) vs O(n³)).',
+        'Extrapolate: How long would training take on 100M samples?',
+      ],
+      expectedOutput: 'A log-log plot showing training time growing quadratically or cubically with sample size, demonstrating why classical ML fails at big data scales.',
+      challenge: 'Repeat the experiment with a Random Forest classifier and compare its scaling behavior to SVM.',
+    },
   },
 
   'module3-topic2': {
@@ -217,6 +267,56 @@ const module3Data: Record<string, TopicData> = {
       'The jump from polynomial to exponential complexity is the chasm that quantum computing bridges.',
       'Not all problems can be sped up by quantum computers — but the ones that can are often transformative.',
     ],
+    story: 'Why does training a state-of-the-art neural network take weeks and cost millions in electricity? The answer lies in computational complexity — the mathematical study of how resource requirements grow with problem size. Classical SVM training scales as O(n²) to O(n³), meaning doubling the dataset quadruples to octuples the computation time. Exponential complexity O(2ⁿ) is even worse: adding just one more input can double the computation, making problems with n=100 practically impossible. Understanding complexity classes helps us appreciate why quantum algorithms that reduce exponential problems to polynomial time represent such a profound breakthrough.',
+    concepts: [
+      { type: 'text', text: 'Computational complexity classifies problems by how resource requirements grow with input size. P = solvable in polynomial time. NP = verifiable in polynomial time. NP-complete = hardest NP problems.' },
+      { type: 'math', formula: 'O(n^2): \\; 10^6 \\text{ samples} \\rightarrow 10^{12} \\text{ ops}' },
+      { type: 'diagram', chart: 'graph TD; A[Complexity Classes] --> B[P: Easy]; A --> C[NP: Hard to Solve]; A --> D[NP-Complete]; B --> E[O(n), O(n²)]; C --> F[O(2ⁿ)]; D --> G[Traveling Salesman];' },
+      { type: 'code', code: { language: 'python', code: 'import time\nimport numpy as np\n\n# Demonstrate O(n²) scaling\nfor n in [100, 200, 400, 800, 1600]:\n    A = np.random.randn(n, n)\n    start = time.time()\n    _ = A @ A  # matrix multiply O(n³)\n    print(f"n={n}: {time.time()-start:.3f}s")' } },
+      { type: 'list', title: 'Complexity Classes', items: ['P — polynomial time (easy, e.g., sorting, searching)', 'NP — verifiable in polynomial time (e.g., Sudoku)', 'NP-complete — hardest NP problems (e.g., traveling salesman)', 'Quantum speedup: Shor factors in polynomial vs exponential time'] },
+      { type: 'flip-card', title: 'Complexity Intuition', cards: [
+        { front: 'Why is O(2ⁿ) called "intractable"?', back: 'For n=100, 2¹⁰⁰ ≈ 10³⁰ operations. At 1ns per op, it takes 10¹³ years — older than the universe.' },
+        { front: 'What quantum speedup does Grover\'s algorithm offer?', back: 'Grover searches an unsorted database of N items in O(√N) time, a quadratic speedup over classical O(N).' },
+      ] },
+    ],
+    activity: {
+      description: 'Compute and visualize the growth rates of different complexity classes to build intuition for why exponential complexity is intractable.',
+      steps: [
+        'Calculate values of n, n², n³, 2ⁿ, n! for n = 10, 20, 30, 50, 100.',
+        'Plot all functions on the same graph (use log scale for y-axis).',
+        'Assume 1 GHz processor (10⁹ ops/sec) — calculate time needed for each complexity at n=50.',
+        'Discuss: At what n does exponential become impractical? What about factorial?',
+        'Research one NP-complete problem and explain why it is hard.',
+      ],
+      discussionQuestions: [
+        'Why does the distinction between polynomial and exponential matter for real-world ML?',
+        'If quantum computers provide polynomial speedups for some NP problems, does that mean P = NP? Why or why not?',
+      ],
+      materials: ['Calculator or Python', 'Graph paper or plotting software', 'Complexity reference sheet'],
+    },
+    project: {
+      description: 'Analyze the computational complexity of a classical ML algorithm of your choice (e.g., kNN, SVM, Random Forest, neural network training) and quantify its scaling behavior.',
+      objectives: [
+        'Determine the time and space complexity of the chosen algorithm',
+        'Empirically verify complexity through benchmarking',
+        'Identify the bottleneck operations and propose optimization strategies',
+      ],
+      deliverables: ['Complexity analysis report', 'Benchmarking code and plots', 'Optimization recommendations'],
+      tools: ['Python, timeit, matplotlib, scikit-learn source code'],
+    },
+    lab: {
+      description: 'Benchmark the training time of various ML algorithms as dataset size increases, and fit complexity curves to empirical data.',
+      setup: 'pip install scikit-learn numpy matplotlib',
+      steps: [
+        'Generate synthetic datasets of increasing size: n = 100, 500, 1K, 5K, 10K.',
+        'For each n, train SVM, Random Forest, and kNN, measuring training time.',
+        'Plot training time vs n on log-log axes for each algorithm.',
+        'Fit regression lines to estimate the exponent: if slope = 2, complexity is O(n²).',
+        'Compare empirical exponents to theoretical expectations.',
+      ],
+      expectedOutput: 'Log-log plots showing different slopes: SVM ~2–3, Random Forest ~n log n, kNN ~O(1) training but O(n) prediction.',
+      challenge: 'Add a quantum-inspired feature: use PCA to reduce dimensionality before training and measure the speedup.',
+    },
   },
 
   'module3-topic3': {
@@ -326,6 +426,56 @@ const module3Data: Record<string, TopicData> = {
       'The curse of dimensionality is THE fundamental challenge that quantum ML aims to address.',
       'Nature operates in high-dimensional quantum Hilbert spaces — QML works with the grain of nature.',
     ],
+    story: 'Imagine trying to find a friend in a stadium — easy with 10 people, harder with 1000, but what if the stadium had 10¹⁰ seats? This is the curse of dimensionality: as the number of features grows, the feature space becomes exponentially sparse. In just 10 dimensions, evenly covering the space requires 10¹⁰ samples. In 100 dimensions, you would need more data points than atoms in the observable universe. Distance metrics that work beautifully in 2D or 3D become meaningless, and every point appears equally far from every other point. This is the single biggest mathematical challenge that quantum computing aims to address.',
+    concepts: [
+      { type: 'text', text: 'The curse of dimensionality: as dimensions increase, data becomes sparse, distances converge, and the amount of data needed for reliable generalization grows exponentially. This is THE fundamental challenge in high-dimensional ML.' },
+      { type: 'math', formula: '\\text{Points needed for grid coverage} = k^d \\text{ where } k = \\text{divisions per dim}, d = \\text{dimensions}' },
+      { type: 'diagram', chart: 'graph TD; A[Low Dimensions] --> B[Dense]; A --> C[Distances Meaningful]; D[High Dimensions] --> E[Sparse]; D --> F[All Points Equidistant]; D --> G[Curse of Dimensionality];' },
+      { type: 'code', code: { language: 'python', code: 'import numpy as np\n\ndef distance_ratio(d):\n    pts = np.random.randn(1000, d)\n    dists = np.linalg.norm(pts[:1] - pts[1:], axis=1)\n    return dists.min() / dists.max()\n\nfor d in [2, 5, 10, 50, 100, 500]:\n    print(f"d={d}: min/max ratio = {distance_ratio(d):.4f}")' } },
+      { type: 'list', title: 'Consequences of High Dimensions', items: ['Distance concentration — nearest and farthest points converge', 'Exponential data requirements — need 10¹⁰ samples for d=10', 'Overfitting becomes nearly certain', 'Visualization impossible beyond 3D'] },
+      { type: 'flip-card', title: 'Dimensionality', cards: [
+        { front: 'Why do distance metrics fail in high dimensions?', back: 'All points become approximately equidistant. The ratio of min to max distance approaches 1, making kNN and kernel methods ineffective.' },
+        { front: 'How does quantum computing help with high dimensions?', back: 'n qubits represent 2ⁿ basis states — exponential representational efficiency. Quantum feature maps embed data into Hilbert spaces naturally.' },
+      ] },
+    ],
+    activity: {
+      description: 'Demonstrate the curse of dimensionality by attempting to fill a hypercube with points in increasing dimensions and observing sparsity.',
+      steps: [
+        'Take a 1D line of length 1. Place 10 points along it — they are close together.',
+        'Now take a 2D square of side 1. Place 100 points — they spread out.',
+        'For 3D, 10D, and 100D, calculate: how many points needed to maintain the same density?',
+        'Write a Python script to compute the Euclidean distance between random points in d-dimensions.',
+        'Plot the min/max distance ratio as d increases from 1 to 100.',
+      ],
+      discussionQuestions: [
+        'How does the curse of dimensionality affect the number of training examples needed for a classifier?',
+        'Can dimensionality reduction (PCA, t-SNE) fully solve the curse? What information is lost?',
+      ],
+      materials: ['Graph paper', 'Python with numpy and matplotlib', 'Interactive dimensionality demo'],
+    },
+    project: {
+      description: 'Implement PCA from scratch and apply it to a high-dimensional dataset (e.g., MNIST with 784 features). Visualize the explained variance ratio and reconstruct images from reduced dimensions.',
+      objectives: [
+        'Understand the mathematics of PCA (eigenvalue decomposition)',
+        'Apply dimensionality reduction to a real dataset',
+        'Analyze the tradeoff between dimension reduction and information loss',
+      ],
+      deliverables: ['PCA implementation from scratch', 'Explained variance plot', 'Image reconstruction comparison'],
+      tools: ['Python, numpy, matplotlib, sklearn.datasets'],
+    },
+    lab: {
+      description: 'Explore the curse of dimensionality empirically by generating random data in increasing dimensions and measuring distance concentration.',
+      setup: 'pip install numpy matplotlib',
+      steps: [
+        'Generate 1000 random points in dimensions d = 2, 5, 10, 20, 50, 100, 500.',
+        'For each d, compute pairwise Euclidean distances.',
+        'Compute the ratio of minimum to maximum distance for each d.',
+        'Plot the ratio vs dimensionality on a semi-log plot.',
+        'Also plot the mean and standard deviation of distances.',
+      ],
+      expectedOutput: 'The min/max distance ratio approaches 1 as d increases, and the standard deviation shrinks — demonstrating distance concentration.',
+      challenge: 'Apply kNN classification to the same data in both original and PCA-reduced space and compare accuracy.',
+    },
   },
 
   'module3-topic4': {
@@ -436,6 +586,56 @@ const module3Data: Record<string, TopicData> = {
       'Barren plateaus are the QML equivalent of vanishing gradients — and both stem from high-dimensional spaces.',
       'The difficulty of classical optimization is a key motivation for quantum alternatives.',
     ],
+    story: 'Training any ML model is fundamentally an optimization problem — finding the set of parameters that minimizes a loss function. But the loss landscapes of deep neural networks are treacherous terrain: millions of local minima, plateaus where gradients vanish, and saddle points that trap optimizers. In quantum ML, the problem is even more acute — barren plateaus cause gradients to vanish exponentially with qubit count, making optimization the central challenge of variational quantum algorithms. Understanding classical optimization challenges is essential preparation for the hybrid quantum-classical optimization loop that powers most near-term QML models.',
+    concepts: [
+      { type: 'text', text: 'Optimization is the engine of ML: we minimize a loss function over parameters. Non-convex landscapes have exponentially many local minima. Gradient descent navigates this landscape using derivative information.' },
+      { type: 'math', formula: '\\theta_{t+1} = \\theta_t - \\eta \\nabla_\\theta L(\\theta_t)' },
+      { type: 'diagram', chart: 'graph TD; A[Optimization] --> B[Convex]; A --> C[Non-Convex]; B --> D[One Minimum]; C --> E[Many Local Minima]; C --> F[Saddle Points]; C --> G[Plateaus];' },
+      { type: 'code', code: { language: 'python', code: 'import numpy as np\nimport matplotlib.pyplot as plt\n\n# Non-convex function\nx = np.linspace(-2, 2, 1000)\ny = x**4 - 4*x**3 + 2*x**2 + x\nplt.plot(x, y)\nplt.title("Non-Convex Optimization Landscape")\nplt.xlabel("Parameter θ")\nplt.ylabel("Loss L(θ)")' } },
+      { type: 'list', title: 'Optimization Challenges', items: ['Local minima — suboptimal solutions that trap gradient descent', 'Saddle points — zero gradient but not minimum (common in high-D)', 'Vanishing gradients — gradients exponentially small in deep networks', 'Barren plateaus — QML equivalent, gradients vanish with qubit count'] },
+      { type: 'flip-card', title: 'Optimization', cards: [
+        { front: 'What is the vanishing gradient problem?', back: 'Gradients become exponentially small as they backpropagate through many layers, causing early layers to stop learning. ResNet skip connections help mitigate this.' },
+        { front: 'What is a barren plateau in QML?', back: 'Gradients of the cost function vanish exponentially with the number of qubits or circuit depth, making parameter optimization nearly impossible for large circuits.' },
+      ] },
+    ],
+    activity: {
+      description: 'Visualize optimization landscapes by plotting 1D and 2D loss functions and tracing gradient descent paths from different starting points.',
+      steps: [
+        'Plot a 1D non-convex function f(x) = x⁴ - 4x³ + 2x² + x.',
+        'Mark the local minima and global minimum on the plot.',
+        'Simulate gradient descent from 3 different starting points and trace the path.',
+        'Observe: different starting points → different local minima.',
+        'Discuss: How does this analogy extend to high-dimensional neural network training?',
+      ],
+      discussionQuestions: [
+        'Why might a simple optimizer like SGD work better than a sophisticated one on some problems?',
+        'How do hybrid quantum-classical algorithms use classical optimizers to handle quantum circuit parameters?',
+      ],
+      materials: ['Python with numpy and matplotlib', 'Optimization visualization notebook'],
+    },
+    project: {
+      description: 'Implement gradient descent for a non-convex function and study how learning rate, momentum, and starting point affect convergence to local vs global minima.',
+      objectives: [
+        'Implement gradient descent with momentum and adaptive learning rates',
+        'Analyze convergence behavior from different initial conditions',
+        'Compare optimization on convex vs non-convex landscapes',
+      ],
+      deliverables: ['Optimization simulation code', 'Convergence analysis plots', 'Summary of findings'],
+      tools: ['Python, numpy, matplotlib'],
+    },
+    lab: {
+      description: 'Demonstrate vanishing gradients by training a deep neural network and tracking gradient magnitudes across layers.',
+      setup: 'pip install torch torchvision matplotlib numpy',
+      steps: [
+        'Create a simple feedforward network with 1, 5, 10, and 20 layers.',
+        'Initialize weights using different schemes (default, Xavier, He).',
+        'Forward pass a batch of random data and backpropagate.',
+        'Extract and plot gradient magnitudes for each layer.',
+        'Show: deeper networks → vanishing gradients in early layers.',
+      ],
+      expectedOutput: 'A plot showing gradient magnitude decreasing exponentially with layer depth for default initialization, with Xavier/He initialization mitigating the decay.',
+      challenge: 'Add skip connections (ResNet-style) and show how they preserve gradient flow in deep networks.',
+    },
   },
 
   'module3-topic5': {
@@ -545,6 +745,56 @@ const module3Data: Record<string, TopicData> = {
       'We are entering the "post-Moore\'s Law" era where new paradigms (like quantum) are essential.',
       'The energy cost of large AI models is unsustainable — quantum holds promise for more efficient computation.',
     ],
+    story: 'Classical computing is hitting walls on every front — physical, architectural, and thermodynamic. Transistors are now just 3nm wide, where quantum tunneling causes electrons to leak through the gate, making further miniaturization nearly impossible. The von Neumann bottleneck limits data throughput between CPU and memory, while training a single large language model consumes as much energy as 130 homes use in a year. These are not software problems that can be optimized away — they are fundamental physical constraints of classical computation itself. Recognizing these limits is the first step toward understanding why quantum computing is not just an alternative, but a necessity.',
+    concepts: [
+      { type: 'text', text: 'Classical computing faces hard physical limits: the Landauer limit (minimum energy to erase a bit), quantum tunneling in transistors, the von Neumann bottleneck, and unsustainable energy consumption of large ML models.' },
+      { type: 'math', formula: 'E_{\\text{Landauer}} = kT \\ln 2 \\approx 2.9 \\times 10^{-21} \\text{ J at 300K}' },
+      { type: 'diagram', chart: 'graph TD; A[Classical Limits] --> B[Landauer Limit]; A --> C[Quantum Tunneling]; A --> D[von Neumann]; A --> E[Energy Crisis]; B --> F[Thermodynamic]; C --> G[Transistor Leakage]; D --> H[CPU-Memory Bottleneck]; E --> I[Unsustainable ML];' },
+      { type: 'code', code: { language: 'python', code: '# Energy cost of training GPT-3\nenergy_mwh = 1287  # MWh\nhomes_per_year = 130\nco2_tons = 552\nprint(f"GPT-3 training: {energy_mwh} MWh")\nprint(f"= {homes_per_year} US homes for a year")\nprint(f"= {co2_tons} tons CO₂")' } },
+      { type: 'list', title: 'Classical Computing Limits', items: ['Landauer limit — thermodynamic minimum energy per bit erasure', 'Quantum tunneling — transistors leak at atomic scales', 'Von Neumann bottleneck — bus bandwidth between CPU and memory', 'Energy — GPT-3 training: 1,287 MWh, 552 tons CO₂'] },
+      { type: 'flip-card', title: 'Physical Limits', cards: [
+        { front: 'What is the Landauer limit?', back: 'The minimum energy required to erase one bit of information: kT·ln2 ≈ 2.9×10⁻²¹ J at room temperature. Classical computing involves irreversible bit erasure, generating heat.' },
+        { front: 'Why can\'t classical memory represent quantum states?', back: 'Representing a superposition of 2ⁿ states classically requires storing 2ⁿ complex amplitudes. For n=50, that\'s petabyte-scale — classically infeasible.' },
+      ] },
+    ],
+    activity: {
+      description: 'Calculate the energy and environmental impact of training various ML models and compare to sustainable alternatives.',
+      steps: [
+        'Research: Find energy consumption data for training models of different sizes (small CNN, medium ResNet, large GPT-style).',
+        'Calculate: CO₂ emissions for each using your local grid\'s carbon intensity.',
+        'Compare: How many tree-planting years would offset each model\'s carbon footprint?',
+        'Discuss: What strategies can reduce ML\'s environmental impact?',
+        'Create an infographic: "The Hidden Environmental Cost of AI."',
+      ],
+      discussionQuestions: [
+        'Should there be regulations on training extremely large ML models due to their environmental impact?',
+        'How might quantum computing reduce the energy cost of ML? Is this guaranteed?',
+      ],
+      materials: ['Internet access', 'Carbon footprint calculator', 'Poster/infographic materials'],
+    },
+    project: {
+      description: 'Write a research brief on the end of Moore\'s Law and its implications for the future of computing, covering physical limits and alternative paradigms (quantum, neuromorphic, photonic).',
+      objectives: [
+        'Understand the physical limits of classical CMOS technology',
+        'Compare alternative computing paradigms',
+        'Assess the timeline and feasibility of each alternative',
+      ],
+      deliverables: ['Research brief (3–5 pages)', 'Comparison table of computing paradigms', 'Timeline projection'],
+      tools: ['Research databases', 'Google Docs or Overleaf'],
+    },
+    lab: {
+      description: 'Simulate the von Neumann bottleneck by benchmarking CPU-GPU memory transfer vs on-chip computation.',
+      setup: 'pip install numpy torch matplotlib',
+      steps: [
+        'Create a large matrix (e.g., 10,000 × 10,000) on CPU.',
+        'Time the operation: matrix multiply on CPU (in-place).',
+        'Transfer matrix to GPU and time the same operation.',
+        'Include data transfer time in the GPU measurement.',
+        'Compare: at what problem size does GPU (including transfer) become faster?',
+      ],
+      expectedOutput: 'A plot showing crossover point where GPU computation (including transfer overhead) becomes faster than CPU-only computation for large matrices.',
+      challenge: 'Repeat with a quantum simulator (AerSimulator) and compare the scaling of simulation vs classical algorithms for linear algebra.',
+    },
   },
 
   'module3-topic6': {
@@ -654,6 +904,56 @@ const module3Data: Record<string, TopicData> = {
       'Quantum computing does not replace classical — it solves problems classical CANNOT solve efficiently.',
       'The problems that are hard for classical computers are often the problems quantum computers are best at.',
     ],
+    story: 'If classical computing is hitting physical walls, what comes next? Quantum computing offers a fundamentally new paradigm based on the laws of quantum mechanics — superposition, entanglement, and interference. Where classical bits are either 0 or 1, quantum bits (qubits) can exist in superpositions of both states simultaneously, offering exponential representational power. ML and quantum computing are a natural match: ML struggles with high-dimensional data (curse of dimensionality), while quantum computers natively operate in exponentially large Hilbert spaces. The NISQ (Noisy Intermediate-Scale Quantum) era defines our current technological reality — we have noisy devices with 50–1000 qubits, and the challenge is designing algorithms that work within these constraints.',
+    concepts: [
+      { type: 'text', text: 'Quantum computing leverages superposition (n qubits represent 2ⁿ states), entanglement (non-classical correlations), and interference (amplitude cancellation) to solve problems intractable for classical computers.' },
+      { type: 'math', formula: 'n \\text{ qubits} \\rightarrow 2^n \\text{ basis states simultaneously}' },
+      { type: 'diagram', chart: 'graph TD; A[Classical Limits] --> B[Quantum Solution]; B --> C[Superposition]; B --> D[Entanglement]; B --> E[Interference]; C --> F[2ⁿ States]; D --> G[Correlations]; E --> H[Amplitude Amplification];' },
+      { type: 'code', code: { language: 'python', code: '# n qubits = 2ⁿ amplitudes\nimport math\nn_qubits = 50\namplitudes = 2**n_qubits\nprint(f"{n_qubits} qubits = {amplitudes:.2e} amplitudes")\nprint(f"Need {amplitudes * 16 / 1e12:.1f} TB (complex128)")' } },
+      { type: 'list', title: 'Key Quantum Concepts', items: ['Superposition — n qubits encode 2ⁿ amplitudes', 'Entanglement — non-classical correlations between qubits', 'Interference — amplitudes cancel or reinforce', 'NISQ — Noisy Intermediate-Scale Quantum: 50–1000 noisy qubits'] },
+      { type: 'flip-card', title: 'Quantum Motivation', cards: [
+        { front: 'Why are ML and quantum computing a natural match?', back: 'ML struggles with high-dimensional data. Quantum computers operate in exponentially large Hilbert spaces. Quantum kernels evaluate inner products in these spaces efficiently.' },
+        { front: 'What is the NISQ era?', back: 'Noisy Intermediate-Scale Quantum — current devices with 50–1000 noisy qubits. QML algorithms must be noise-tolerant and use shallow circuits with classical optimization.' },
+      ] },
+    ],
+    activity: {
+      description: 'Create a concept map connecting classical ML limits to quantum computing capabilities, showing how each quantum property addresses a specific classical limitation.',
+      steps: [
+        'List 5 classical ML limits from Topics 3.1–3.5 on the left side of a whiteboard.',
+        'List 5 quantum capabilities (superposition, entanglement, interference, etc.) on the right.',
+        'Draw arrows connecting each classical limit to the quantum capability that addresses it.',
+        'Write a brief explanation for each connection.',
+        'Present your concept map and discuss with the class.',
+      ],
+      discussionQuestions: [
+        'Which quantum property do you think will provide the biggest advantage for ML? Why?',
+        'What are the biggest challenges in making quantum ML practical in the NISQ era?',
+      ],
+      materials: ['Whiteboard or large paper', 'Markers', 'Sticky notes'],
+    },
+    project: {
+      description: 'Write a forward-looking essay: "Quantum Machine Learning in 2035 — A Vision." Predict how QML might transform a specific industry (e.g., pharmaceuticals, finance, climate science).',
+      objectives: [
+        'Synthesize classical ML limits and quantum capabilities',
+        'Apply QML concepts to a specific domain',
+        'Demonstrate realistic expectations (not hype) for quantum advantage',
+      ],
+      deliverables: ['Vision essay (3–5 pages)', 'Timeline of expected milestones', 'Bibliography of key research papers'],
+      tools: ['Research databases', 'Google Docs or Overleaf'],
+    },
+    lab: {
+      description: 'Compare classical vs quantum approaches to a simple problem: evaluate inner products in high-dimensional spaces classically and simulate a quantum kernel.',
+      setup: 'pip install scikit-learn numpy qiskit qiskit-machine-learning',
+      steps: [
+        'Generate random high-dimensional data (d=100, n=100 samples).',
+        'Compute the classical kernel matrix using RBF kernel.',
+        'Use Qiskit\'s QuantumKernel to compute a quantum kernel matrix.',
+        'Compare the structure of both kernel matrices using heatmaps.',
+        'Train an SVM on both kernels and compare classification accuracy.',
+      ],
+      expectedOutput: 'Two kernel matrix heatmaps showing different similarity patterns. The quantum kernel may capture non-classical similarities that the classical RBF kernel misses.',
+      challenge: 'Vary the dimensionality of the data and observe at what point the quantum kernel begins to show different behavior from the classical kernel.',
+    },
   },
 };
 

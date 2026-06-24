@@ -21,6 +21,80 @@ const module10Data: Record<string, TopicData> = {
       'Count: how many trainable parameters does your circuit have?',
       'Compare: how does a parameterized gate differ from a fixed gate?',
     ],
+    story: 'Imagine a puppet whose strings can be pulled at different angles — each pull changes the puppet\'s pose. A parameterized quantum circuit works the same way: we have fixed gates (the puppet structure) but the rotation angles θ are adjustable strings. By tuning these angles, the circuit can produce different quantum states, just as pulling different strings creates different puppet poses. This ability to change behavior without rewiring the entire circuit is what makes PQCs the foundation of variational quantum machine learning. Every trainable quantum model starts here: a circuit that can learn.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'A **parameterized quantum circuit (PQC)** contains gates whose rotation angles are adjustable parameters θ. Unlike fixed gates (H, X, CNOT), parameterized gates like R<sub>y</sub>(θ) can produce different outputs depending on the angle value.',
+      },
+      {
+        type: 'text',
+        content: 'The general form of a PQC: $$U(\\boldsymbol{\\theta}) = \\prod_{l=1}^{L} \\left( \\prod_{i} R(\\theta_{i,l}) \\cdot U_{\\text{ent}} \\right)$$ where $L$ is the number of layers, $R(\\theta)$ are single-qubit rotations, and $U_{\\text{ent}}$ is an entangling gate pattern.',
+      },
+      {
+        type: 'text',
+        content: 'In Qiskit, parameters are defined using `Parameter` objects:',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: 'from qiskit.circuit import QuantumCircuit, Parameter\n\nqc = QuantumCircuit(2)\ntheta = Parameter("θ")\nqc.ry(theta, 0)\nqc.cx(0, 1)\nqc.ry(theta, 1)',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: '# Binding values to parameters\nbound_circuit = qc.assign_parameters({theta: 0.5})\n# Or bind multiple values for batch processing\nimport numpy as np\nvalues = np.linspace(0, 2*np.pi, 10)\ncircuits = [qc.assign_parameters({theta: v}) for v in values]',
+      },
+      {
+        type: 'card',
+        title: 'Expressibility',
+        content: 'Expressibility measures what fraction of the Hilbert space a PQC can reach. A circuit with only Ry gates can only reach states on a restricted manifold. Adding Rz and CNOT gates increases expressibility but can cause barren plateaus.',
+      },
+    ],
+    activity: {
+      description: 'Build your first parameterized circuit and explore how changing parameters changes the output quantum state.',
+      steps: [
+        'Create a 2-qubit circuit with one Parameter("θ") applied as Ry(θ) to qubit 0',
+        'Add a CNOT gate between qubits 0 and 1',
+        'Bind θ to 5 different values: 0, π/2, π, 3π/2, 2π',
+        'Run each circuit on a statevector simulator and collect the output statevectors',
+        'Plot how the probability of measuring |0⟩ on qubit 0 varies with θ',
+      ],
+      discussionQuestions: [
+        'Why does the output probability follow a sinusoidal pattern as θ varies? (Hint: look at the matrix representation of Ry(θ))',
+        'What would change if you replaced Ry(θ) with Rz(θ)? How would the output state differ?',
+      ],
+      materials: 'Qiskit, Python with numpy/matplotlib, statevector simulator',
+      codetask: 'Write a function `explore_parameter(qc, param, values)` that takes a parameterized circuit, a Parameter object, and a list of values, and returns the measurement probabilities for each value.',
+    },
+    project: {
+      description: 'Design a parameterized circuit family and analyze its expressibility by measuring how many distinct output states it can produce.',
+      objectives: [
+        'Design 3 different PQC ansätze with increasing complexity (1 layer, 2 layers, 3 layers)',
+        'For each ansatz, sample 100 random parameter sets and compute the pairwise fidelities between output states',
+        'Analyze how the distribution of pairwise fidelities changes with circuit depth and entangling gate pattern',
+      ],
+      deliverables: [
+        'A report showing the circuit diagrams of your 3 ansätze',
+        'Histograms of pairwise fidelity distributions for each ansatz',
+        'A conclusion on which ansatz is most expressible and why',
+      ],
+      tools: 'Qiskit, numpy, matplotlib, statevector_simulator',
+    },
+    lab: {
+      description: 'Implement and analyze parameterized quantum circuits to understand how rotation angles influence quantum states and how to train them.',
+      setup: 'Qiskit 1.0+, Python, numpy, matplotlib. Review QuantumCircuit, Parameter, and assign_parameters.',
+      steps: [
+        'Define a PQC with 3 qubits, each with an Ry parameter per layer, for 2 layers',
+        'Use a ring of CNOT gates for entanglement (qubit i → qubit i+1 mod 3)',
+        'Generate 50 random parameter sets and run all circuits on the statevector simulator',
+        'Compute the expectation value ⟨Z⟩ on qubit 0 for each parameter set',
+        'Plot a histogram of the ⟨Z⟩ values — is the distribution uniform?',
+        'Repeat with 4 layers and compare the distributions',
+      ],
+      expectedOutput: 'A side-by-side comparison plot showing ⟨Z⟩ distributions for 2-layer vs 4-layer circuits. The 4-layer circuit should produce a wider or more uniform distribution, indicating higher expressibility.',
+      challenge: 'Add an Rz(φ) gate after each Ry gate (so each qubit has 2 parameters per layer). How does the expressibility change? Does the number of parameters double, or does the circuit explore new regions of Hilbert space?',
+    },
     mcqs: [
       {
         id: 'M10T1Q1',
@@ -130,6 +204,79 @@ const module10Data: Record<string, TopicData> = {
       'Identify: what is the cost function in a VQA for classification?',
       'Compare: VQA vs classical gradient descent — what changes?',
     ],
+    story: 'In 2014, Alberto Peruzzo and colleagues introduced the Variational Quantum Eigensolver (VQE) — an algorithm that uses a classical optimizer to minimize a cost function computed by a parameterized quantum circuit. This was the birth of the VQA paradigm. The key insight: instead of trying to run the entire algorithm on a quantum computer (which requires fault tolerance), split the work — the quantum circuit computes the hard part (expectation values in an exponentially large space), and the classical computer handles the easy part (optimization). This hybrid approach became the dominant paradigm for NISQ-era QML.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'A **Variational Quantum Algorithm (VQA)** minimizes a cost function $C(\\boldsymbol{\\theta}) = \\langle 0 | U^\\dagger(\\boldsymbol{\\theta}) H U(\\boldsymbol{\\theta}) | 0 \\rangle$ where $U(\\boldsymbol{\\theta})$ is a PQC and $H$ is a problem-specific Hamiltonian (or observable).',
+      },
+      {
+        type: 'text',
+        content: 'The **parameter-shift rule** computes gradients of expectation values without a separate quantum circuit for derivatives:',
+      },
+      {
+        type: 'text',
+        content: '$$\\frac{\\partial \\langle H \\rangle}{\\partial \\theta_i} = \\frac{1}{2} \\left( \\langle H \\rangle_{\\theta_i + \\pi/2} - \\langle H \\rangle_{\\theta_i - \\pi/2} \\right)$$',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: 'def parameter_shift(circuit, params, i, hamiltonian):\n    """Compute gradient of <H> w.r.t. param[i]"""\n    eps = np.pi / 2\n    params_plus = params.copy()\n    params_minus = params.copy()\n    params_plus[i] += eps\n    params_minus[i] -= eps\n    \n    val_plus = estimate_expectation(circuit, params_plus, hamiltonian)\n    val_minus = estimate_expectation(circuit, params_minus, hamiltonian)\n    return 0.5 * (val_plus - val_minus)',
+      },
+      {
+        type: 'text',
+        content: 'The **barren plateau** problem: for deep or highly expressive circuits, the gradient variance decays exponentially with the number of qubits, making gradient-based optimization no better than random search.',
+      },
+      {
+        type: 'card',
+        title: 'VQA Workflow Diagram',
+        content: '```mermaid\ngraph LR\n    A[Initial Parameters θ] --> B[Quantum Circuit U(θ)]\n    B --> C[Measure Expectation ⟨H⟩]\n    C --> D[Classical Optimizer]\n    D --> E{{Converged?}}\n    E -->|No| F[Update θ ← θ - η∇C]\n    F --> B\n    E -->|Yes| G[Optimal Parameters θ*]',
+      },
+    ],
+    activity: {
+      description: 'Implement a simple VQA loop: minimize the expectation value of a custom Hamiltonian using a parameterized circuit and the parameter-shift rule.',
+      steps: [
+        'Define a 2-qubit Hamiltonian H = Z₀ + Z₁ + 0.5 × Z₀⊗Z₁ (using SparsePauliOp from Qiskit)',
+        'Create a PQC with 2 layers of Ry + CNOT on 2 qubits (4 parameters total)',
+        'Write a function to estimate ⟨H⟩ given a parameter vector using the statevector simulator',
+        'Implement the parameter-shift rule to compute gradients for all 4 parameters',
+        'Run 50 iterations of gradient descent and plot the cost function over iterations',
+      ],
+      discussionQuestions: [
+        'Why does the cost function decrease in a stepwise pattern rather than smoothly? How does the learning rate affect this?',
+        'What happens if you initialize all parameters to zero? Does the optimizer still find the minimum?',
+      ],
+      materials: 'Qiskit (SparsePauliOp, Aer), numpy, matplotlib',
+      codetask: 'Implement a function `vqa_minimize(circuit, hamiltonian, initial_params, steps, lr)` that runs gradient descent and returns (optimal_params, cost_history).',
+    },
+    project: {
+      description: 'Compare gradient-based (parameter-shift) and gradient-free (COBYLA) optimization for minimizing a 4-qubit Hamiltonian, measuring convergence speed and total quantum circuit evaluations.',
+      objectives: [
+        'Formulate a 4-qubit Ising model Hamiltonian: H = Σᵢ ZᵢZᵢ₊₁ + Σᵢ Xᵢ',
+        'Design a 4-qubit PQC with 3 layers (24 parameters)',
+        'Run both gradient descent (with parameter-shift) and COBYLA optimization, tracking cost per iteration and total circuit evaluations',
+      ],
+      deliverables: [
+        'Convergence plots showing cost vs iterations for both methods',
+        'A table comparing total circuit evaluations needed for convergence',
+        'Analysis: which method is more efficient for this problem and why?',
+      ],
+      tools: 'Qiskit (SparsePauliOp, Aer), scipy.optimize (minimize with COBYLA), numpy, matplotlib',
+    },
+    lab: {
+      description: 'Build a complete VQA from scratch — define a Hamiltonian, design a PQC, implement parameter-shift gradients, and run gradient descent optimization.',
+      setup: 'Qiskit 1.0+, scipy, numpy, matplotlib. Review SparsePauliOp, QuantumCircuit, statevector_simulator.',
+      steps: [
+        'Construct a 3-qubit Hamiltonian H = Z₀Z₁ + Z₁Z₂ + 0.5(X₀ + X₁ + X₂) using SparsePauliOp',
+        'Design a 3-qubit PQC with 2 layers of Ry + CNOT (6 parameters)',
+        'Implement get_expectation(params) using Statevector.expectation_value()',
+        'Implement parameter_shift_gradient(params) returning a 6-element gradient vector',
+        'Run gradient descent for 100 iterations (η = 0.1), storing the cost each iteration',
+        'Plot the cost convergence curve and print the final optimal parameters and minimum cost',
+      ],
+      expectedOutput: 'A convergence plot showing the cost decreasing from its initial value to a minimum. The final cost should be close to the ground state energy of H (you can verify with numpy.linalg.eigvalsh on the matrix representation).',
+      challenge: 'Add momentum to your gradient descent (use the update rule: v ← βv + η∇C, θ ← θ - v with β = 0.9). Does momentum help convergence? Compare the number of iterations needed to reach the same cost value.',
+    },
     mcqs: [
       {
         id: 'M10T2Q1',
@@ -239,6 +386,79 @@ const module10Data: Record<string, TopicData> = {
       'Identify: what makes a model "trainable" vs just "parameterized"?',
       'Read: "The Expressive Power of Parameterized Quantum Circuits" (5 min)',
     ],
+    story: 'A parameterized circuit is like a musical instrument — it can produce many sounds, but it needs a musician (the optimizer) and a score (the training data) to play the right notes. A trainable quantum model is the full ensemble: the instrument learns which notes to play by listening to feedback from the audience (the cost function). In this topic, we bridge the gap from "circuits that can change" to "circuits that can learn." The training loop — encode, run, measure, compute cost, update parameters — is the heartbeat of quantum machine learning, and it follows the same rhythm as classical model training.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'A **trainable quantum model** extends a PQC with three components: (1) a **cost function** $C(\\boldsymbol{\\theta}, D)$ that measures performance on dataset $D$, (2) an **optimizer** that updates $\\boldsymbol{\\theta}$ to minimize $C$, and (3) a **training loop** that iterates this process.',
+      },
+      {
+        type: 'text',
+        content: 'The training loop for a variational quantum classifier:',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: 'for epoch in range(num_epochs):\n    total_cost = 0\n    for x, y in dataloader:\n        # 1. Encode data into quantum state\n        encoded_circuit = feature_map.bind_parameters({x_params: x})\n        \n        # 2. Append trainable ansatz\n        full_circuit = encoded_circuit.compose(ansatz)\n        \n        # 3. Measure expectation value\n        pred = estimate_expectation(full_circuit, theta, observable)\n        \n        # 4. Compute loss\n        loss = cross_entropy(pred, y)\n        \n        # 5. Compute gradient (parameter-shift)\n        grad = parameter_shift_gradient(full_circuit, theta, observable)\n        \n        # 6. Update parameters\n        theta -= learning_rate * grad\n        total_cost += loss\n    print(f"Epoch {epoch}: Cost = {total_cost/len(dataloader):.4f}")',
+      },
+      {
+        type: 'text',
+        content: '**Prediction from measurement**: For binary classification, measure $\\langle Z \\rangle = P(0) - P(1)$ on a readout qubit. The predicted class is $\\hat{y} = \\text{sign}(\\langle Z \\rangle)$. For multi-class, measure multiple qubits or use multiple observables.',
+      },
+      {
+        type: 'card',
+        title: 'Trainable vs Parameterized',
+        content: 'A parameterized circuit has adjustable angles but no learning procedure. A trainable model adds: data encoding, a cost function (e.g., cross-entropy), an optimizer (e.g., Adam), and a training loop. The difference is the ability to improve from data.',
+      },
+      {
+        type: 'text',
+        content: '**Advantage over QSVM**: QSVM uses a fixed feature map (no training in the quantum part). Variational models train the circuit parameters to adapt the quantum transformation to the specific dataset — enabling the circuit to learn which features are most discriminative.',
+      },
+    ],
+    activity: {
+      description: 'Train a simple variational quantum classifier on a synthetic 2D dataset. Compare training with and without gradient information.',
+      steps: [
+        'Generate a synthetic 2-class dataset using make_moons or make_circles from sklearn (200 samples)',
+        'Create a feature map with angle encoding (Ry on each feature dimension) and a 2-layer ansatz with 4 parameters',
+        'Implement the training loop: for each sample, encode, run circuit, measure ⟨Z⟩, compute loss',
+        'Train for 50 epochs using COBYLA (gradient-free) and record the loss per epoch',
+        'Plot the decision boundary of the trained model on a meshgrid — does it separate the two classes?',
+      ],
+      discussionQuestions: [
+        'How does the decision boundary of the quantum classifier compare to a classical SVM with RBF kernel? Which is more interpretable?',
+        'What happens if you reduce the number of layers from 2 to 1? Does the decision boundary become less complex?'
+      ],
+      materials: 'Qiskit, sklearn, numpy, matplotlib',
+      codetask: 'Implement a class `VariationalQuantumClassifier` with methods: `fit(X, y, optimizer, epochs)` and `predict(X)`. The predict method should return class labels (-1 or +1) based on sign(⟨Z⟩).',
+    },
+    project: {
+      description: 'Compare a trainable variational quantum classifier against a fixed-feature-map QSVM on the same dataset, analyzing the expressibility vs trainability trade-off.',
+      objectives: [
+        'Implement a VariationalQuantumClassifier (VQC) with a 3-layer trainable ansatz',
+        'Implement a QSVM using the same feature map but without trainable parameters',
+        'Compare accuracy, training time, and decision boundary complexity on a synthetic dataset',
+      ],
+      deliverables: [
+        'Side-by-side plots of decision boundaries for VQC and QSVM',
+        'Accuracy comparison table (train and test accuracy for both models)',
+        'A written analysis: when would you prefer a trainable model over a fixed-feature-map model?',
+      ],
+      tools: 'Qiskit (FidelityQuantumKernel, VQC class), sklearn (SVC), numpy, matplotlib',
+    },
+    lab: {
+      description: 'Build a complete variational quantum classifier from scratch — encode data, define the training loop, and evaluate on a test set.',
+      setup: 'Qiskit 1.0+, sklearn, numpy, matplotlib. Generate synthetic data with make_classification.',
+      steps: [
+        'Generate 150 samples with 2 features using make_classification(n_features=2, n_redundant=0, n_clusters_per_class=1)',
+        'Split into train (100) and test (50) sets; standardize features to [-1, 1]',
+        'Design a 2-qubit feature map using Ry encoding for 2 features',
+        'Design a trainable ansatz with 2 layers of Ry + CNOT (4 parameters)',
+        'Implement the training loop with COBYLA optimizer for 100 iterations',
+        'Evaluate accuracy on test set and plot the decision boundary',
+      ],
+      expectedOutput: 'Test accuracy should be >= 70% (the synthetic dataset is designed to be separable). The decision boundary plot should show a non-linear separation of the two classes.',
+      challenge: 'Replace COBYLA with SPSA (implemented from scratch) and compare convergence. SPSA requires only 2 circuit evaluations per iteration regardless of the number of parameters — can you achieve similar accuracy with fewer quantum circuit executions?',
+    },
     mcqs: [
       {
         id: 'M10T3Q1',
@@ -348,6 +568,79 @@ const module10Data: Record<string, TopicData> = {
       'Compare: global vs local optima in the quantum loss landscape',
       'Research: what is SPSA and why is it popular for quantum optimization?',
     ],
+    story: 'In 2018, a team at Los Alamos National Laboratory demonstrated that the loss landscape of variational quantum algorithms is fundamentally different from classical neural networks — it is riddled with barren plateaus where gradients vanish exponentially. This discovery sent shockwaves through the QML community. But it also sparked a deeper understanding: the optimization of quantum circuits is a mathematical problem with its own unique geometry. The rotation gates introduce sinusoidal parameter dependence, creating a landscape of hills and valleys that is periodic and often deceptive. Navigating this landscape — avoiding local minima, escaping plateaus, and converging to good solutions — is one of the central challenges of variational QML.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'The **loss landscape** of a VQC is the function $C(\\boldsymbol{\\theta})$ plotted over the parameter space. Due to rotation gates, $C(\\boldsymbol{\\theta})$ is a sum of trigonometric terms:',
+      },
+      {
+        type: 'text',
+        content: '$$C(\\theta_1, \\ldots, \\theta_M) = a_0 + \\sum_{i} a_i \\cos(\\theta_i + \\phi_i) + \\sum_{i<j} b_{ij} \\cos(\\theta_i \\pm \\theta_j + \\phi_{ij}) + \\ldots$$',
+      },
+      {
+        type: 'text',
+        content: '**Gradient-free optimizers** like COBYLA and Nelder-Mead evaluate the cost at different parameter values without computing gradients. Each evaluation requires one circuit execution. They are robust to noise but may converge slowly.',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: 'from scipy.optimize import minimize\n\ndef cost_function(theta):\n    """Compute VQC cost for given parameters"""\n    circuit = build_vqc(theta)\n    return estimate_cost(circuit)\n\n# Gradient-free optimization\nresult = minimize(cost_function, theta0, method="COBYLA", options={"maxiter": 100})',
+      },
+      {
+        type: 'text',
+        content: '**SPSA** estimates the gradient using only 2 cost evaluations per iteration: $\\nabla C(\\theta) \\approx \\frac{C(\\theta + \\epsilon\\Delta) - C(\\theta - \\epsilon\\Delta)}{2\\epsilon} \\odot \\Delta^{-1}$ where $\\Delta$ is a random perturbation vector.',
+      },
+      {
+        type: 'card',
+        title: 'Shot Noise & Optimization',
+        content: 'Each measurement has finite shots (samples). The cost estimate is $\\hat{C} = C + \\epsilon$ where $\\epsilon \\sim \\mathcal{N}(0, \\sigma^2 / \\sqrt{S})$ with $S$ = number of shots. More shots = less noise = more reliable gradients, but at the cost of more circuit executions.',
+      },
+    ],
+    activity: {
+      description: 'Visualize the loss landscape of a 2-parameter quantum circuit and test different optimizers on it.',
+      steps: [
+        'Create a 1-qubit circuit with 2 parameters: Ry(θ₁) on qubit 0, followed by Ry(θ₂) on qubit 0',
+        'Define the cost as C(θ₁, θ₂) = ⟨Z⟩ = cos(θ₁)cos(θ₂) - sin(θ₁)sin(θ₂) (analytically derived)',
+        'Plot the cost landscape as a 3D surface plot over θ₁, θ₂ ∈ [0, 2π]',
+        'Run COBYLA from 5 different random starting points and mark the converged points on the landscape',
+        'Run gradient descent (with parameter-shift) from the same starting points and compare convergence',
+      ],
+      discussionQuestions: [
+        'Why does the loss landscape have multiple minima with the same cost value? (Hint: periodicity of trigonometric functions)',
+        'Why might COBYLA and gradient descent converge to different points from the same starting location?',
+      ],
+      materials: 'Qiskit, scipy.optimize, numpy, matplotlib (for 3D plotting)',
+      codetask: 'Write a function `plot_loss_landscape(theta_range, resolution)` that creates a contour plot of the cost function and overlays the optimization paths from both COBYLA and gradient descent.',
+    },
+    project: {
+      description: 'Systematically compare 4 optimizers (COBYLA, SPSA, Adam, Nelder-Mead) on a 4-qubit VQC optimization problem, measuring convergence speed, final cost, and total circuit evaluations.',
+      objectives: [
+        'Define a 4-qubit VQC with 8 parameters (2 layers of Ry + CNOT) and a Hamiltonian H = Z₀Z₁Z₂Z₃',
+        'Run each optimizer 10 times with different random seeds to get statistics',
+        'Measure: (a) iterations to convergence, (b) final cost value, (c) total circuit evaluations, (d) variance across runs',
+      ],
+      deliverables: [
+        'Bar chart comparing final cost across optimizers (with error bars for 10 runs)',
+        'Table of total circuit evaluations per optimizer',
+        'Recommendation: which optimizer would you use for a NISQ device with limited shot budget?',
+      ],
+      tools: 'Qiskit (SparsePauliOp, Aer), scipy.optimize (COBYLA, Nelder-Mead), numpy, matplotlib',
+    },
+    lab: {
+      description: 'Implement SPSA from scratch and compare it with COBYLA and parameter-shift gradient descent on a noisy VQC optimization task.',
+      setup: 'Qiskit 1.0+, scipy, numpy, matplotlib. Review SparsePauliOp, QuantumCircuit, and the parameter-shift rule from Topic 10.2.',
+      steps: [
+        'Construct a 4-qubit Hamiltonian H = Σᵢ ZᵢZᵢ₊₁ (cyclic) with 4 parameters',
+        'Design a 4-qubit PQC with 1 layer of Ry + CNOT ring (4 parameters)',
+        'Implement SPSA with parameters: ε = 0.1, a = 0.2, c = 0.1, A = 10 (from SPSA literature)',
+        'Run optimization with 3 methods: COBYLA, parameter-shift GD (η = 0.1), and SPSA',
+        'Add shot noise by using simulator with finite shots = 1024 for each cost evaluation',
+        'Plot convergence curves for all 3 methods with error bands from 5 runs each',
+      ],
+      expectedOutput: 'SPSA should converge faster (fewer circuit evaluations) but with noisier convergence. COBYLA should be most robust. GD may struggle if shot noise makes gradient estimates unreliable.',
+      challenge: 'Implement an adaptive SPSA variant that decreases the perturbation size ε over iterations (εₜ = ε₀ / t^γ). Does this improve convergence stability compared to fixed-ε SPSA?',
+    },
     mcqs: [
       {
         id: 'M10T4Q1',
@@ -459,6 +752,83 @@ const module10Data: Record<string, TopicData> = {
       'Reflect: what is the quantum analog of "overfitting" in classical ML?',
       'Read: "Capacity and Trainability in Quantum Machine Learning" (5 min)',
     ],
+    story: 'In classical deep learning, the relationship between model parameters and learning is well understood: more parameters mean more capacity, but also more risk of overfitting. Quantum machine learning inherits this trade-off — and adds a quantum-specific twist. In 2021, researchers showed that increasing the number of layers in a VQC does not just increase capacity; it also increases the risk of barren plateaus, where gradients vanish and learning becomes impossible. Worse, noise from finite shots can masquerade as signal, fooling the optimizer into false convergence. Understanding the parameter-learning relationship in quantum circuits is not just academic — it determines whether your quantum model will actually learn from data or merely memorize noise.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'The **bias-variance trade-off in QML**: more parameters increase **expressibility** (lower bias) but also increase the risk of **overfitting** (higher variance) and **barren plateaus** (untrainability).',
+      },
+      {
+        type: 'text',
+        content: 'For a PQC with $N$ qubits and $L$ layers, the number of parameters scales as:',
+      },
+      {
+        type: 'text',
+        content: '$$\\text{params} = L \\times N \\times (\\text{rotations per qubit}) + (L-1) \\times N$$',
+      },
+      {
+        type: 'text',
+        content: 'For Ry + CNOT layers: params = $L \\times N$ (rotation gates). For Ry + Rz + CNOT: params = $2L \\times N$.',
+      },
+      {
+        type: 'text',
+        content: '**Regularization strategies for VQCs**:',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: '# Strategy 1: Limit circuit depth (capacity control)\nnum_layers = 2  # Shallow circuit = fewer params = less overfitting\n\n# Strategy 2: Add noise during training (implicit regularization)\nbackend = AerSimulator(method="automatic", noise_model=noise_model)\n\n# Strategy 3: Early stopping\ndef train_with_early_stopping(X, y, X_val, y_val, patience=10):\n    best_val_loss = float("inf")\n    patience_counter = 0\n    for epoch in range(max_epochs):\n        train_loss = training_step(X, y)\n        val_loss = evaluate(X_val, y_val)\n        if val_loss < best_val_loss:\n            best_val_loss = val_loss\n            patience_counter = 0\n        else:\n            patience_counter += 1\n            if patience_counter >= patience:\n                break  # Early stopping',
+      },
+      {
+        type: 'card',
+        title: 'Parameter Initialization',
+        content: 'Random initialization from U[-π, π] is common. Better strategies: He initialization (scale by 1/√N_qubits) or identity initialization (start near identity). Poor initialization can trap the model in barren plateau regions from the start.',
+      },
+    ],
+    activity: {
+      description: 'Explore the relationship between the number of parameters and overfitting in a variational quantum classifier.',
+      steps: [
+        'Generate a small synthetic dataset with 30 training samples and 100 test samples from make_moons',
+        'Create VQCs with 1, 2, 4, and 6 layers (2, 4, 8, 12 parameters on 2 qubits)',
+        'Train each VQC on the 30 training samples using COBYLA for 100 iterations',
+        'Plot training accuracy and test accuracy as a function of number of layers',
+        'Identify the "sweet spot" — the depth that maximizes test accuracy without overfitting',
+      ],
+      discussionQuestions: [
+        'Why does test accuracy first increase then decrease as you add more layers? What is this phenomenon called in classical ML?',
+        'How would you modify this experiment to detect whether the VQC is actually learning patterns or just memorizing the training data?',
+      ],
+      materials: 'Qiskit, sklearn (make_moons), numpy, matplotlib',
+      codetask: 'Write a function `find_optimal_depth(X_train, X_test, y_train, y_test, max_layers)` that returns a plot of train/test accuracy vs depth and prints the optimal number of layers.',
+    },
+    project: {
+      description: 'Investigate the effect of parameter initialization strategies on VQC training success and final accuracy.',
+      objectives: [
+        'Implement 3 initialization strategies: uniform random U[-π, π], He-inspired scaling (U[-π/√N, π/√N]), and identity-near initialization (U[-0.1, 0.1])',
+        'Train 10 instances of the same VQC with each initialization strategy on a fixed dataset',
+        'Compare convergence speed, final accuracy, and variance across runs for each strategy',
+      ],
+      deliverables: [
+        'Box plots showing final accuracy distributions for each initialization strategy',
+        'Convergence curves (mean ± std) for each strategy across 10 runs',
+        'Recommendation: which initialization would you suggest for a 6-qubit, 4-layer VQC?',
+      ],
+      tools: 'Qiskit, numpy, matplotlib, seaborn (for box plots)',
+    },
+    lab: {
+      description: 'Diagnose and mitigate overfitting in a variational quantum classifier using early stopping, depth control, and noise injection.',
+      setup: 'Qiskit 1.0+, sklearn, numpy, matplotlib. Use a small dataset (50 samples) to force overfitting behavior.',
+      steps: [
+        'Generate 50 samples from make_circles(noise=0.1) and split 30 train / 20 test',
+        'Design a deep VQC with 6 layers on 2 qubits (12 parameters — excessive for 30 samples)',
+        'Train without regularization for 200 iterations — record train and test loss each epoch',
+        'Implement early stopping with patience=5 — retrain and compare convergence curves',
+        'Repeat with a shallow VQC (2 layers, 4 parameters) and compare all 3 experiments',
+        'Plot train and test loss curves for all 3 experiments on the same axes',
+      ],
+      expectedOutput: 'The deep VQC without early stopping should show train loss near 0 but test loss increasing (overfitting). Early stopping should catch the inflection point. The shallow VQC should show less overfitting but potentially higher overall loss.',
+      challenge: 'Implement weight decay (L2 regularization) for VQC parameters by adding λ||θ||² to the cost function. Use λ ∈ {0, 0.001, 0.01, 0.1} and compare test accuracy. Does weight decay help prevent overfitting in quantum models?',
+    },
     mcqs: [
       {
         id: 'M10T5Q1',
@@ -569,6 +939,85 @@ const module10Data: Record<string, TopicData> = {
       'Experiment: change the number of layers and observe accuracy changes',
       'Design: create your own VQC ansatz for a binary classification problem of your choice',
     ],
+    story: 'This is the moment everything comes together. Over the past five topics, you have learned: parameterized circuits (the hardware), variational algorithms (the strategy), trainable models (the framework), optimization (the engine), and parameter learning theory (the science). Now, in this lab, you build a complete Variational Quantum Classifier from scratch — encoding data, designing an ansatz, training it, and evaluating its performance. In a few hours, you will be doing what QML researchers were doing just a few years ago: training a quantum model to classify data. The VQC you build today is the foundation for quantum neural networks, hybrid models, and everything that follows.',
+    concepts: [
+      {
+        type: 'text',
+        content: 'The **VQC class** from `qiskit-machine-learning` provides a ready-to-use variational quantum classifier. It combines a **feature map** (encodes classical data) and an **ansatz** (trainable circuit) into a single end-to-end model.',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: 'from qiskit.circuit.library import RealAmplitudes, ZZFeatureMap\nfrom qiskit_algorithms.optimizers import COBYLA\nfrom qiskit_machine_learning.algorithms import VQC\n\nfeature_map = ZZFeatureMap(feature_dimension=2, reps=2)\nansatz = RealAmplitudes(num_qubits=2, reps=3)\n\nvqc = VQC(\n    feature_map=feature_map,\n    ansatz=ansatz,\n    optimizer=COBYLA(maxiter=100),\n    quantum_instance=quantum_instance\n)\nvqc.fit(X_train, y_train)\naccuracy = vqc.score(X_test, y_test)',
+      },
+      {
+        type: 'text',
+        content: 'The **VQC workflow** can be visualized as a pipeline:',
+      },
+      {
+        type: 'text',
+        content: '```mermaid\ngraph LR\n    A[Raw Data] --> B[Normalize]\n    B --> C[Feature Map Encoding]\n    C --> D[Trainable Ansatz]\n    D --> E[Measure Expectation]\n    E --> F[Compute Cost]\n    F --> G[Update Parameters]\n    G --> D\n    E --> H[Prediction]',
+      },
+      {
+        type: 'text',
+        content: '**Key design choices in the VQC lab**:',
+      },
+      {
+        type: 'code',
+        language: 'python',
+        content: '# Design choices to explore:\n\n# 1. Feature map choice\nfeature_map_1 = ZZFeatureMap(2, reps=1)  # Simple\nfeature_map_2 = PauliFeatureMap(2, reps=2, paulis=["ZZ", "ZX"])  # Complex\n\n# 2. Ansatz choice\nansatz_1 = RealAmplitudes(2, reps=1)  # Ry + CNOT\nansatz_2 = EfficientSU2(2, reps=2)  # Rz + Ry + Rz + CNOT\n\n# 3. Optimizer choice\noptimizers = {\n    "COBYLA": COBYLA(maxiter=100),\n    "SPSA": SPSA(maxiter=100),\n    "ADAM": ADAM(maxiter=100),\n}',
+      },
+      {
+        type: 'card',
+        title: 'Lab Success Checklist',
+        content: '✅ Feature map chosen\n✅ Ansatz designed\n✅ Optimizer selected\n✅ Data split into train/test\n✅ Model trained\n✅ Accuracy measured\n✅ Experiment with depth\n✅ Compare optimizers\n✅ Decision boundary plotted',
+      },
+    ],
+    activity: {
+      description: 'Train a complete VQC on a real dataset using the qiskit-machine-learning library and experiment with different design choices.',
+      steps: [
+        'Load the Iris dataset, select 2 features (sepal length, petal length) and 2 classes (setosa, versicolor) for binary classification',
+        'Normalize features to [0, 1] using MinMaxScaler',
+        'Create a VQC with ZZFeatureMap(reps=1) and RealAmplitudes(reps=2), using COBYLA optimizer',
+        'Train the VQC on 80% of the data and evaluate on 20%',
+        'Plot the decision boundary on a 2D grid',
+        'Repeat with 4 different ansatz depths (reps=1, 2, 3, 4) and compare accuracy',
+      ],
+      discussionQuestions: [
+        'How does the decision boundary change as you increase the ansatz depth? Does it become more complex or just more wiggly?',
+        'If you were deploying this model in production, would you prefer the highest test accuracy or the simplest model with acceptable accuracy? Why?',
+      ],
+      materials: 'Qiskit (qiskit-machine-learning, qiskit-circuit-library), sklearn (Iris), numpy, matplotlib',
+      codetask: 'Write a function `experiment_vqc(X_train, X_test, y_train, y_test, depths, optimizers)` that returns a DataFrame of test accuracies for all combinations of depth and optimizer, and automatically identifies the best configuration.',
+    },
+    project: {
+      description: 'Design, build, and optimize a VQC for a challenging 4-class classification problem using a custom ansatz and hyperparameter tuning.',
+      objectives: [
+        'Design a custom ansatz (not the built-in RealAmplitudes) with a novel entangling pattern (e.g., all-to-all or linear with alternating directions)',
+        'Perform hyperparameter tuning over: ansatz depth (1-5 layers), optimizer type (COBYLA, SPSA, Adam), and feature map (ZZFeatureMap vs PauliFeatureMap)',
+        'Benchmark your best VQC against a classical Random Forest classifier on the same dataset',
+      ],
+      deliverables: [
+        'A circuit diagram of your custom ansatz',
+        'Hyperparameter tuning results table with all 30+ combinations tested',
+        'Final comparison: VQC accuracy vs Random Forest accuracy, with a discussion of the trade-offs (accuracy vs quantum resource usage)',
+      ],
+      tools: 'Qiskit (qiskit-machine-learning, circuit library), sklearn (train_test_split, RandomForestClassifier), numpy, matplotlib, pandas (for results table)',
+    },
+    lab: {
+      description: 'End-to-end VQC lab: build a variational quantum classifier from scratch (without using the built-in VQC class), train it, and optimize it through experimentation.',
+      setup: 'Qiskit 1.0+, qiskit-machine-learning, sklearn, numpy, matplotlib. Review all previous topics 10.1–10.5.',
+      steps: [
+        'Generate binary classification data: 100 samples, 2 features, using make_classification with 2 clusters per class',
+        'Build a feature map using ZZFeatureMap with 2 repetitions on 2 qubits',
+        'Build a custom ansatz: 3 layers of Ry + Rz + CNOT (12 trainable parameters on 2 qubits)',
+        'Implement a cost function: cross-entropy between predicted ⟨Z⟩ and true labels',
+        'Train using COBYLA for 200 iterations, recording cost and accuracy each iteration',
+        'Plot the training curve (cost) and test accuracy; visualize the decision boundary on a meshgrid',
+      ],
+      expectedOutput: 'Test accuracy >= 75% with a clear non-linear decision boundary. The training curve should show cost decreasing and stabilizing. The decision boundary should separate the two classes with a smooth, curved boundary.',
+      challenge: 'Extend your VQC to 2-output qubits for 4-class classification. Use 2 readout qubits with ⟨Z₁⟩ and ⟨Z₂⟩ to encode 4 binary combinations (00, 01, 10, 11) mapping to 4 classes. Train and evaluate on the full Iris dataset (4 classes, 4 features). Report the 4×4 confusion matrix.',
+    },
     mcqs: [
       {
         id: 'M10T6Q1',

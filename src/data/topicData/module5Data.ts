@@ -109,6 +109,56 @@ const module5Data: Record<string, TopicData> = {
       'The choice of SDK often depends on which quantum hardware you want to access.',
       'Qiskit integration with classical ML libraries makes it ideal for QML development.',
     ],
+    story: 'Qiskit is to quantum computing what scikit-learn is to classical ML — an open-source ecosystem that democratizes access to cutting-edge technology. Developed by IBM, Qiskit provides everything you need: circuit construction (Terra), high-performance simulation (Aer), QML algorithms (Machine Learning), and cloud access to real quantum hardware (Runtime). The ecosystem is designed for hybrid quantum-classical workflows, integrating seamlessly with Python\'s classical ML stack. Understanding this ecosystem is your first step toward becoming a quantum programmer — you are not just learning a library, you are joining a global community building the quantum future.',
+    concepts: [
+      { type: 'text', text: 'Qiskit is IBM\'s open-source quantum SDK with components: Terra (circuits), Aer (simulators), Machine Learning (QML algorithms), Nature (chemistry), Finance, Optimization, and Runtime (hardware access).' },
+      { type: 'math', formula: '\\text{Qiskit Stack: } \\text{User} \\rightarrow \\text{QuantumCircuit} \\rightarrow \\text{Transpiler} \\rightarrow \\text{Backend}' },
+      { type: 'diagram', chart: 'graph TD; A[Qiskit Ecosystem] --> B[Terra]; A --> C[Aer]; A --> D[Machine Learning]; A --> E[Runtime]; B --> F[Circuit Construction]; C --> G[Simulators]; D --> H[QSVM, QNN, VQC]; E --> I[Hardware Access];' },
+      { type: 'code', code: { language: 'python', code: '# Qiskit ecosystem components\nimport qiskit\nfrom qiskit_aer import AerSimulator\nfrom qiskit_machine_learning.kernels import QuantumKernel\n\nprint(f"Qiskit Terra: {qiskit.__version__}")\nprint(f"Aer: {AerSimulator()}")\nprint(f"ML: QuantumKernel available: {bool(QuantumKernel)}")' } },
+      { type: 'list', title: 'Qiskit Ecosystem', items: ['Terra — core circuit construction and transpilation', 'Aer — high-performance simulators (statevector, stabilizer, MPS)', 'Machine Learning — QSVM, QGAN, VQC, NeuralNetwork layers', 'Runtime — cloud access to IBM Quantum hardware'] },
+      { type: 'flip-card', title: 'Qiskit Ecosystem', cards: [
+        { front: 'What is Qiskit Aer?', back: 'IBM\'s high-performance quantum circuit simulator. Supports multiple methods: statevector (exact), stabilizer (Clifford), MPS (shallow circuits), and GPU acceleration.' },
+        { front: 'How does Qiskit compare to other quantum SDKs?', back: 'Qiskit (IBM) is most popular. Others: Cirq (Google), PennyLane (Xanadu — specializes in QML), Amazon Braket (AWS). Qiskit integrates best with scikit-learn.' },
+      ] },
+    ],
+    activity: {
+      description: 'Research and compare the major quantum computing SDKs (Qiskit, Cirq, PennyLane, Braket) across criteria like hardware access, QML support, documentation, and community.',
+      steps: [
+        'Visit the documentation for Qiskit, Cirq, PennyLane, and Amazon Braket.',
+        'Create a comparison table: language, hardware backends, QML features, learning curve.',
+        'Write a short review of each SDK\'s strengths and weaknesses.',
+        'Install one alternative SDK (e.g., PennyLane) and create a simple circuit.',
+        'Present your comparison and recommendation to the class.',
+      ],
+      discussionQuestions: [
+        'Why might a researcher choose PennyLane over Qiskit for QML research?',
+        'What factors influence SDK choice in a real quantum computing project?',
+      ],
+      materials: ['Internet access', 'Comparison worksheet'],
+    },
+    project: {
+      description: 'Create a comprehensive "Getting Started with Qiskit" tutorial (one-page guide + code notebook) that a peer could use to begin quantum programming.',
+      objectives: [
+        'Document the Qiskit ecosystem and installation process',
+        'Provide working code examples for basic circuits',
+        'Include guidance on accessing IBM Quantum hardware',
+      ],
+      deliverables: ['Tutorial Markdown/PDF guide', 'Accompanying Jupyter notebook', 'Quick-reference card'],
+      tools: ['Qiskit documentation', 'Jupyter Notebook'],
+    },
+    lab: {
+      description: 'Set up the full Qiskit environment and verify all ecosystem components are working.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning qiskit-ibm-runtime matplotlib pylatexenc scikit-learn',
+      steps: [
+        'Create a fresh Python virtual environment (python -m venv qml_env).',
+        'Activate it and install all required packages.',
+        'Create an IBM Quantum account at quantum.ibm.com and save your API token.',
+        'Write a test script that imports all major Qiskit modules.',
+        'Create and run a simple Bell state circuit to verify everything works.',
+      ],
+      expectedOutput: 'A working Qiskit environment with all imports successful and a Bell state circuit producing ~50/50 measurement outcomes.',
+      challenge: 'Set up Qiskit in Google Colab and compare the setup process to local installation.',
+    },
   },
 
   'module5-topic2': {
@@ -218,6 +268,56 @@ const module5Data: Record<string, TopicData> = {
       'Most installation issues are environment-related - virtual environments solve most of them.',
       'Once Qiskit is installed correctly, it stays working - the setup effort is a one-time investment.',
     ],
+    story: 'Before you can program a quantum computer, you need to set up your development environment - a critical but often underestimated skill. Installing Qiskit is straightforward with pip, but understanding virtual environments, dependency management, and installation verification will save you hours of debugging later. The recommended installation includes qiskit (core), qiskit-aer (simulator), qiskit-machine-learning (QML algorithms), and supporting libraries for visualization. Whether you use a local environment, Google Colab, or IBM Quantum Lab, the goal is the same: a working setup where import qiskit runs without errors and you can execute your first quantum circuit.',
+    concepts: [
+      { type: 'text', text: 'Installation: pip install qiskit qiskit-aer qiskit-machine-learning matplotlib pylatexenc scikit-learn. Use virtual environments (venv) to prevent dependency conflicts.' },
+      { type: 'math', formula: 'pip install qiskit \\rightarrow python -c "import qiskit; print(qiskit.__version__)"' },
+      { type: 'diagram', chart: 'graph TD; A[Install Python] --> B[Create venv]; B --> C[pip install]; C --> D[Verify]; D --> E[Run First Circuit]; E --> F[Success!];' },
+      { type: 'code', code: { language: 'python', code: '# Installation verification\nfrom qiskit_aer import AerSimulator\nfrom qiskit_machine_learning.kernels import QuantumKernel\n\nsim = AerSimulator()\nprint(f"AerSimulator ready: {sim}")' } },
+      { type: 'list', title: 'Installation Checklist', items: ['Python 3.8+ installed', 'Virtual environment created (venv or conda)', 'pip install qiskit qiskit-aer qiskit-machine-learning', 'IBM Quantum account (optional, for hardware access)', 'Verification: imports run without errors'] },
+      { type: 'flip-card', title: 'Installation', cards: [
+        { front: 'What is the recommended way to install Qiskit?', back: 'pip install qiskit qiskit-aer qiskit-machine-learning matplotlib pylatexenc scikit-learn. Use a virtual environment to avoid dependency conflicts.' },
+        { front: 'Can Qiskit be installed on Google Colab?', back: 'Yes - simply run !pip install qiskit qiskit-aer in a code cell. The installation persists for the session duration.' },
+      ] },
+    ],
+    activity: {
+      description: 'Walk through the complete Qiskit installation process step-by-step, documenting any errors and their solutions.',
+      steps: [
+        'Create a new Python virtual environment: python -m venv qml_env.',
+        'Activate the environment and install all Qiskit packages.',
+        'Write a verification script that imports and tests each package.',
+        'If you encounter errors, research and document the solution.',
+        'Submit a working "Verified Installation" screenshot.',
+      ],
+      discussionQuestions: [
+        'What are the most common Qiskit installation errors and how would you troubleshoot them?',
+        'Why is using a virtual environment considered a best practice for Python development?',
+      ],
+      materials: ['Terminal/command prompt', 'Python installed', 'Internet access'],
+    },
+    project: {
+      description: 'Write an installation troubleshooting guide for Qiskit covering common errors on Windows, macOS, and Linux, with solutions and verification steps.',
+      objectives: [
+        'Identify common installation issues across platforms',
+        'Document clear, step-by-step solutions',
+        'Create a reusable resource for the QML community',
+      ],
+      deliverables: ['Troubleshooting guide (Markdown)', 'Platform-specific installation scripts', 'Verification test suite'],
+      tools: ['Multiple OS environments for testing', 'Screenshots and error logs'],
+    },
+    lab: {
+      description: 'Install and verify the complete Qiskit environment, then create a test circuit to confirm everything works end-to-end.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning matplotlib pylatexenc scikit-learn',
+      steps: [
+        'Run pip install for all required packages in a terminal.',
+        'Create a Python script that imports qiskit, qiskit_aer, and qiskit_machine_learning.',
+        'Build a simple circuit: H gate on q0, CNOT(q0, q1), measure both.',
+        'Run on AerSimulator with 1024 shots and print the counts.',
+        'Use plot_histogram to visualize the results.',
+      ],
+      expectedOutput: 'A successful script execution showing measurement counts ~512 "00" and ~512 "11", with a histogram plot displayed.',
+      challenge: 'Install PennyLane alongside Qiskit and create a circuit that runs on both frameworks, comparing the API differences.',
+    },
   },
 
   'module5-topic3': {
@@ -327,6 +427,56 @@ const module5Data: Record<string, TopicData> = {
       'The quantum circuit pattern is always: Create circuit -> Add gates -> Add measurement -> Run -> Analyze results.',
       'Quantum randomness is not a bug - it is a feature that enables quantum algorithms.',
     ],
+    story: 'Every quantum programmer remembers their first circuit — the moment when abstract theory transforms into executable code. In Qiskit, you start by creating a QuantumCircuit, add gates using intuitive methods like qc.h(0) and qc.cx(0, 1), then run it on a simulator. The "Hello Quantum" equivalent is a 1-qubit circuit with a Hadamard gate and measurement — producing truly random 0s and 1s. This moment marks your transition from quantum observer to quantum creator, and the pattern you learn here — create circuit, add gates, measure, run, analyze — is the foundation for every quantum algorithm you will ever write.',
+    concepts: [
+      { type: 'text', text: 'Your first quantum program: qc = QuantumCircuit(1, 1); qc.h(0); qc.measure(0, 0); result = AerSimulator().run(qc, shots=1024).result(); print(result.get_counts()).' },
+      { type: 'math', formula: 'H|0\\rangle = \\frac{|0\\rangle + |1\\rangle}{\\sqrt{2}} \\rightarrow \\text{Measure: } P(0) = P(1) = 0.5' },
+      { type: 'diagram', chart: 'graph LR; A[qc = QuantumCircuit(1,1)] --> B[qc.h(0)]; B --> C[qc.measure(0,0)]; C --> D[AerSimulator().run(qc)]; D --> E[result.get_counts()]; E --> F[{"0": 512, "1": 512}];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\nqc = QuantumCircuit(1, 1)\nqc.h(0)\nqc.measure(0, 0)\n\nresult = AerSimulator().run(qc, shots=1024).result()\ncounts = result.get_counts()\nprint(counts)  # ~{"0": 512, "1": 512}' } },
+      { type: 'list', title: 'First Program Steps', items: ['Create circuit: QuantumCircuit(qubits, classical_bits)', 'Add gates: qc.h(0), qc.cx(0, 1), qc.x(1)', 'Add measurement: qc.measure_all() or qc.measure(q, c)', 'Run: AerSimulator().run(qc, shots=1024).result()', 'Analyze: result.get_counts() returns frequency dict'] },
+      { type: 'flip-card', title: 'Hello Quantum', cards: [
+        { front: 'What is the Hello Quantum program?', back: 'A 1-qubit circuit with H gate and measurement that produces random 0s and 1s with ~50% probability each - the quantum equivalent of Hello World.' },
+        { front: 'What does result.get_counts() return?', back: 'A dictionary mapping bitstring outcomes to frequency counts, e.g., {"0": 520, "1": 504}. The frequencies approximate the true probability distribution.' },
+      ] },
+    ],
+    activity: {
+      description: 'Write your first quantum program from scratch without looking at examples, then iteratively debug and improve it.',
+      steps: [
+        'Write a Qiskit program that creates a Bell state (H + CNOT) from memory.',
+        'Run it on AerSimulator with 1024 shots and print the counts.',
+        'If the output is wrong, trace through your circuit step-by-step.',
+        'Add visualization: draw the circuit and plot the histogram.',
+        'Modify to use 3 qubits in a GHZ state and observe the output pattern.',
+      ],
+      discussionQuestions: [
+        'What was the most surprising thing about running your first quantum circuit?',
+        'How does writing a quantum program differ from writing a classical program?',
+      ],
+      materials: ['Qiskit environment', 'Circuit diagram template'],
+    },
+    project: {
+      description: 'Build a "Quantum Program Template" notebook that can be reused for any quantum circuit, with sections for circuit creation, simulation, visualization, and analysis.',
+      objectives: [
+        'Create a reusable template for quantum programming',
+        'Include documentation and best practices',
+        'Support parameterized circuits and multiple backends',
+      ],
+      deliverables: ['Template Jupyter notebook', 'Usage examples', 'Documentation'],
+      tools: ['Python, Qiskit, Jupyter'],
+    },
+    lab: {
+      description: 'Write, run, and analyze your first quantum program - the Hello Quantum circuit with a Hadamard gate.',
+      setup: 'pip install qiskit qiskit-aer matplotlib pylatexenc',
+      steps: [
+        'Create a QuantumCircuit with 1 qubit and 1 classical bit.',
+        'Add a Hadamard gate on qubit 0.',
+        'Add a measurement from qubit 0 to classical bit 0.',
+        'Run on AerSimulator with 1024 shots.',
+        'Print the counts and use plot_histogram to visualize.',
+      ],
+      expectedOutput: 'A histogram with approximately equal bars for "0" (~512) and "1" (~512), demonstrating quantum randomness.',
+      challenge: 'Extend to 2 qubits: apply H to both, measure both, and verify the uniform distribution over all 4 basis states (each ~256 out of 1024).',
+    },
   },
 
   'module5-topic4': {
@@ -436,6 +586,56 @@ const module5Data: Record<string, TopicData> = {
       'Visualization bridges the gap between abstract quantum states and human intuition.',
       'The ability to read and interpret quantum circuit diagrams is a core QML skill.',
     ],
+    story: 'A picture is worth a thousand amplitudes — and in quantum computing, visualization is essential for understanding what your circuit is doing. Qiskit provides powerful visualization tools: circuit diagrams (qc.draw("mpl")), measurement histograms (plot_histogram), and Bloch sphere plots (plot_bloch_multivector). These tools transform abstract quantum states and operations into intuitive visual representations. When you see a histogram with roughly 512 counts for "0" and 512 for "1", you are looking at the direct experimental evidence of quantum superposition — the same phenomenon that powers all quantum algorithms.',
+    concepts: [
+      { type: 'text', text: 'Qiskit visualization: qc.draw("mpl") for circuit diagrams, plot_histogram(counts) for measurement results, plot_bloch_multivector(state) for qubit states. All in qiskit.visualization.' },
+      { type: 'math', formula: '\\text{Histogram: } \\frac{\\text{counts}[i]}{\\text{total shots}} \\approx |\\alpha_i|^2' },
+      { type: 'diagram', chart: 'graph TD; A[Circuit] --> B[qc.draw("mpl")]; A --> C[Run]; C --> D[plot_histogram]; D --> E[Counts]; A --> F[Statevector]; F --> G[plot_bloch_multivector];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.visualization import plot_histogram, plot_bloch_multivector\nfrom qiskit.quantum_info import Statevector\n\n# Circuit visualization\nqc.draw("mpl")  # circuit diagram\n\n# Result visualization\nplot_histogram(result.get_counts())\n\n# State visualization\nstate = Statevector(qc)\nplot_bloch_multivector(state)' } },
+      { type: 'list', title: 'Visualization Tools', items: ['qc.draw("mpl") — matplotlib circuit diagram (needs pylatexenc)', 'plot_histogram(counts) — bar chart of measurement outcomes', 'plot_bloch_multivector(state) — qubit state on Bloch sphere', 'plot_state_city(state) — 3D bar plot of density matrix'] },
+      { type: 'flip-card', title: 'Visualization', cards: [
+        { front: 'What does a 50-50 histogram indicate?', back: 'With 1024 shots, ~512 for "0" and ~512 for "1" means the qubit was in equal superposition (|0⟩ + |1⟩)/√2 before measurement.' },
+        { front: 'What information does the Bloch sphere provide?', back: 'It shows the exact quantum state of a qubit as a point on the unit sphere, revealing both probability amplitudes and phase relationships.' },
+      ] },
+    ],
+    activity: {
+      description: 'Given a circuit diagram, predict the measurement outcome distribution; then run the circuit to verify your prediction.',
+      steps: [
+        'Draw a circuit: H on q0, CNOT(q0, q1), measure both.',
+        'Predict: what measurement outcomes will appear and with what frequencies?',
+        'Implement the circuit in Qiskit and run on AerSimulator.',
+        'Use plot_histogram to display results and compare with your prediction.',
+        'Repeat for circuits: (a) X on q0, (b) H on q0, H on q1, (c) H on q0, Z on q0, H on q0.',
+      ],
+      discussionQuestions: [
+        'How does the circuit diagram help in understanding what a quantum algorithm does?',
+        'What kinds of quantum states are difficult to interpret from histograms alone?',
+      ],
+      materials: ['Qiskit notebook', 'Circuit template sheets'],
+    },
+    project: {
+      description: 'Create a visualization gallery notebook that demonstrates all Qiskit visualization functions with annotated examples and explanations.',
+      objectives: [
+        'Master all Qiskit visualization tools',
+        'Understand what each visualization reveals about quantum states',
+        'Create a reference resource for future QML work',
+      ],
+      deliverables: ['Visualization gallery notebook', 'Annotated examples', 'Quick-reference guide'],
+      tools: ['Python, Qiskit, matplotlib, pylatexenc'],
+    },
+    lab: {
+      description: 'Use all Qiskit visualization tools to understand a quantum circuit end-to-end.',
+      setup: 'pip install qiskit qiskit-aer matplotlib pylatexenc',
+      steps: [
+        'Build a 2-qubit circuit: H on q0, CNOT(q0, q1), measure both.',
+        'Draw the circuit using qc.draw("mpl") and save the figure.',
+        'Run on AerSimulator (1024 shots) and plot histogram.',
+        'Use StatevectorSimulator to get the exact state and plot it on Bloch spheres.',
+        'Create a combined figure with circuit, histogram, and Bloch spheres.',
+      ],
+      expectedOutput: 'A comprehensive visualization showing: circuit diagram, measurement histogram (only "00" and "11"), and Bloch spheres showing the entangled state.',
+      challenge: 'Use plot_state_city to visualize the density matrix of the Bell state and explain what the 3D bars represent.',
+    },
   },
 
   'module5-topic5': {
@@ -545,6 +745,56 @@ const module5Data: Record<string, TopicData> = {
       'Choosing the right simulator and shot count is a practical skill that affects research quality.',
       'Understanding simulation limits helps you appreciate the power of real quantum hardware.',
     ],
+    story: 'Quantum simulators are the bridge between theory and hardware — they let you develop and test quantum circuits without needing a physical quantum computer. Qiskit Aer provides multiple simulation methods: StatevectorSimulator (exact state vector, limited to ~30 qubits), AerSimulator (measurement sampling with configurable shots), and specialized methods like stabilizer (Clifford circuits, thousands of qubits). The choice of simulator and shot count directly affects result quality: more shots give better probability estimates but take longer. Understanding why classical simulators hit an exponential wall at ~35 qubits is the best argument for why we need real quantum hardware.',
+    concepts: [
+      { type: 'text', text: 'StatevectorSimulator: exact state vector, no sampling noise, ~30 qubit limit. AerSimulator: measurement sampling, configurable shots. Stabilizer: Clifford-only, thousands of qubits.' },
+      { type: 'math', formula: '\\text{Statevector memory: } 2^n \\times 16 \\text{ bytes (complex128)} \\rightarrow n=30: 16 \\text{ GB}, n=35: 275 \\text{ GB}' },
+      { type: 'diagram', chart: 'graph TD; A[Simulators] --> B[Statevector]; A --> C[AerSimulator]; A --> D[Stabilizer]; A --> E[MPS]; B --> F[Exact, ~30 qubits]; C --> G[Sampling, any qubits]; D --> H[Clifford, 1000+ qubits];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit_aer import AerSimulator\n\n# Different simulation methods\nsim_statevector = AerSimulator(method="statevector")\nsim_stabilizer = AerSimulator(method="stabilizer")\nsim_mps = AerSimulator(method="matrix_product_state")\n\n# Shot count affects accuracy\nfor shots in [100, 1000, 10000]:\n    result = sim.run(qc, shots=shots).result()\n    print(f"{shots} shots: {result.get_counts()}")' } },
+      { type: 'list', title: 'Simulator Comparison', items: ['StatevectorSimulator — exact amplitudes, limited to ~30 qubits', 'AerSimulator(method="statevector") — same as above', 'AerSimulator (default) — measurement sampling, any shot count', 'Stabilizer — efficient for Clifford gates only', 'MPS — efficient for shallow circuits with low entanglement'] },
+      { type: 'flip-card', title: 'Simulators', cards: [
+        { front: 'Why can\'t classical simulators handle more than ~35 qubits?', back: 'Statevector simulation stores 2ⁿ complex amplitudes. For n=35, that\'s ~275 GB of RAM. For n=50, it\'s petabytes — classically infeasible.' },
+        { front: 'How does shot count affect simulation results?', back: 'Higher shot counts give more accurate probability estimates (law of large numbers). With 100 shots, expect ±5% error; with 10,000 shots, ±0.5%.' },
+      ] },
+    ],
+    activity: {
+      description: 'Compare different simulators and shot counts on the same circuit, analyzing the tradeoffs between accuracy, speed, and resource usage.',
+      steps: [
+        'Create a Bell state circuit.',
+        'Run on StatevectorSimulator and record exact probabilities (should be 0.5, 0.5).',
+        'Run on AerSimulator with shot counts: 10, 100, 1000, 10000, 100000.',
+        'Plot the estimated probabilities vs shot count, with exact values as reference.',
+        'Measure runtime for each shot count and discuss the accuracy-speed tradeoff.',
+      ],
+      discussionQuestions: [
+        'In a research setting, how would you choose the appropriate simulator and shot count?',
+        'What types of circuits would benefit from the stabilizer simulator? When would it fail?',
+      ],
+      materials: ['Qiskit notebook', 'Timing tools (timeit)'],
+    },
+    project: {
+      description: 'Benchmark different Qiskit Aer simulation methods on circuits of increasing qubit count and depth, producing a performance comparison report.',
+      objectives: [
+        'Understand the computational scaling of different simulators',
+        'Identify which simulation method works best for different circuit types',
+        'Produce actionable guidance for simulator selection',
+      ],
+      deliverables: ['Benchmarking code', 'Performance plots', 'Simulator selection guide'],
+      tools: ['Python, Qiskit, Aer, timeit, matplotlib'],
+    },
+    lab: {
+      description: 'Compare StatevectorSimulator and AerSimulator on the same circuit, observing how shot count affects measurement statistics.',
+      setup: 'pip install qiskit qiskit-aer matplotlib numpy',
+      steps: [
+        'Build a circuit with H on q0, then Ry(π/3) on q0 (unequal superposition).',
+        'Compute exact probabilities using StatevectorSimulator.',
+        'Run on AerSimulator with shots = 100, 500, 1000, 5000, 10000.',
+        'For each shot count, compute the error: |estimated_P0 - exact_P0|.',
+        'Plot error vs shot count on a log-log scale.',
+      ],
+      expectedOutput: 'A log-log plot showing error decreasing as 1/√(shots) — demonstrating the law of large numbers. Exact P(0) ≈ 0.75, P(1) ≈ 0.25.',
+      challenge: 'Create a circuit with 5 qubits in superposition and try to simulate it with StatevectorSimulator, then with MPS method. Compare memory usage.',
+    },
   },
 
   'module5-topic6': {
@@ -654,6 +904,56 @@ const module5Data: Record<string, TopicData> = {
       'Transpilation is an invisible but essential step - it bridges the gap between theory and physical reality.',
       'Running on real hardware teaches you that noise is the central challenge of NISQ-era quantum computing.',
     ],
+    story: 'Running a quantum circuit on real hardware is the ultimate test — it transforms simulation into physical reality. In Qiskit, a "backend" is any device that executes circuits, from local simulators to IBM\'s cloud quantum processors. The beauty of Qiskit\'s abstraction is that the same code works everywhere: backend.run(circuit, shots=1024). Transpilation is the invisible step that maps your logical circuit to the specific gate set, qubit topology, and noise characteristics of each physical device. Fake backends (noisy simulators) let you test how your circuit would perform on real hardware without using quantum time — an essential development workflow.',
+    concepts: [
+      { type: 'text', text: 'A Qiskit backend runs quantum circuits. Same API for simulators (AerSimulator) and real hardware (IBM backends). Transpilation maps logical circuits to physical device constraints.' },
+      { type: 'math', formula: '\\text{Result} = \\text{Backend}.\\text{run}(\\text{Circuit}, \\text{shots}=1024).\\text{result}()' },
+      { type: 'diagram', chart: 'graph TD; A[Circuit] --> B[Transpile]; B --> C[Physical Circuit]; C --> D[Backend]; D --> E[Simulator]; D --> F[Real Hardware]; D --> G[Fake Backend]; E --> H[Ideal Result]; F --> I[Noisy Result]; G --> J[Simulated Noise];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.providers.fake_provider import FakeManila\nfrom qiskit import transpile\n\n# Transpile for real hardware topology\nbackend = FakeManila()\ntranspiled_qc = transpile(qc, backend)\nprint(f"Original depth: {qc.depth()}")\nprint(f"Transpiled depth: {transpiled_qc.depth()}")\n\n# Run on simulated real hardware\nresult = backend.run(transpiled_qc, shots=1024).result()' } },
+      { type: 'list', title: 'Backend Concepts', items: ['Backend — any device that runs circuits (simulator or hardware)', 'Transpilation — optimizes + maps circuit to device topology', 'Fake backends — noisy simulators mimicking real devices', 'IBM Quantum account — required for real hardware access'] },
+      { type: 'flip-card', title: 'Hardware Execution', cards: [
+        { front: 'What does transpilation do before running on real hardware?', back: 'Decomposes gates into native gates, optimizes depth, maps logical to physical qubits respecting chip topology, inserts SWAP gates for connectivity.' },
+        { front: 'What are fake backends?', back: 'Noisy simulator backends (FakeManila, FakeLagos) that model real IBM devices with realistic gate errors, readout errors, and coupling maps for testing without using quantum time.' },
+      ] },
+    ],
+    activity: {
+      description: 'Compare ideal simulation vs noisy simulation on a fake backend to understand how noise affects quantum computation.',
+      steps: [
+        'Create a simple circuit (e.g., H gate on one qubit, measure).',
+        'Run on AerSimulator (ideal) and record the ideal counts (should be 50-50).',
+        'Transpile for a fake backend (e.g., FakeManila) and run on it.',
+        'Compare the noisy counts to the ideal counts — observe the bias.',
+        'Discuss: How does noise affect the reliability of quantum computation?',
+      ],
+      discussionQuestions: [
+        'Why does transpilation increase circuit depth? What are the implications for noise?',
+        'How might you design circuits that are more resilient to noise (error mitigation)?',
+      ],
+      materials: ['Qiskit notebook', 'Fake backend documentation'],
+    },
+    project: {
+      description: 'Design and execute an experiment comparing the same circuit run on AerSimulator, a fake backend, and real IBM Quantum hardware (if available). Document the differences.',
+      objectives: [
+        'Understand the full pipeline from circuit to hardware result',
+        'Quantify the impact of noise on different circuit types',
+        'Learn the workflow for submitting jobs to IBM Quantum',
+      ],
+      deliverables: ['Experiment notebook', 'Noise comparison analysis', 'IBM Quantum job submission report'],
+      tools: ['Python, Qiskit, IBM Quantum account, fake backends'],
+    },
+    lab: {
+      description: 'Run a circuit on a fake backend to experience how noise affects quantum computation, then compare with ideal simulation.',
+      setup: 'pip install qiskit qiskit-aer qiskit-ibm-runtime',
+      steps: [
+        'Create a Bell state circuit.',
+        'Run on AerSimulator (ideal) and record the ideal counts (only "00" and "11").',
+        'Transpile for FakeManila backend using transpile(qc, backend).',
+        'Run the transpiled circuit on FakeManila backend.',
+        'Compare counts: ideal shows only "00"/"11"; noisy shows some "01"/"10" due to errors.',
+      ],
+      expectedOutput: 'Ideal: ~512 "00", ~512 "11", 0 others. Noisy: ~480 "00", ~480 "11", ~32 "01", ~32 "10" (gate errors cause deviations from ideal behavior).',
+      challenge: 'Apply measurement error mitigation using Qiskit\'s CompleteMeasFitter and observe how much the noise is reduced.',
+    },
   },
 
   'module5-topic7': {
@@ -764,9 +1064,57 @@ const module5Data: Record<string, TopicData> = {
       'The act of measurement is the only source of true randomness in the universe - and we can harness it.',
       'This lab marks the completion of your quantum programming foundation - you are ready for QML.',
     ],
+    story: 'In this culminating lab, you will build a quantum coin toss and random number generator — two practical applications that demonstrate the unique power of quantum computing. Classical pseudorandom number generators are deterministic: given the same seed, they produce the same sequence. Quantum random number generators, by contrast, leverage the fundamental randomness of quantum measurement (Born\'s rule), producing numbers that are truly unpredictable. With just a Hadamard gate and measurement, you get a quantum coin. With n qubits in superposition, you can generate truly random numbers from 0 to 2ⁿ-1 — the foundation for quantum cryptography and the clearest demonstration of quantum advantage in everyday computing.',
+    concepts: [
+      { type: 'text', text: 'Quantum coin toss: H gate creates superposition, measurement gives 50% heads (|0⟩), 50% tails (|1⟩). Quantum RNG: n qubits in superposition generate random numbers from 0 to 2ⁿ-1 with uniform distribution.' },
+      { type: 'math', formula: 'P(\\text{heads}) = |\\langle 0|\\psi\\rangle|^2 = 0.5 \\quad P(\\text{tails}) = |\\langle 1|\\psi\\rangle|^2 = 0.5' },
+      { type: 'diagram', chart: 'graph TD; A[Quantum RNG] --> B[H on q0]; A --> C[H on q1]; A --> D[H on q2]; B --> E[Measure]; C --> E; D --> E; E --> F[3-bit Random Number: 0-7];' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\nfrom qiskit_aer import AerSimulator\n\n# 3-qubit quantum random number generator\nn = 3\nqc = QuantumCircuit(n, n)\nfor q in range(n):\n    qc.h(q)      # superposition on each qubit\nqc.measure(range(n), range(n))\n\nresult = AerSimulator().run(qc, shots=1).result()\nbits = list(result.get_counts().keys())[0]\nrand_int = int(bits, 2)\nprint(f"Random number 0-{2**n-1}: {rand_int}")' } },
+      { type: 'list', title: 'Quantum Randomness', items: ['Classical PRNGs: deterministic algorithms, predictable with same seed', 'Quantum RNGs: fundamentally random (Born\'s rule), provably unpredictable', 'Coin toss: 1 qubit, 2 outcomes (0 or 1)', 'RNG: n qubits, 2ⁿ outcomes (0 to 2ⁿ-1)', 'Hardware bias: imperfect H gates cause unequal probabilities'] },
+      { type: 'flip-card', title: 'Quantum RNG', cards: [
+        { front: 'How does a quantum RNG differ from a classical PRNG?', back: 'Classical PRNGs use deterministic algorithms — given the seed, the entire sequence is predictable. Quantum RNGs use the fundamental randomness of measurement, which is provably unpredictable.' },
+        { front: 'How do you generate a random number from 0 to 7?', back: 'Use 3 qubits, apply H to each (uniform superposition of all 8 states), measure all. The 3-bit outcome is a uniformly random number from 0 to 7.' },
+      ] },
+    ],
+    activity: {
+      description: 'Build a quantum coin toss and RNG, test them statistically, and compare with classical pseudorandom alternatives.',
+      steps: [
+        'Build a 1-qubit quantum coin toss circuit (H + measure).',
+        'Run it 1000 times and record the sequence of outcomes.',
+        'Use Python\'s random module to generate 1000 classical pseudorandom bits.',
+        'Run statistical tests (runs test, chi-square) on both sequences.',
+        'Write a report comparing the statistical properties of quantum vs classical randomness.',
+      ],
+      discussionQuestions: [
+        'For what applications is quantum randomness essential vs overkill?',
+        'How could you verify that a quantum RNG is truly random vs pseudorandom?',
+      ],
+      materials: ['Qiskit notebook', 'Statistical testing tools (scipy.stats)'],
+    },
+    project: {
+      description: 'Build a practical quantum random number generator that generates numbers in a specified range and passes standard statistical randomness tests (NIST SP 800-22).',
+      objectives: [
+        'Implement a quantum RNG with configurable range',
+        'Apply statistical tests to validate randomness quality',
+        'Compare quantum RNG throughput with classical alternatives',
+      ],
+      deliverables: ['Quantum RNG Python package', 'Statistical validation report', 'Documentation and usage examples'],
+      tools: ['Python, Qiskit, AerSimulator, scipy.stats, NIST test suite'],
+    },
+    lab: {
+      description: 'Build a quantum coin toss and a multi-qubit quantum random number generator, then test the randomness statistically.',
+      setup: 'pip install qiskit qiskit-aer matplotlib numpy scipy',
+      steps: [
+        'Build a 1-qubit circuit: H on q0, measure — this is your quantum coin.',
+        'Run with 4096 shots and plot the histogram (should be ~50-50).',
+        'Build a 4-qubit RNG: apply H to all 4 qubits, measure all.',
+        'Run with 8192 shots and verify all 16 outcomes appear with ~512 counts each.',
+        'Perform a chi-square goodness-of-fit test against the uniform distribution.',
+      ],
+      expectedOutput: '1-qubit: ~2048 counts for "0" and "1". 4-qubit: all 16 outcomes with ~512 ± 40 counts each. Chi-square test p-value > 0.05 (fail to reject uniformity).',
+      challenge: 'Implement a quantum RNG on a fake noisy backend and measure how hardware bias affects the uniformity. Calculate the bias correction needed.',
+    },
   },
-
-
 };
 
 export default module5Data;

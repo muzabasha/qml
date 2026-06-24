@@ -3,6 +3,59 @@ import type { TopicData } from '../../types';
 const module13Data: Record<string, TopicData> = {
   'module13-topic1': {
     topicId: 'module13-topic1',
+    story: 'In 2017, a startup claimed their AI achieved 99% accuracy in detecting skin cancer. The press celebrated. But dermatologists noticed something odd: the dataset was 95% benign lesions and only 5% malignant. A model that simply predicted "benign" every time would achieve 95% accuracy — yet it would miss every single cancer. This is the accuracy paradox. In QML, the same trap awaits: a quantum classifier might report 90% accuracy on a fraud detection dataset, but if fraud is only 5% of the data, that accuracy could mean the model caught nothing at all. This topic establishes accuracy as the starting point of evaluation — and warns of its dangers.',
+    concepts: [
+      { type: 'text', content: 'Accuracy is the ratio of correct predictions to total predictions: (TP + TN) / (TP + TN + FP + FN). While intuitive, accuracy is misleading for imbalanced datasets where one class dominates. In QML, accuracy must be paired with resource-aware metrics.' },
+      { type: 'math', content: '\\text{Accuracy} = \\frac{TP + TN}{TP + TN + FP + FN} = \\frac{\\text{Correct Predictions}}{\\text{Total Predictions}}' },
+      { type: 'chart', content: 'graph LR\n  A[All Predictions] --> B[Correct]\n  A --> C[Incorrect]\n  B --> D[True Positives TP]\n  B --> E[True Negatives TN]\n  C --> F[False Positives FP]\n  C --> G[False Negatives FN]\n  D --> H[Accuracy = TP+TN / TP+TN+FP+FN]' },
+      { type: 'code', content: 'from sklearn.metrics import accuracy_score\n\ny_true = [0, 0, 1, 1, 0, 0, 0, 1, 0, 0]\ny_pred = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]\n# 90% accuracy but model never predicts class 1 correctly\nacc = accuracy_score(y_true, y_pred)\nprint(f"Accuracy: {acc:.2f}")  # 0.90 -- misleading!' },
+      { type: 'list', content: ['Accuracy = (TP + TN) / Total — simple but can be dangerously misleading', 'Imbalanced datasets (e.g., 95% class A, 5% class B) make accuracy nearly useless', 'Always check class distribution before relying on accuracy', 'In QML, also report quantum resource cost: circuit depth, shots, qubit count', 'Accuracy alone is never sufficient — pair with precision, recall, F1, and confusion matrix'] },
+      { type: 'flipcard', content: { front: 'A model achieves 95% accuracy on a fraud detection dataset where fraud is 3% of cases. Why is this metric misleading?', back: 'A model that predicts "not fraud" for every single sample achieves 97% accuracy without catching any fraud. The 95% accuracy could actually be worse than the trivial baseline — always check class distribution first.' } },
+    ],
+    activity: {
+      description: 'Explore the accuracy paradox by computing accuracy on imbalanced datasets and identifying scenarios where accuracy masks model failure.',
+      steps: [
+        'Generate synthetic datasets with varying class imbalance ratios (90:10, 95:5, 99:1)',
+        'Train a trivial "always predict majority class" model and compute accuracy for each imbalance ratio',
+        'Train a real classifier (any model) and compare its accuracy to the trivial baseline',
+        'Identify datasets where accuracy > 90% but the model is practically useless',
+        'Propose alternative metrics for each identified scenario',
+      ],
+      discussionQuestions: [
+        'If accuracy is misleading for imbalanced data, why is it still the most commonly reported metric?',
+        'How should we evaluate QML models when the benchmark datasets themselves have inherent class imbalance?',
+      ],
+      materials: ['Python with sklearn', 'Synthetic data generator or imbalanced datasets'],
+      codetask: 'Write a function that takes a dataset, a model, and a list of class imbalance ratios. For each ratio, compute the accuracy of the model and of a "majority-class" baseline, and return a DataFrame comparing them.',
+    },
+    project: {
+      description: 'Create a comprehensive guide for evaluating QML classifiers that documents when accuracy is appropriate and when it is misleading, with examples from quantum and classical models.',
+      objectives: [
+        'Demonstrate the accuracy paradox with both classical and quantum classifiers on imbalanced datasets',
+        'Develop a decision tree for selecting the right evaluation metric based on dataset properties',
+        'Include quantum resource costs (circuit depth, shots) as part of the evaluation framework',
+      ],
+      deliverables: [
+        'Jupyter notebook with experiments showing accuracy failure cases on imbalanced data',
+        'A decision flowchart (digital) for metric selection',
+        'A short paper-style report (3–4 pages) on accuracy in QML evaluation',
+      ],
+      tools: ['sklearn, Qiskit, matplotlib', 'Imbalanced classification datasets'],
+    },
+    lab: {
+      description: 'Compute accuracy for multiple QML and classical models on imbalanced datasets to observe the accuracy paradox firsthand and learn to interpret accuracy in context.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn numpy matplotlib',
+      steps: [
+        'Load the Breast Cancer dataset and artificially imbalance it by downsampling the positive class to 5%',
+        'Train a DummyClassifier (strategy="most_frequent") as the trivial baseline',
+        'Train a QSVM and a classical SVM on the imbalanced dataset',
+        'Compute and display accuracy for all three models',
+        'Compare against the true positive rate to see if accuracy hides poor recall',
+        'Repeat with varying imbalance ratios (10%, 5%, 2%, 1%) and plot accuracy vs recall',
+      ],
+      expectedOutput: 'A plot showing accuracy staying high while recall drops as imbalance increases, demonstrating the accuracy paradox visually.',
+      challenge: 'Design a weighted accuracy metric that incorporates the cost of false negatives versus false positives. For a fraud detection scenario where FN costs 100x more than FP, compute the "cost-weighted accuracy" for each model.',
+    },
     prerequisites: [
       'Module 9: QSVM — understanding of quantum classification pipeline',
       'Module 11: QNN — understanding of QNN classification outputs',
@@ -111,6 +164,59 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic2': {
     topicId: 'module13-topic2',
+    story: 'In 2020, a hospital deployed an AI system to detect pneumonia from chest X-rays. The system reported 97% accuracy. But doctors soon discovered it had learned to recognize "hospital X-ray machine" markings rather than actual pneumonia — it achieved high accuracy by memorizing spurious correlations. Precision and recall would have told a different story: precision was high (when it predicted pneumonia, it was usually right), but recall was abysmal (it missed most real pneumonia cases). This case illustrates why we need more granular metrics: accuracy tells us the overall score; precision and recall tell us the detailed report card. In QML, where training data is often scarce and spurious correlations are easy to learn, precision and recall are essential guardrails.',
+    concepts: [
+      { type: 'text', content: 'Precision answers "when the model predicts positive, how often is it correct?" (TP / (TP + FP)). Recall answers "of all actual positive cases, how many did the model catch?" (TP / (TP + FN)). The F1-score is their harmonic mean, penalizing extreme imbalance between them.' },
+      { type: 'math', content: 'P = \\frac{TP}{TP+FP}, \\quad R = \\frac{TP}{TP+FN}, \\quad F_1 = 2 \\cdot \\frac{P \\cdot R}{P + R}' },
+      { type: 'chart', content: 'graph TD\n  subgraph Actual\n    A1[Actual Positive] -->|Correct| B[True Positive]\n    A1 -->|Missed| C[False Negative]\n    A2[Actual Negative] -->|False Alarm| D[False Positive]\n    A2 -->|Correct| E[True Negative]\n  end\n  B --> F[Precision = TP / TP+FP]\n  B --> G[Recall = TP / TP+FN]\n  D --> F\n  C --> G' },
+      { type: 'code', content: 'from sklearn.metrics import precision_score, recall_score, f1_score\n\ny_true = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0]\ny_pred = [1, 0, 0, 1, 0, 1, 1, 0, 0, 0]\n\np = precision_score(y_true, y_pred)\nr = recall_score(y_true, y_pred)\nf = f1_score(y_true, y_pred)\nprint(f"P={p:.2f}, R={r:.2f}, F1={f:.2f}")\n# High precision, low recall scenario' },
+      { type: 'list', content: ['Precision = TP / (TP + FP): accuracy of positive predictions — minimizes false alarms', 'Recall = TP / (TP + FN): coverage of actual positives — minimizes missed detections', 'F1-score = harmonic mean: balanced metric penalizing extreme P/R imbalance', 'Precision and recall trade off: increasing one often reduces the other', 'In QML, low recall may mean the quantum model fails on certain types of samples — investigate the failure patterns'] },
+      { type: 'flipcard', content: { front: 'When is it better to optimize for recall over precision?', back: 'When false negatives are very costly — e.g., medical diagnosis (missing cancer), fraud detection (missing fraud), or security (missing an attack). In these cases, you accept more false alarms to catch more true positives.' } },
+    ],
+    activity: {
+      description: 'Explore the precision-recall trade-off by adjusting decision thresholds of a quantum classifier and observing how the balance shifts.',
+      steps: [
+        'Train any quantum classifier (QSVM or QNN) on a binary classification dataset',
+        'Obtain the raw prediction scores (decision function or probabilities) for the test set',
+        'Vary the decision threshold from 0 to 1 and compute precision and recall at each threshold',
+        'Plot the precision-recall curve',
+        'Identify the threshold that maximizes F1-score and the threshold that maximizes recall (at any cost)',
+      ],
+      discussionQuestions: [
+        'For a QML fraud detection model, would you optimize for precision or recall? Why?',
+        'How does the precision-recall trade-off inform the choice of quantum model architecture?',
+      ],
+      materials: ['Trained quantum classifier (QSVM or QNN)', 'sklearn.metrics for precision, recall, F1'],
+      codetask: 'Write a function that takes y_true and y_scores (float predictions) and a list of thresholds, and returns a DataFrame with precision, recall, and F1 at each threshold. Find the optimal threshold automatically.',
+    },
+    project: {
+      description: 'Develop a precision-recall analysis toolkit for QML classifiers that helps practitioners select the optimal decision threshold based on the cost of false positives vs false negatives.',
+      objectives: [
+        'Implement threshold analysis for any QML classifier\'s raw output scores',
+        'Create a cost-sensitive optimization function that finds the optimal threshold given FP and FN costs',
+        'Integrate the toolkit with Qiskit and PennyLane classifiers',
+      ],
+      deliverables: [
+        'Python class QMLThresholdOptimizer with fit, optimize_threshold, and plot_curve methods',
+        'Demo notebook applying the toolkit to QSVM and QNN on 3 datasets',
+        'Report analyzing the optimal thresholds for different cost scenarios',
+      ],
+      tools: ['Qiskit or PennyLane, sklearn, matplotlib, numpy'],
+    },
+    lab: {
+      description: 'Compute precision, recall, and F1-score for a quantum classifier on an imbalanced dataset and learn to interpret the trade-off between them.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn matplotlib numpy',
+      steps: [
+        'Load a dataset with moderate class imbalance (e.g., Breast Cancer: 37% malignant)',
+        'Train a QSVM (quantum kernel) and obtain decision function scores on test data',
+        'Compute precision, recall, and F1 at the default threshold (0)',
+        'Plot the precision-recall curve and compute the area under the PR curve (AUC-PR)',
+        'Find the threshold that maximizes the F1-score',
+        'Report the confusion matrices at default vs optimal thresholds',
+      ],
+      expectedOutput: 'A precision-recall curve plot with the optimal threshold marked, and two confusion matrices (default threshold vs optimal threshold) showing the trade-off.',
+      challenge: 'Implement a "cost-sensitive" threshold selection where FN_cost = 10 × FP_cost. Find the threshold that minimizes total cost on the test set, and compare its confusion matrix to the F1-optimal threshold.',
+    },
     prerequisites: [
       '13.1 Accuracy and Classification Metrics — foundational metric understanding',
       'Understanding of binary classification outcomes: TP, TN, FP, FN',
@@ -220,6 +326,59 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic3': {
     topicId: 'module13-topic3',
+    story: 'In 2018, a quantum computing startup published results showing their QML model achieved 92% accuracy on a 10-class classification problem. Impressive — until a reviewer plotted the confusion matrix. It revealed that the quantum model correctly classified 9 out of 10 classes but confused class 7 with class 8 in almost every case. The accuracy number hid this specific weakness. The confusion matrix, by contrast, showed exactly where the quantum model struggled. This level of detail is invaluable: if the quantum model consistently confuses chemically similar molecular structures, the chemist using it knows to double-check those predictions. The confusion matrix is the diagnostic tool that accuracy alone cannot replace.',
+    concepts: [
+      { type: 'text', content: 'A confusion matrix is a C×C matrix (C = number of classes). Rows correspond to actual classes, columns to predicted classes. Diagonal entries are correct predictions; off-diagonal entries reveal specific error patterns. For binary classification, the matrix has TN (top-left), FP (top-right), FN (bottom-left), TP (bottom-right).' },
+      { type: 'math', content: '\\text{False Positive Rate (FPR)} = \\frac{FP}{FP + TN}, \\quad \\text{False Negative Rate (FNR)} = \\frac{FN}{FN + TP}' },
+      { type: 'chart', content: 'graph TD\n  subgraph Binary Confusion Matrix\n    A[Actual Negative] -->|Predicted Negative| B[TN]\n    A -->|Predicted Positive| C[FP]\n    D[Actual Positive] -->|Predicted Negative| E[FN]\n    D -->|Predicted Positive| F[TP]\n  end\n  B --> G[Specificity = TN / TN+FP]\n  F --> H[Sensitivity = TP / TP+FN]' },
+      { type: 'code', content: 'from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay\nimport matplotlib.pyplot as plt\n\ny_true = [0, 0, 1, 1, 2, 2, 2, 0, 1, 2]\ny_pred = [0, 0, 0, 1, 2, 2, 1, 0, 1, 2]\n\ncm = confusion_matrix(y_true, y_pred, labels=[0, 1, 2])\ndisp = ConfusionMatrixDisplay(cm, display_labels=[0, 1, 2])\ndisp.plot()\nplt.show()\n# Reveals: class 1 is often confused with class 0' },
+      { type: 'list', content: ['Binary confusion matrix: 4 cells (TN, FP, FN, TP) support all derived metrics', 'Multi-class matrix: C×C, diagonal = correct, off-diagonal = specific confusions', 'Normalized matrix (row-wise) shows per-class accuracy, accounting for class imbalance', 'Comparing confusion matrices between quantum and classical models reveals where QML excels', 'Off-diagonal patterns can suggest feature map improvements (e.g., classes that entangle)'] },
+      { type: 'flipcard', content: { front: 'How can a confusion matrix help diagnose a quantum feature map?', back: 'If a confusion matrix shows specific class pairs being confused, it may indicate that the quantum feature map does not create enough separation between those classes in Hilbert space — suggesting the need for a different encoding or more entanglement.' } },
+    ],
+    activity: {
+      description: 'Generate and analyze confusion matrices for quantum and classical classifiers to identify patterns in model errors and diagnose weaknesses.',
+      steps: [
+        'Train a QSVM and a classical SVM on a multi-class dataset (e.g., Iris or Digits)',
+        'Plot confusion matrices for both models (use normalized versions for fair comparison)',
+        'Identify which class pairs each model confuses most',
+        'Calculate per-class precision, recall, and F1 from the confusion matrix entries',
+        'Write a diagnostic: what do the confusion patterns reveal about each model?',
+      ],
+      discussionQuestions: [
+        'If a quantum model confuses classes A and B while a classical model does not, what does this suggest about the quantum feature map?',
+        'How would you use confusion matrix analysis to iteratively improve a quantum classifier\'s architecture?',
+      ],
+      materials: ['Trained QSVM and classical SVM models', 'sklearn.metrics.confusion_matrix'],
+      codetask: 'Write a function that takes two confusion matrices (quantum and classical) and returns a "difference matrix" — highlighting where the quantum model improves or worsens compared to the classical model for each class pair.',
+    },
+    project: {
+      description: 'Build a diagnostic toolkit that uses confusion matrix analysis to automatically suggest improvements to quantum classifier architectures based on error patterns.',
+      objectives: [
+        'Implement a confusion-matrix-driven diagnostic that identifies weak class separations',
+        'Suggest specific feature map modifications (more qubits, different encoding, more entanglement) based on error patterns',
+        'Validate the diagnostic by applying suggested improvements and measuring confusion reduction',
+      ],
+      deliverables: [
+        'Python class ConfusionDiagnostic for QML that analyzes error patterns and suggests improvements',
+        'Demonstration notebook on 3+ datasets showing the diagnostic loop: analyze → suggest → improve → re-analyze',
+        'Report documenting common confusion patterns and their architectural remedies',
+      ],
+      tools: ['Qiskit, sklearn, matplotlib, seaborn', 'Multi-class datasets (Iris, Wine, Digits)'],
+    },
+    lab: {
+      description: 'Generate and analyze confusion matrices for quantum and classical classifiers on a multi-class dataset, learning to extract detailed diagnostic information from error patterns.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn matplotlib seaborn pandas',
+      steps: [
+        'Load the Iris dataset (3 classes) and split into train/test',
+        'Train a classical SVM (RBF kernel) and a QSVM (ZZFeatureMap kernel)',
+        'Generate confusion matrices for both models using sklearn\'s ConfusionMatrixDisplay',
+        'Create normalized confusion matrices (row-wise) to see per-class accuracy',
+        'Compute per-class precision, recall, and F1 from the matrix values',
+        'Write a paragraph analyzing which classes each model handles well and poorly',
+      ],
+      expectedOutput: 'Side-by-side confusion matrices (raw and normalized) for QSVM and classical SVM, with a table of per-class metrics and an analysis paragraph identifying class-specific strengths and weaknesses.',
+      challenge: 'Train a QNN on the Iris dataset and generate its confusion matrix. Compare with QSVM. The QNN may have different confusion patterns — hypothesize why the architectures produce different errors, and verify by examining the decision boundaries.',
+    },
     prerequisites: [
       '13.2 Precision, Recall, and F1 Score — TP, TN, FP, FN concepts',
       'Understanding of binary classification outcomes at the sample level',
@@ -328,6 +487,60 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic4': {
     topicId: 'module13-topic4',
+    story: 'In 2021, a highly publicized paper claimed "quantum advantage in classification" on a gene expression dataset. The authors reported that their QSVM achieved 96% accuracy versus 92% for classical SVM. A win for QML — until a skeptical reviewer noticed that the classical SVM used default hyperparameters (C=1.0, gamma="scale") while the quantum kernel had been extensively tuned. After proper tuning, the classical SVM also reached 96%. The "quantum advantage" vanished. This episode is a cautionary tale: fair comparison between quantum and classical models is harder than it looks. This topic teaches the rigorous methodology needed to ensure that observed performance differences are real, not artifacts of unequal treatment.',
+    concepts: [
+      { type: 'text', content: 'Comparing classical and quantum models requires identical experimental conditions: same train-test splits, same preprocessing, same evaluation metrics, and equal hyperparameter optimization effort. Report both the accuracy gap (quantum minus classical) and statistical significance.' },
+      { type: 'math', content: '\\Delta = \\text{Acc}_{\\text{quantum}} - \\text{Acc}_{\\text{classical}}, \\quad H_0: \\Delta = 0 \\; (\\text{no advantage}), \\quad H_1: \\Delta > 0 \\; (\\text{quantum advantage})' },
+      { type: 'chart', content: 'graph TD\n  A[Dataset] --> B[Train/Test Split\n  Fixed Seed]\n  A --> C[k-Fold CV\n  Same Folds]\n  B --> D[Classical Model\n  Hyperparameter Tuning]\n  B --> E[Quantum Model\n  Hyperparameter Tuning]\n  C --> D\n  C --> E\n  D --> F[Evaluation: Same Metrics]\n  E --> F\n  F --> G[Statistical Test\n  Compare Performance]' },
+      { type: 'code', content: 'from sklearn.model_selection import cross_val_score, KFold\nfrom sklearn.svm import SVC\nfrom qiskit_machine_learning.kernels import QuantumKernel\nimport numpy as np\n\n# Same CV folds for both models\ncv = KFold(n_splits=5, shuffle=True, random_state=42)\n\nclassical_scores = cross_val_score(SVC(kernel="rbf"), X, y, cv=cv)\nqsvm_scores = cross_val_score(SVC(kernel=quantum_kernel), X, y, cv=cv)\n\nprint(f"Classical: {np.mean(classical_scores):.3f}±{np.std(classical_scores):.3f}")\nprint(f"Quantum:   {np.mean(qsvm_scores):.3f}±{np.std(qsvm_scores):.3f}")' },
+      { type: 'list', content: ['Use identical CV folds for both models — same random seed ensures fair comparison', 'Hyperparameter tuning effort must be equal: grid search for both, not just quantum', 'Report mean ± std across CV folds, not just a single train-test split', 'Statistical significance test (t-test or Wilcoxon) before claiming advantage', 'Also compare sample efficiency: how much data does each model need for the same accuracy?'] },
+      { type: 'flipcard', content: { front: 'What is the "Occam\'s razor" argument in QML comparison?', back: 'If a QNN with 20 parameters matches the accuracy of a classical NN with 10,000 parameters, the quantum model is likely better at capturing the underlying structure — simpler models generalize better, and this simplicity is a form of advantage beyond raw accuracy.' } },
+    ],
+    activity: {
+      description: 'Conduct a controlled comparison between a quantum and classical classifier, ensuring equal hyperparameter tuning effort and reporting statistically sound results.',
+      steps: [
+        'Choose a dataset and create a fixed 5-fold CV split with a known random seed',
+        'Run a grid search for both a classical SVM (RBF kernel, varying C and gamma) and a QSVM (varying quantum kernel parameters) — use the same number of grid points',
+        'Select the best hyperparameters for each model based on CV accuracy',
+        'Compare test accuracies and compute the accuracy gap (quantum - classical)',
+        'Perform a paired t-test on the fold-wise scores to check statistical significance',
+        'Write a conclusion: is there evidence for quantum advantage on this dataset?',
+      ],
+      discussionQuestions: [
+        'What if the quantum model does not outperform the classical model after fair tuning? Is the research still valuable?',
+        'How would you design a comparison where the quantum model is allowed to use different (more expensive) resources? How do you account for that cost?',
+      ],
+      materials: ['Qiskit, sklearn, scipy.stats for t-test', 'Dataset of choice (synthetic or benchmark)'],
+      codetask: 'Write a function compare_quantum_classical that takes data, a quantum model builder, a classical model builder, and an integer for the number of grid search points. It returns a comparison report including accuracy gap, p-value, and a recommendation (advantage, no advantage, inconclusive).',
+    },
+    project: {
+      description: 'Build an automated comparison framework that fairly evaluates quantum vs classical models with rigorous statistical methodology, producing reproducible comparison reports.',
+      objectives: [
+        'Automate the fair comparison pipeline: same CV folds, equal tuning effort, statistical testing',
+        'Support multiple quantum model types (QSVM, QNN) and classical counterparts (SVM, RF, XGBoost)',
+        'Generate standardized comparison reports suitable for publication',
+      ],
+      deliverables: [
+        'Python package QMLCompare with a simple API for fair model comparison',
+        'Demonstration comparing 3 quantum models against 5 classical models on 5 benchmark datasets',
+        'Standardized report template (markdown + figures) for documenting comparison results',
+      ],
+      tools: ['Qiskit, sklearn, scipy, pandas, matplotlib', 'Benchmark dataset collection'],
+    },
+    lab: {
+      description: 'Conduct a rigorous head-to-head comparison of QSVM and classical SVM with equal hyperparameter tuning, statistically analyzing whether the quantum model provides an advantage.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn scipy pandas matplotlib',
+      steps: [
+        'Load the Wine dataset and create stratified 5-fold CV splits with random_state=42',
+        'Define a parameter grid for classical SVM: C ∈ [0.1, 1, 10, 100], gamma ∈ [0.001, 0.01, 0.1, 1]',
+        'Define a parameter grid for quantum kernel: entanglement=["full", "linear"], repetitions=[1, 2, 3]',
+        'Run GridSearchCV for both models and record the best parameters and CV score',
+        'Evaluate the best models on the held-out test set',
+        'Report: accuracy gap, p-value from paired t-test, and a conclusion statement',
+      ],
+      expectedOutput: 'A comparison report table showing best parameters, CV scores, test scores, and a statistical significance analysis with a clear conclusion about whether quantum advantage was observed.',
+      challenge: 'Repeat the comparison on a synthetic dataset designed to be hard for classical kernels (e.g., concentric circles). Does the quantum kernel show advantage here? If not, design a data transformation that makes the quantum kernel\'s advantage clear.',
+    },
     prerequisites: [
       '13.3 Confusion Matrix Analysis — detailed error analysis capability',
       'Module 9: QSVM and Module 11: QNN — practical experience with quantum models',
@@ -437,6 +650,59 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic5': {
     topicId: 'module13-topic5',
+    story: 'In 2019, Google\'s Sycamore processor achieved "quantum supremacy" with a random circuit sampling task — a problem designed to be hard for classical computers but useless in practice. This was a milestone, but it left the question: when will quantum computers be useful? Three years later, Huang et al. (2022) published a landmark result showing provable quantum advantage for learning from quantum data — a task relevant to chemistry and materials science. The distinction between "supremacy" (can we do something classical cannot?) and "advantage" (can we do something useful better?) is critical. In QML, we chase advantage: not just higher accuracy, but practical improvements in sample efficiency, generalization, or the ability to solve problems that are intractable classically.',
+    concepts: [
+      { type: 'text', content: 'Quantum advantage in ML means a quantum algorithm outperforms the best known classical algorithm on a practically relevant task. This can take the form of: (1) better accuracy, (2) better sample efficiency, (3) provable complexity separation. Quantum supremacy, by contrast, was demonstrated on an artificial task.' },
+      { type: 'math', content: '\\text{Quantum Advantage} \\iff \\exists \\; \\mathcal{A}_{\\text{quantum}} : \\forall \\; \\mathcal{A}_{\\text{classical}}, \\; \\text{Perf}(\\mathcal{A}_{\\text{quantum}}) > \\text{Perf}(\\mathcal{A}_{\\text{classical}})' },
+      { type: 'chart', content: 'graph TD\n  A[Quantum Computing] --> B[Quantum Supremacy\n  2019: Sycamore\n  Random Circuit Sampling]\n  A --> C[Quantum Advantage\n  Useful Task Outperformance]\n  C --> D[Provable\n  Formal Proof]\n  C --> E[Empirical\n  Demonstrated in Practice]\n  D --> F[Learning from Quantum Data\n  Huang et al. 2022]\n  E --> G[QML Classification\n  Ongoing Research]' },
+      { type: 'code', content: '# Conceptual: provable advantage scenario\n# Quantum model can learn from exponentially fewer samples\n# for data generated by quantum processes\n\ndef quantum_advantage_scenario():\n    # Data comes from a quantum process (e.g., molecule simulation)\n    # Quantum model: directly uses quantum states as input\n    # Classical model: must reconstruct quantum state from measurements\n    # Result: quantum model needs O(n) samples, classical needs O(2^n)\n    print("Provably more sample-efficient!")\n    return "Quantum Advantage: Sample Complexity"' },
+      { type: 'list', content: ['Quantum supremacy = classical computer cannot simulate the task at all (even an artificial one)', 'Quantum advantage = useful practical outperformance on real-world tasks', 'Provable advantage: mathematical proof that classical algorithms cannot match quantum performance', 'Empirical advantage: observed in experiments but not yet proven theoretically', 'Current QML shows mostly comparable or slightly better performance — true provable advantage remains rare'] },
+      { type: 'flipcard', content: { front: 'Why is proving quantum advantage in ML so difficult?', back: 'Classical ML has decades of optimization and powerful heuristics. Even if a quantum method is theoretically superior, classical methods may approximate it well on small problem sizes (where we can currently experiment). Separating fundamental advantage from practical approximation is the core challenge.' } },
+    ],
+    activity: {
+      description: 'Critically evaluate published claims of quantum advantage in QML by analyzing their methodology and identifying potential weaknesses.',
+      steps: [
+        'Select 3 QML papers from the provided list that claim quantum advantage',
+        'For each paper, identify: (1) What is the claimed advantage? (2) What classical baseline was used? (3) Was hyperparameter tuning fair? (4) Was statistical significance tested?',
+        'Score each paper on a "strength of evidence" scale from 1 (weak) to 5 (strong)',
+        'Write a critique of the strongest and weakest claim',
+        'Present your analysis to the group and discuss',
+      ],
+      discussionQuestions: [
+        'Should journals require a minimum standard for claiming quantum advantage (e.g., statistical tests, fair baselines)?',
+        'Is it acceptable to claim "quantum advantage" based on empirical results alone, without a formal proof?',
+      ],
+      materials: ['List of QML advantage papers', 'Evaluation rubric for assessing claims'],
+      codetask: 'Write a Python script that generates a synthetic dataset where a quantum kernel provably outperforms classical kernels (based on the "learning from quantum data" framework). Verify the advantage experimentally.',
+    },
+    project: {
+      description: 'Write a comprehensive literature review and experimental analysis of quantum advantage claims in QML, identifying patterns in which types of problems exhibit advantage and which do not.',
+      objectives: [
+        'Catalog all major quantum advantage claims in QML from 2018–2026',
+        'Re-implement the top 3 most cited advantage demonstrations',
+        'Identify common characteristics of problems where quantum advantage appears (data type, size, structure)',
+      ],
+      deliverables: [
+        'Literature review paper (5–10 pages) analyzing the landscape of quantum advantage claims',
+        'Reproducible notebooks re-implementing key advantage demonstrations',
+        'A taxonomy of QML problems categorized by likelihood of quantum advantage',
+      ],
+      tools: ['Qiskit, PennyLane, sklearn', 'Academic paper access (arXiv, journals)'],
+    },
+    lab: {
+      description: 'Attempt to reproduce a published quantum advantage result and then test whether the advantage holds under rigorous fair comparison conditions.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn scipy',
+      steps: [
+        'Select a dataset and quantum model from a paper claiming advantage (e.g., using ZZFeatureMap vs RBF kernel)',
+        'Reproduce the paper\'s exact experiment with their reported hyperparameters',
+        'Now run a fair comparison: perform grid search for both quantum and classical models',
+        'Check if the advantage persists after equal tuning effort',
+        'Apply statistical significance testing (paired t-test, α=0.05)',
+        'Write a conclusion: "Advantage confirmed," "Advantage not reproducible," or "Inconclusive — needs more data"',
+      ],
+      expectedOutput: 'A reproduction report showing the original claimed results, the reproduced results, and the results after fair comparison. Include a clear verdict on whether quantum advantage was confirmed.',
+      challenge: 'Design a synthetic dataset where you can provably demonstrate quantum advantage. The challenge is to make the advantage large enough (Δ > 10%) and statistically significant (p < 0.01). Document the dataset\'s properties that enable the quantum advantage.',
+    },
     prerequisites: [
       '13.4 Comparing Classical and Quantum Models — practical comparison methodology',
       'Module 1.2: Why QML? — initial quantum advantage motivation',
@@ -545,6 +811,60 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic6': {
     topicId: 'module13-topic6',
+    story: 'In 2022, a consortium of quantum computing companies launched "QMLBench" — a standardized benchmark suite for comparing quantum and classical ML models. Before QMLBench, every paper used different datasets, different metrics, and different comparison protocols, making it nearly impossible to track progress across the field. One paper would report accuracy on Iris, another on a proprietary molecular dataset, and a third on random synthetic data. QMLBench changed this by defining: (1) a fixed set of benchmark datasets, (2) standardized train-test splits, (3) required metrics (accuracy, F1, training time, quantum resource costs), and (4) statistical significance requirements. This topic teaches you how to design and apply such benchmarking strategies — the foundation of credible QML research.',
+    concepts: [
+      { type: 'text', content: 'A benchmarking strategy defines: datasets (fixed splits), models (quantum and classical), metrics (accuracy, F1, resource cost, timing), and statistical validation (cross-validation, significance tests). Reproducibility requires fixed random seeds, documented hyperparameters, and versioned code.' },
+      { type: 'math', content: '\\text{Report: } \\mu_k \\pm \\sigma_k \\; \\forall \\; k \\in \\{1, \\dots, K\\} \\text{ models}, \\quad \\text{with } p\\text{-value from paired test}' },
+      { type: 'chart', content: 'graph TD\n  A[Benchmark Suite] --> B[Datasets\n  Fixed Splits]\n  A --> C[Models\n  Quantum + Classical]\n  A --> D[Metrics\n  Performance + Resource]\n  A --> E[Protocol\n  CV + Significance]\n  B --> F[Reproducible Report]\n  C --> F\n  D --> F\n  E --> F\n  F --> G[Community Progress\n  Tracking]' },
+      { type: 'code', content: 'import json\nfrom datetime import datetime\n\ndef run_benchmark(datasets, models, cv_folds=5):\n    results = {\n        "timestamp": datetime.now().isoformat(),\n        "datasets": [],\n        "models": []\n    }\n    for dataset in datasets:\n        dataset_results = {"name": dataset.name, "model_scores": {}}\n        for model_name in models:\n            scores = cross_val_score(model, dataset.X, dataset.y, cv=cv_folds)\n            dataset_results["model_scores"][model_name] = {\n                "mean": float(np.mean(scores)),\n                "std": float(np.std(scores)),\n                "all_folds": scores.tolist()\n            }\n        results["datasets"].append(dataset_results)\n    return results' },
+      { type: 'list', content: ['Fixed dataset splits: use predefined train/test indices (not random each time)', 'Cross-validation: k-fold with fixed seeds for reproducibility', 'Required metrics: accuracy, F1 (macro), training time (seconds), quantum resource costs (qubits, depth, shots)', 'Statistical significance: paired t-test or Wilcoxon for model comparisons', 'Version control: document library versions (Qiskit, sklearn, Python) for exact reproducibility'] },
+      { type: 'flipcard', content: { front: 'Why is dataset scaling important in QML benchmarking?', back: 'Testing models on varying dataset sizes (50, 100, 500, 1000 samples) reveals sample efficiency — how much data each model needs to reach peak performance. QML models might show advantage only at certain dataset sizes, making this a critical dimension of benchmarking.' } },
+    ],
+    activity: {
+      description: 'Design and implement a benchmarking protocol for comparing QML and classical models on a standardized dataset, producing a reproducible report.',
+      steps: [
+        'Select 1 quantum model (QSVM) and 2 classical models (SVM RBF, Random Forest)',
+        'Select 2 benchmark datasets with predefined train-test splits',
+        'Define the benchmark protocol: 5-fold CV, fixed seeds, metrics (accuracy, F1, training time, qubits, circuit depth)',
+        'Run the benchmark and collect all metrics',
+        'Generate a benchmark report with comparison tables and visualizations',
+      ],
+      discussionQuestions: [
+        'What additional metrics would you add to the benchmark for a specific domain (e.g., drug discovery, finance)?',
+        'How would you handle the trade-off between quantum resource cost and performance in the benchmark ranking?',
+      ],
+      materials: ['Qiskit, sklearn', 'Benchmark datasets with fixed splits'],
+      codetask: 'Write a function that takes a results dictionary from a benchmark run and generates a LaTeX-compatible table and a matplotlib bar chart comparing all models across all metrics.',
+    },
+    project: {
+      description: 'Build a complete benchmarking framework for QML that generates standardized, reproducible reports suitable for publication, with support for multiple quantum and classical models.',
+      objectives: [
+        'Implement a configurable benchmarking pipeline supporting QSVM, QNN, classical SVM, RF, and Logistic Regression',
+        'Generate standardized reports including tables, figures, and statistical analysis',
+        'Benchmark at least 5 datasets and publish the results as a reference point for the field',
+      ],
+      deliverables: [
+        'Python package QMLBench with command-line interface for running benchmarks',
+        'Reference benchmark results on 5+ datasets with 3+ quantum and 5+ classical models',
+        'Report template (LaTeX/markdown) for publishing benchmark results',
+        'Docker container for exact reproducibility of benchmark environment',
+      ],
+      tools: ['Qiskit, PennyLane, sklearn, pandas, matplotlib, Docker'],
+    },
+    lab: {
+      description: 'Run a standardized benchmark comparing a QSVM against two classical baselines across two datasets, producing a complete reproducible benchmark report.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn scipy pandas matplotlib seaborn',
+      steps: [
+        'Load the Wine and Breast Cancer datasets with predefined train-test splits (random_state=42)',
+        'Define benchmarking protocol: 5-fold CV, compute accuracy, F1 (macro), training time, and for QSVM also record qubit count and circuit depth',
+        'Run the benchmark for QSVM (ZZFeatureMap), classical SVM (RBF kernel), and Random Forest',
+        'Collect results into a pandas DataFrame',
+        'Generate a comparison bar chart with error bars and a summary table',
+        'Run a statistical test (paired t-test between each pair of models)',
+      ],
+      expectedOutput: 'A benchmark report containing: (1) comparison table of all metrics across datasets, (2) bar chart visualization, (3) statistical significance matrix, (4) a one-paragraph summary of findings.',
+      challenge: 'Extend the benchmark to include dataset scaling: for each dataset, run the full benchmark on subsets of size [25, 50, 100, 200, full]. Plot accuracy vs dataset size for each model. Does the quantum model\'s relative performance change with dataset size?',
+    },
     prerequisites: [
       '13.5 Understanding Quantum Advantage — goals of benchmarking',
       'Familiarity with standard ML benchmarking practices (train-test split, cross-validation)',
@@ -654,6 +974,61 @@ const module13Data: Record<string, TopicData> = {
 
   'module13-topic7': {
     topicId: 'module13-topic7',
+    story: 'A research group spent six months building a novel QNN architecture. Their results looked impressive — 94% accuracy on a difficult classification task. But when a collaborator asked to see the confusion matrix, the training curves, and the classical baseline comparison, the group realized they had not saved the intermediate results. They had the final accuracy number but could not explain why their model worked, where it failed, or whether it was truly better than classical alternatives. This cautionary tale illustrates why the evaluation lab is the most important practical skill in this module. By the end of this lab, you will not only know how to evaluate models — you will have a reproducible evaluation pipeline that documents every aspect of your model\'s performance for scrutiny and reproduction.',
+    concepts: [
+      { type: 'text', content: 'The evaluation lab integrates all Module 13 concepts: compute accuracy, precision, recall, F1, confusion matrix, compare quantum vs classical with fair methodology, benchmark with cross-validation, and interpret results in the context of quantum advantage. Reproducibility is the core requirement.' },
+      { type: 'math', content: '\\text{Comprehensive Evaluation} = \\{ \\text{Acc}, P, R, F_1, \\text{CM}, \\Delta_{\\text{q-c}}, p\\text{-value}, \\text{cost}_{\\text{quantum}} \\}' },
+      { type: 'chart', content: 'graph TD\n  A[Lab Pipeline] --> B[Data Prep\n  Split + Scale]\n  B --> C[Train Classical\n  SVM + RF + LR]\n  B --> D[Train Quantum\n  QSVM + QNN]\n  C --> E[Compute Metrics\n  Acc, F1, Confusion]\n  D --> E\n  E --> F[Statistical\n  Comparison]\n  F --> G[Visualization\n  Charts + Tables]\n  G --> H[Report:\n  Findings + Conclusions]' },
+      { type: 'code', content: 'def evaluation_lab_pipeline(X, y, random_state=42):\n    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=random_state)\n    scaler = StandardScaler().fit(X_train)\n    X_train_scaled = scaler.transform(X_train)\n    X_test_scaled = scaler.transform(X_test)\n\n    models = {\n        "SVM (RBF)": SVC(kernel="rbf"),\n        "Random Forest": RandomForestClassifier(),\n        "QSVM": SVC(kernel=quantum_kernel)\n    }\n    results = {}\n    for name, model in models.items():\n        model.fit(X_train_scaled, y_train)\n        y_pred = model.predict(X_test_scaled)\n        results[name] = {\n            "accuracy": accuracy_score(y_test, y_pred),\n            "f1": f1_score(y_test, y_pred, average="macro"),\n            "confusion": confusion_matrix(y_test, y_pred)\n        }\n    return results' },
+      { type: 'list', content: ['Step 1: Load data, preprocess (scale), split (train/test) — with fixed seed', 'Step 2: Train multiple classical baselines (SVM, RF, Logistic Regression)', 'Step 3: Train quantum models (QSVM, QNN) with same data splits', 'Step 4: Compute comprehensive metrics for all models', 'Step 5: Generate visualizations (bar charts, confusion matrices)', 'Step 6: Write conclusions: which model works best, when, and why?'] },
+      { type: 'flipcard', content: { front: 'What is the single most important practice for reproducible QML evaluation?', back: 'Fix ALL random seeds: numpy.random.seed(42), random.seed(42), and use fixed train_test_split arguments. Document every hyperparameter, every library version, and every data preprocessing step. Your future self (and reviewers) will thank you.' } },
+    ],
+    activity: {
+      description: 'Complete the full evaluation lab: train multiple classical and quantum models on the same dataset, compute comprehensive metrics, and write a rigorous comparison report.',
+      steps: [
+        'Preprocess the dataset: handle missing values, scale features, stratify train-test split',
+        'Train 3 classical models (SVM, Random Forest, Logistic Regression) with default hyperparameters',
+        'Train 2 quantum models (QSVM with ZZFeatureMap, QNN with 4 qubits)',
+        'Compute accuracy, precision, recall, F1 (macro), and confusion matrices for all models',
+        'Generate a comparison bar chart and a summary table',
+        'Write a one-page report: which model performs best? Does the quantum model show advantage? Why or why not?',
+      ],
+      discussionQuestions: [
+        'If none of the quantum models outperform classical baselines, what conclusions can you still draw from the experiment?',
+        'How would you modify the experiment to potentially demonstrate quantum advantage? (Different dataset? Different feature map? More qubits?)',
+      ],
+      materials: ['Complete Python environment with Qiskit, sklearn, matplotlib', 'Benchmark dataset'],
+      codetask: 'Write a function that takes a trained model, test data, and a model name string, and returns a dictionary containing accuracy, F1, precision, recall, confusion matrix, and classification report (using sklearn.metrics.classification_report).',
+    },
+    project: {
+      description: 'Create a comprehensive QML model evaluation portfolio that evaluates quantum and classical models across multiple datasets and metrics, serving as both a reference and a template for reproducible QML research.',
+      objectives: [
+        'Evaluate at least 3 quantum models and 5 classical models across 5 diverse datasets',
+        'Apply the full suite of metrics and statistical tests from Module 13',
+        'Produce a publication-quality evaluation report with reproducible code',
+      ],
+      deliverables: [
+        'Jupyter notebook collection (one per dataset) with complete evaluation pipelines',
+        'A master comparison report aggregating results across all datasets',
+        'Reproducible environment specification (requirements.txt or environment.yml)',
+        'A README explaining how to reproduce all results',
+      ],
+      tools: ['Qiskit, PennyLane, sklearn, pandas, matplotlib, seaborn, scipy'],
+    },
+    lab: {
+      description: 'The capstone evaluation lab: build a complete pipeline that trains and evaluates multiple classical and quantum models, generates comprehensive metrics, and produces a publication-quality comparison report.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn scipy pandas matplotlib seaborn',
+      steps: [
+        'Load the Breast Cancer dataset, scale features, and create a stratified train-test split (80:20, random_state=42)',
+        'Train classical models: SVM (RBF kernel), Random Forest (100 trees), Logistic Regression (max_iter=1000)',
+        'Train quantum models: QSVM (using ZZFeatureMap with QuantumKernel), QNN (4 qubits, 2 layers)',
+        'For each model, compute and store: accuracy, precision, recall, F1, confusion matrix, training time (seconds)',
+        'For quantum models, also record: number of qubits, circuit depth, number of shots used',
+        'Generate a comparison figure with subplots: (a) accuracy bar chart, (b) F1 bar chart, (c) confusion matrices grid, (d) training time comparison',
+      ],
+      expectedOutput: 'A complete evaluation report including: comparison table, multi-panel figure, and a 500-word analysis discussing which models performed best, whether quantum advantage was observed, and what factors might explain the results.',
+      challenge: 'The Breast Cancer dataset is relatively easy — most models achieve >95% accuracy. Create a harder synthetic dataset (e.g., concentric circles or moons with noise) where classical models struggle, and demonstrate that a quantum model achieves significantly better performance. Explain what property of the quantum model enables this advantage.',
+    },
     prerequisites: [
       'All topics in Module 13 (13.1–13.6) — complete evaluation and benchmarking theory',
       'Module 9 Lab: QSVM and Module 11 Lab: QNN — practical model building experience',

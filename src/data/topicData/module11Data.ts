@@ -110,6 +110,59 @@ const module11Data: Record<string, TopicData> = {
       'The universal approximation theorem tells us NNs can learn anything — but at what computational cost?',
       'Every deep learning practitioner eventually hits the scalability wall — QML offers a fundamentally different path forward.',
     ],
+    story: 'Every time you unlock your phone with facial recognition or get a movie recommendation on Netflix, a neural network is working behind the scenes. These classical neural networks have revolutionized technology, but they face a fundamental limitation: as problems grow more complex, the number of parameters needed explodes exponentially. Quantum neural networks offer a radically different approach, leveraging the strange laws of quantum mechanics to process information in ways classical computers cannot match.',
+    concepts: [
+      { type: 'text', text: 'A classical neuron computes a weighted sum of its inputs followed by a non-linear activation function. This simple building block, when stacked into layers, can approximate any continuous function — the universal approximation theorem.' },
+      { type: 'math', formula: 'y = \\sigma\\left(\\sum_{i=1}^{n} w_i x_i + b\\right)' },
+      { type: 'diagram', chart: 'flowchart TD\n  A[Input x₁] -->|w₁| C((Σ + b))\n  B[Input x₂] -->|w₂| C\n  C --> D[σ Activation]\n  D --> E[Output y]' },
+      { type: 'code', code: { language: 'python', code: 'import torch.nn as nn\n\nmodel = nn.Sequential(\n    nn.Linear(784, 256),\n    nn.ReLU(),\n    nn.Linear(256, 64),\n    nn.ReLU(),\n    nn.Linear(64, 10)\n)' } },
+      { type: 'list', title: 'Key Activation Functions', items: ['Sigmoid: σ(x) = 1/(1+e⁻ˣ) — smooth, saturating', 'ReLU: f(x) = max(0, x) — sparse, non-saturating', 'Tanh: tanh(x) — zero-centered, saturating'] },
+      { type: 'card', cards: [{ front: 'What problem does backpropagation solve?', back: 'It efficiently computes gradients of the loss with respect to every weight using the chain rule, enabling gradient-based optimization of deep networks.' }, { front: 'What is the curse of dimensionality?', back: 'As input dimensions increase, the volume of space grows exponentially, requiring exponentially more data and parameters to model effectively.' }] },
+    ],
+    activity: {
+      description: 'Build a simple classical neural network in PyTorch to classify handwritten digits from the MNIST dataset, then analyze its parameter count and training dynamics.',
+      steps: [
+        'Load the MNIST dataset using torchvision and create DataLoaders with batch size 64',
+        'Define a 3-layer MLP with ReLU activations and 256 hidden units',
+        'Train using cross-entropy loss and Adam optimizer for 5 epochs',
+        'Plot the training and validation loss curves',
+        'Calculate the total number of parameters and compare with a 2-qubit QNN\'s parameter count',
+      ],
+      discussionQuestions: [
+        'How does the parameter count of a classical NN scale with input dimensionality, and why does this motivate quantum approaches?',
+        'What role does the activation function play — could a quantum measurement serve a similar purpose?',
+      ],
+      materials: ['Python 3.10+', 'PyTorch 2.0+', 'Jupyter Notebook', 'Matplotlib'],
+      codetask: { language: 'python', code: 'import torch\nimport torch.nn as nn\n\nmodel = nn.Sequential(\n    nn.Linear(784, 256),\n    nn.ReLU(),\n    nn.Linear(256, 10)\n)\nprint(f"Params: {sum(p.numel() for p in model.parameters())}")' },
+    },
+    project: {
+      description: 'Design and implement a comparative study between classical MLPs and quantum neural networks for a binary classification task, analyzing parameter efficiency and accuracy trade-offs.',
+      objectives: [
+        'Implement both classical MLP and QNN models for the same classification dataset',
+        'Compare parameter counts, training time, and final accuracy between the two approaches',
+        'Document the conditions under which quantum models show advantage or disadvantage',
+      ],
+      deliverables: [
+        'Two working models (classical MLP + QNN) with documented architectures',
+        'Comparison table showing accuracy, parameters, and training time for both models',
+        'A 3-page report analyzing the results and discussing quantum advantage',
+      ],
+      tools: ['Python', 'PyTorch', 'Qiskit', 'PennyLane', 'Jupyter Notebook'],
+    },
+    lab: {
+      description: 'In this lab, you will implement a classical neural network from scratch using NumPy to understand the mechanics of forward propagation, backpropagation, and gradient descent before moving to quantum counterparts.',
+      setup: 'pip install numpy matplotlib scikit-learn torchvision',
+      steps: [
+        'Implement a single neuron with sigmoid activation using NumPy',
+        'Extend to a 2-layer MLP with forward and backward propagation',
+        'Train on the Iris dataset and record accuracy',
+        'Visualize the decision boundary for 2 selected features',
+        'Compare the learned weights with rotation angles in a quantum circuit',
+        'Document parameter scaling as you increase hidden layer size',
+      ],
+      expectedOutput: 'A working 2-layer MLP achieving >90% accuracy on Iris test set with visualized decision boundaries and a parameter scaling plot.',
+      challenge: 'Add L2 regularization (weight decay) to your NumPy implementation and observe how it changes the decision boundary — then consider how quantum noise could serve a similar regularizing role.',
+    },
   },
 
   'module11-topic2': {
@@ -219,6 +272,59 @@ const module11Data: Record<string, TopicData> = {
       'The exponential Hilbert space is both the promise and the challenge of QNNs — more expressive but harder to train.',
       'Every QNN is a hybrid quantum-classical algorithm by necessity, since measurement produces classical outputs.',
     ],
+    story: 'Imagine trying to map every street in a city with a pencil and paper — that is what classical neural networks do when faced with high-dimensional data. Quantum neural networks work like having a 3D holographic map that captures the entire city at once. By operating in exponentially large Hilbert spaces, QNNs can represent complex patterns that would require exponentially more classical resources, opening the door to solving problems once thought impossible.',
+    concepts: [
+      { type: 'text', text: 'A Quantum Neural Network replaces classical weighted connections with parameterized quantum gates. The rotation angle of a gate like Ry(θ) serves as the trainable weight, and multiple qubits with entangling gates create rich representational power.' },
+      { type: 'math', formula: '|\\psi(\\theta)\\rangle = \\prod_{l=1}^{L} \\left(\\bigotimes_{i=1}^{n} R_y(\\theta_{i,l})\\ \\cdot\\ U_{\\text{ent}} \\right) |0\\rangle^{\\otimes n}' },
+      { type: 'diagram', chart: 'graph LR\n  A[|0⟩] --> B[Ry(θ₁)]\n  B --> C[CNOT]\n  C --> D[Ry(θ₂)]\n  D --> E[Measure ⟨Z⟩]' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(2)\nqc.ry(theta, 0)\nqc.ry(phi, 1)\nqc.cx(0, 1)\nqc.ry(omega, 0)' } },
+      { type: 'list', title: 'QNN vs Classical NN', items: ['Weight → Rotation angle θ', 'Layer → Parameterized circuit block', 'Activation → Measurement collapse', 'Backpropagation → Parameter-shift rule'] },
+      { type: 'card', cards: [{ front: 'Why can\'t we backpropagate through quantum gates?', back: 'Measurement collapses the quantum state into classical bits, breaking the quantum information needed for reverse-mode differentiation. The parameter-shift rule avoids this by evaluating circuits at shifted parameter values.' }, { front: 'What makes QNNs "quantum"?', back: 'QNNs use superposition (multiple states simultaneously), entanglement (correlated qubits), and quantum interference (constructive/destructive) — phenomena with no classical analogue.' }] },
+    ],
+    activity: {
+      description: 'Implement a minimal QNN in Qiskit with 2 qubits, 1 variational layer, and a single measurement to understand the core mechanics of quantum neural networks.',
+      steps: [
+        'Create a 2-qubit quantum circuit with angle encoding for 2 input features',
+        'Add a variational layer with Ry rotations followed by a CNOT entangling gate',
+        'Measure the Pauli-Z expectation on qubit 0',
+        'Train using COBYLA optimizer for 50 iterations on a binary classification task',
+        'Plot the cost function convergence and final decision boundary',
+      ],
+      discussionQuestions: [
+        'How does the measurement step act as a non-linear activation function, and what are its limitations?',
+        'What happens to the QNN\'s expressivity when you remove the entangling gate?',
+      ],
+      materials: ['Python 3.10+', 'Qiskit 1.0+', 'Qiskit Aer', 'Matplotlib'],
+      codetask: { language: 'python', code: 'from qiskit.circuit import Parameter\n\ntheta = Parameter("θ")\nqc = QuantumCircuit(1)\nqc.ry(theta, 0)\nprint(qc.draw())' },
+    },
+    project: {
+      description: 'Create a comprehensive comparison of expressivity between QNNs with different entanglement patterns (linear, circular, all-to-all) on a synthetic dataset with known non-linear structure.',
+      objectives: [
+        'Implement QNNs with 3 different entanglement patterns for comparison',
+        'Evaluate each model\'s ability to learn a non-linear XOR-like decision boundary',
+        'Quantify the trade-off between circuit depth and classification accuracy',
+      ],
+      deliverables: [
+        'Jupyter notebook with all three QNN implementations and training loops',
+        'Accuracy comparison table and decision boundary visualizations',
+        'Written analysis of which entanglement pattern works best and why',
+      ],
+      tools: ['Qiskit', 'NumPy', 'Matplotlib', 'scikit-learn'],
+    },
+    lab: {
+      description: 'Build your first QNN from scratch using Qiskit. You will implement angle encoding, a variational layer with entanglement, measurement, and a classical optimization loop — the complete hybrid QML pipeline.',
+      setup: 'pip install qiskit qiskit-aer matplotlib numpy',
+      steps: [
+        'Design a 2-qubit feature map using Ry gates for angle encoding',
+        'Create a variational layer with Ry rotations and a CNOT entangler',
+        'Add measurement operators to compute ⟨Z₀⟩ expectation',
+        'Wrap the circuit in a Qiskit Sampler primitive and run 1024 shots',
+        'Implement the parameter-shift rule to compute gradients',
+        'Train for 100 iterations using COBYLA and record loss history',
+      ],
+      expectedOutput: 'A trained QNN that achieves >75% accuracy on a synthetic binary classification dataset, with a plotted convergence curve showing decreasing loss.',
+      challenge: 'Extend your QNN to 4 qubits and use a circular entanglement pattern. Compare the training convergence and final accuracy against the 2-qubit version. Does more qubits always mean better performance?',
+    },
   },
 
   'module11-topic3': {
@@ -328,6 +434,58 @@ const module11Data: Record<string, TopicData> = {
       'Expressivity and trainability are in tension: more expressive circuits often suffer from barren plateaus.',
       'Smart initializations and pre-trained strategies are active research areas for overcoming barren plateaus.',
     ],
+    story: 'Designing a QNN architecture is like designing a bridge: you need the right balance of strength (expressivity) and weight (trainability). Too simple and it collapses (cannot learn complex patterns); too elaborate and it becomes unstable (barren plateaus). The art of QNN design lies in finding the sweet spot where quantum circuits are expressive enough to capture complex patterns without becoming untrainable.',
+    concepts: [
+      { type: 'text', text: 'A QNN architecture consists of three sequential stages: data encoding maps classical features to quantum states, variational layers process the state through trainable gates, and measurement collapses the result to a classical prediction.' },
+      { type: 'math', formula: 'f(x, \\theta) = \\text{Tr}\\left( O\\ U_L(\\theta_L) \\cdots U_1(\\theta_1)\\ S(x)\\,|0\\rangle\\langle0|\\, S(x)^\\dagger U_1(\\theta_1)^\\dagger \\cdots U_L(\\theta_L)^\\dagger \\right)' },
+      { type: 'diagram', chart: 'flowchart LR\n  A[Classical Data x] --> B[Encoding S(x)]\n  B --> C[Var Layer 1]\n  C --> D[Var Layer 2]\n  D --> E[...]\n  E --> F[Var Layer L]\n  F --> G[Measurement]\n  G --> H[Prediction ŷ]' },
+      { type: 'code', code: { language: 'python', code: 'def qnn_architecture(n_qubits, n_layers):\n    qc = QuantumCircuit(n_qubits)\n    for l in range(n_layers):\n        for q in range(n_qubits):\n            qc.ry(Parameter(f"θ_{l}_{q}"), q)\n        for q in range(n_qubits-1):\n            qc.cx(q, q+1)\n    return qc' } },
+      { type: 'list', title: 'Architecture Design Choices', items: ['Encoding method: angle, amplitude, or basis encoding', 'Entanglement pattern: linear, circular, or all-to-all', 'Number of variational layers L: 1-5 typical for NISQ', 'Gate set: Rx, Ry, Rz or combinations', 'Measurement strategy: single qubit or multi-qubit Pauli expectations'] },
+      { type: 'card', cards: [{ front: 'What is the difference between expressivity and trainability?', back: 'Expressivity measures what functions a QNN can represent; trainability measures whether those functions can be learned via optimization. High expressivity often leads to barren plateaus, making training infeasible.' }, { front: 'Why is circuit depth limited on NISQ devices?', back: 'Each quantum gate introduces noise and takes time. Qubits decohere over time, so deeper circuits accumulate more errors and lose quantum information before measurement.' }] },
+    ],
+    activity: {
+      description: 'Design and simulate three QNN architectures with different entanglement patterns (linear, circular, all-to-all) and compare their expressivity on a toy classification problem.',
+      steps: [
+        'Create 3 separate QNN circuits with identical encoding but different entanglement: linear (nearest-neighbor CNOT), circular (wrap-around CNOT), all-to-all (full pairwise CNOT)',
+        'Train each model on a 2D synthetic dataset with a non-linear spiral decision boundary',
+        'Record training accuracy, convergence speed, and circuit depth for each',
+        'Plot the learned decision boundaries for all three models side by side',
+        'Analyze which entanglement pattern provides the best accuracy-depth trade-off',
+      ],
+      discussionQuestions: [
+        'Why does all-to-all entanglement not always give the best results despite being the most expressive?',
+        'How would you decide the optimal number of variational layers for a given problem?',
+      ],
+      materials: ['Python', 'Qiskit', 'scikit-learn (make_moons dataset)', 'Matplotlib'],
+      codetask: { language: 'python', code: 'def linear_entanglement(qc, n):\n    for i in range(n-1):\n        qc.cx(i, i+1)\n\ndef circular_entanglement(qc, n):\n    for i in range(n):\n        qc.cx(i, (i+1)%n)' },
+    },
+    project: {
+      description: 'Develop a systematic benchmarking framework for QNN architectures that evaluates the accuracy-depth trade-off across multiple datasets and entanglement patterns.',
+      objectives: [
+        'Create a modular QNN builder supporting configurable encoding, entanglement, and depth',
+        'Benchmark 12 architecture variants (3 patterns × 2 depths × 2 datasets)',
+        'Identify the optimal architecture configuration for each dataset type',
+      ],
+      deliverables: [
+        'Modular QNN builder Python package with configuration API',
+        'Complete benchmark results with visual comparison plots',
+        'A design guideline document recommending architectures based on problem characteristics',
+      ],
+      tools: ['Qiskit', 'scikit-learn', 'Pandas', 'Seaborn', 'Jupyter'],
+    },
+    lab: {
+      description: 'Implement a parameterized QNN builder and systematically explore how architectural choices affect model performance on a real dataset.',
+      setup: 'pip install qiskit qiskit-machine-learning scikit-learn matplotlib',
+      steps: [
+        'Build a QNN factory function that accepts n_qubits, n_layers, and entanglement type as parameters',
+        'Encode the Breast Cancer Wisconsin dataset (30 features reduced to 4 via PCA)',
+        'Train QNN variants with L=1,2,3 layers each with linear and circular entanglement',
+        'Compare test accuracies and training times across all 6 configurations',
+        'Identify the best performing architecture and analyze why it succeeds',
+      ],
+      expectedOutput: 'A bar chart comparing test accuracies for all 6 QNN configurations with error bars, accompanied by a table of training times and circuit depths.',
+      challenge: 'Implement an adaptive architecture that starts with L=1 and automatically increases layers until validation accuracy stops improving. Compare its efficiency against fixed-depth architectures.',
+    },
   },
 
   'module11-topic4': {
@@ -437,6 +595,59 @@ const module11Data: Record<string, TopicData> = {
       'The parameter-shift rule is elegant: it computes exact gradients using only circuit evaluations, no backpropagation through unitaries.',
       'Training VQCs is still an active research area — better optimizers and initialization strategies are needed.',
     ],
+    story: 'In 2018, Edward Farhi and Hartmut Neven proposed a deceptively simple idea: what if we could train a quantum circuit to classify data the same way we train neural networks? Their variational quantum classifier became the foundation of modern QML. Today, VQCs are used in applications from medical diagnosis to fraud detection, demonstrating that even shallow quantum circuits can learn decision boundaries that classical classifiers struggle to find.',
+    concepts: [
+      { type: 'text', text: 'A Variational Quantum Classifier is a hybrid algorithm that trains a parameterized quantum circuit to separate data classes. The circuit maps inputs to measurement outcomes, and a classical optimizer adjusts gate parameters to minimize classification error.' },
+      { type: 'math', formula: '\\hat{y}(x) = \\text{sign}(\\langle Z \\rangle) = \\text{sign}\\left(\\langle 0| S(x)^\\dagger U(\\theta)^\\dagger Z\\, U(\\theta)\\, S(x) |0\\rangle\\right)' },
+      { type: 'diagram', chart: 'flowchart TD\n  A[(Data x)] --> B[Feature Map S(x)]\n  B --> C[Var Circuit U(θ)]\n  C --> D[⟨Z⟩ Measurement]\n  D --> E{⟨Z⟩ > 0?}\n  E -->|Yes| F[Class 1]\n  E -->|No| G[Class 0]' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit_machine_learning.algorithms import VQC\n\nvqc = VQC(\n    feature_map=ZZFeatureMap(4),\n    ansatz=RealAmplitudes(4, reps=3),\n    optimizer=COBYLA(maxiter=200)\n)\nvqc.fit(X_train, y_train)' } },
+      { type: 'list', title: 'VQC Training Steps', items: ['Encode data sample into quantum state', 'Apply variational circuit U(θ)', 'Measure expectation value ⟨Z⟩', 'Compute binary cross-entropy loss', 'Update θ using parameter-shift gradients', 'Repeat until convergence'] },
+      { type: 'card', cards: [{ front: 'How does a VQC handle multi-class classification?', back: 'Multi-class VQC uses one-vs-all (train one classifier per class) or multi-qubit measurement (2ⁿ classes from n qubits). The expectation values are passed through softmax for probability estimates.' }, { front: 'What optimizers work best for VQC training?', back: 'COBYLA (gradient-free, robust to noise), SPSA (approximate gradients, efficient), and Adam (gradient-based, faster convergence) are common choices depending on problem scale.' }] },
+    ],
+    activity: {
+      description: 'Implement a VQC for the Iris dataset using Qiskit\'s built-in VQC class, then compare its performance against classical classifiers.',
+      steps: [
+        'Load the Iris dataset and select 2 features for 2-class classification (setosa vs versicolor)',
+        'Create a ZZFeatureMap with 2 features and a RealAmplitudes ansatz with 1 repetition',
+        'Train the VQC using COBYLA optimizer for 100 iterations',
+        'Evaluate on a held-out test set and record accuracy',
+        'Compare against Logistic Regression and SVM baselines on the same data',
+      ],
+      discussionQuestions: [
+        'What hyperparameters (feature map, ansatz, optimizer) most affect VQC performance?',
+        'Why might a VQC outperform classical models on some datasets but not others?',
+      ],
+      materials: ['Python', 'Qiskit Machine Learning', 'scikit-learn', 'Matplotlib'],
+      codetask: { language: 'python', code: 'from qiskit.circuit.library import ZZFeatureMap, RealAmplitudes\n\nfeature_map = ZZFeatureMap(2)\nansatz = RealAmplitudes(2, reps=2)\nprint(f"Circuit depth: {feature_map.decompose().depth()}")' },
+    },
+    project: {
+      description: 'Build a comprehensive VQC benchmark that evaluates accuracy, training time, and robustness across 5 different datasets and 3 optimizer configurations.',
+      objectives: [
+        'Implement a VQC training pipeline with configurable feature maps and ansatze',
+        'Benchmark against 5 datasets of varying dimensionality and complexity',
+        'Analyze how dataset characteristics (size, dimensions, separability) affect VQC performance',
+      ],
+      deliverables: [
+        'Reusable VQC benchmarking pipeline script',
+        'Results dashboard with accuracy, convergence plots, and resource metrics',
+        'Report detailing which dataset characteristics favor VQC over classical methods',
+      ],
+      tools: ['Qiskit Machine Learning', 'scikit-learn', 'Pandas', 'Plotly'],
+    },
+    lab: {
+      description: 'In this hands-on lab, you will implement a VQC from scratch — building the feature map, ansatz, measurement, and training loop — to gain a deep understanding of how variational quantum classifiers work under the hood.',
+      setup: 'pip install qiskit qiskit-machine-learning qiskit-aer scikit-learn',
+      steps: [
+        'Create a ZZFeatureMap for 2 features and visualize the circuit',
+        'Design a RealAmplitudes ansatz with 2 qubits and 3 repetitions',
+        'Combine encoding + ansatz + measurement into a single PQCFactory',
+        'Implement the parameter-shift rule manually for 1 parameter',
+        'Train using COBYLA for 150 iterations, recording loss at each step',
+        'Evaluate and plot the decision boundary on a 2D grid',
+      ],
+      expectedOutput: 'A fully trained VQC that correctly classifies the Iris dataset with visualized decision boundary and a training loss convergence plot showing the optimization progress.',
+      challenge: 'Modify your VQC to use SPSA optimizer instead of COBYLA and compare convergence speed. Then add quantum noise simulation (using Qiskit Aer\'s NoiseModel) and observe how noise affects the decision boundary.',
+    },
   },
 
   'module11-topic5': {
@@ -545,6 +756,59 @@ const module11Data: Record<string, TopicData> = {
       'Entanglement is the source of quantum advantage in QNNs — without it, you have a linear model.',
       'The expressivity vs trainability trade-off is the central design challenge in QNN architecture.',
     ],
+    story: 'Think of quantum layers as lenses in a telescope — each additional lens lets you see finer details, but each also introduces optical distortion. In quantum neural networks, each variational layer adds representational power but also accumulates noise and risks barren plateaus. The art of QNN design is knowing how many layers to use: too few and your model underfits; too many and it becomes untrainable on NISQ hardware.',
+    concepts: [
+      { type: 'text', text: 'A quantum layer in a QNN is a repeating pattern: single-qubit rotations (trainable parameters) followed by entangling gates (fixed). Stacking L such layers creates a circuit whose expressivity grows with depth, analogous to adding hidden layers in classical deep learning.' },
+      { type: 'math', formula: 'U_{\\text{layer}}(\\theta) = \\left(\\bigotimes_{i=1}^{n} R_y(\\theta_i)\\right) \\cdot U_{\\text{ent}}' },
+      { type: 'diagram', chart: 'graph TD\n  subgraph Layer 1\n    A1[Ry(θ₁)] --> B1[CNOT]\n    A2[Ry(θ₂)] --> B2[CNOT]\n  end\n  subgraph Layer 2\n    A3[Ry(θ₃)] --> B3[CNOT]\n    A4[Ry(θ₄)] --> B4[CNOT]\n  end\n  Layer 1 --> Layer 2' },
+      { type: 'code', code: { language: 'python', code: 'def variational_layer(params, n_qubits):\n    qc = QuantumCircuit(n_qubits)\n    for i in range(n_qubits):\n        qc.ry(params[i], i)\n    for i in range(n_qubits-1):\n        qc.cx(i, i+1)\n    return qc\n\nqc = QuantumCircuit(4)\nfor l in range(3):  # 3 layers\n    qc.compose(variational_layer(params[l], 4), inplace=True)' } },
+      { type: 'list', title: 'Layer Design Parameters', items: ['Number of qubits n (2-10 typical)', 'Number of layers L (1-5 typical)', 'Rotation gate type (Ry only or Rx+Ry+Rz)', 'Entanglement topology (linear, circular, all-to-all)', 'Parameter initialization (uniform random, identity, He-inspired)'] },
+      { type: 'card', cards: [{ front: 'What happens if you use different rotation gates in each layer?', back: 'Using Rx, Ry, Rz combinations (a "universal" layer) increases expressivity per layer but triples the parameter count, potentially worsening barren plateaus.' }, { front: 'Why is the identity block initialization useful?', back: 'Initializing parameters near zero (identity operation) starts the QNN near a classical linear model, avoiding random barren plateau regions early in training.' }] },
+    ],
+    activity: {
+      description: 'Systematically explore how the number of variational layers affects QNN performance by training models with L=1, 2, 3, 4 on a fixed classification problem.',
+      steps: [
+        'Fix a dataset (e.g., Breast Cancer with PCA to 4 features) and a 4-qubit QNN architecture',
+        'Create 4 QNN variants with L=1, 2, 3, 4 variational layers',
+        'Train each variant 5 times with different random seeds',
+        'Record mean and standard deviation of test accuracy for each L',
+        'Plot accuracy vs depth and identify the optimal number of layers',
+      ],
+      discussionQuestions: [
+        'At what depth does accuracy stop improving (diminishing returns) and why?',
+        'How does the variance across runs change with depth — does deeper mean less stable?',
+      ],
+      materials: ['Python', 'Qiskit', 'scikit-learn', 'Matplotlib', 'NumPy'],
+      codetask: { language: 'python', code: 'depths = [1, 2, 3, 4]\naccuracies = []\nfor L in depths:\n    acc = train_qnn(n_qubits=4, n_layers=L)\n    accuracies.append(acc)\nplt.plot(depths, accuracies, "o-")' },
+    },
+    project: {
+      description: 'Develop a depth-adaptive QNN training algorithm that automatically determines the optimal number of variational layers during training using a validation-based early stopping criterion.',
+      objectives: [
+        'Implement a progressive QNN that starts with L=1 and adds layers when validation loss plateaus',
+        'Compare adaptive depth QNN against fixed-depth counterparts on 3 datasets',
+        'Analyze the computational cost savings from using only the necessary number of layers',
+      ],
+      deliverables: [
+        'Adaptive depth QNN implementation with clear documentation',
+        'Benchmark results comparing adaptive vs fixed-depth approaches',
+        'Visualization showing how the optimal depth varies across datasets',
+      ],
+      tools: ['Qiskit', 'scikit-learn', 'NumPy', 'Matplotlib'],
+    },
+    lab: {
+      description: 'In this lab, you will build a multi-layer QNN and empirically study the expressivity-trainability trade-off by measuring gradient magnitudes and accuracy across different depths.',
+      setup: 'pip install qiskit qiskit-aer matplotlib numpy scikit-learn',
+      steps: [
+        'Build a 4-qubit QNN with configurable number of layers (L=1 to 5)',
+        'For each configuration, compute the gradient variance at initialization using parameter-shift',
+        'Train each QNN on a synthetic make_moons dataset and record final accuracy',
+        'Plot gradient variance vs layer depth on a log scale',
+        'Superimpose the accuracy vs depth curve to visualize the trade-off',
+        'Identify the depth where gradient variance drops below 10⁻⁴ and accuracy starts to degrade',
+      ],
+      expectedOutput: 'A dual-axis plot showing gradient variance (log scale, left axis) and test accuracy (linear, right axis) against the number of variational layers, clearly showing the expressivity-trainability trade-off.',
+      challenge: 'Implement "warm start" initialization: train a shallow QNN, then use its parameters to initialize a deeper QNN by inserting identity layers. Compare warm-start accuracy against random initialization for L=4.',
+    },
   },
 
   'module11-topic6': {
@@ -654,6 +918,59 @@ const module11Data: Record<string, TopicData> = {
       'The quantum layer in a hybrid model is just another differentiable function — elegantly integrated into the classical deep learning paradigm.',
       'The art of hybrid QNN design is deciding which parts of the pipeline should be quantum and which should remain classical.',
     ],
+    story: 'Imagine a chef who uses both traditional knife skills and a high-tech sous-vide machine — each tool serves its purpose. Hybrid quantum-classical neural networks work the same way: classical layers handle the tasks they excel at (feature extraction, high-dimensional processing), while quantum layers tackle complex pattern recognition in Hilbert space. This pragmatic fusion is the dominant paradigm in today\'s NISQ era, elegantly combining the best of both worlds.',
+    concepts: [
+      { type: 'text', text: 'A hybrid QNN combines classical neural network layers with quantum circuit layers in a single end-to-end trainable pipeline. Data flows: classical preprocessing reduces dimensionality, quantum layer processes in Hilbert space, classical post-processing produces the final prediction.' },
+      { type: 'math', formula: 'f_{\\text{hybrid}}(x) = f_{\\text{classical}}^{\\text{(post)}} \\circ f_{\\text{quantum}} \\circ f_{\\text{classical}}^{\\text{(pre)}} (x)' },
+      { type: 'diagram', chart: 'graph LR\n  A[Input x] --> B[Classical\nDense Layer]\n  B --> C[Quantum\nCircuit Layer]\n  C --> D[Classical\nOutput Layer]\n  D --> E[Prediction ŷ]' },
+      { type: 'code', code: { language: 'python', code: 'import pennylane as qml\n\n@qml.qnode(dev)\ndef quantum_layer(x, weights):\n    qml.AngleEmbedding(x, wires=range(2))\n    qml.StronglyEntanglingLayers(weights, wires=range(2))\n    return [qml.expval(qml.PauliZ(i)) for i in range(2)]' } },
+      { type: 'list', title: 'Hybrid Architecture Patterns', items: ['Classical encoder → Quantum processor → Classical decoder', 'Classical CNN → Quantum classifier head', 'Quantum feature extractor → Classical SVM', 'Classical attention → Quantum transformer block'] },
+      { type: 'card', cards: [{ front: 'How do gradients flow through a hybrid QNN?', back: 'Classical autograd (PyTorch/TF) handles classical layers. The quantum layer registers a custom autograd.Function that uses parameter-shift for its gradient. Both gradient types are combined in the optimizer.' }, { front: 'What is the main bottleneck in hybrid QNN training?', back: 'The quantum layer requires a circuit execution per forward pass. With hundreds of training iterations and thousands of samples, this becomes the computational bottleneck.' }] },
+    ],
+    activity: {
+      description: 'Build a hybrid QNN in PennyLane with PyTorch: a classical dense layer reduces 4 features to 2 qubit inputs, a quantum layer processes them, and another classical layer produces the final classification.',
+      steps: [
+        'Install PennyLane with PyTorch support',
+        'Define a 2-qubit quantum device and QNode with AngleEmbedding and StronglyEntanglingLayers',
+        'Create a PyTorch model: Linear(4,2) → QuantumLayer → Linear(2,1)',
+        'Train on the Iris 2-feature, 2-class subset using Adam optimizer',
+        'Compare training curves: hybrid model vs purely classical model of similar parameter count',
+      ],
+      discussionQuestions: [
+        'What advantage does the quantum layer provide over an equivalent classical hidden layer?',
+        'How would you decide the optimal split of parameters between classical and quantum parts?',
+      ],
+      materials: ['Python', 'PennyLane', 'PyTorch', 'scikit-learn', 'Matplotlib'],
+      codetask: { language: 'python', code: 'import torch\nimport pennylane as qml\n\ndev = qml.device("default.qubit", wires=2)\n\n@qml.qnode(dev, interface="torch")\ndef quantum_layer(x, w):\n    qml.AngleEmbedding(x, wires=range(2))\n    qml.StronglyEntanglingLayers(w, wires=range(2))\n    return [qml.expval(qml.PauliZ(i)) for i in range(2)]' },
+    },
+    project: {
+      description: 'Design a comprehensive hybrid QNN framework that automatically determines the optimal allocation of parameters between classical and quantum components for a given dataset.',
+      objectives: [
+        'Create a flexible hybrid model builder with configurable classical/quantum split ratio',
+        'Benchmark different split ratios (90/10, 75/25, 50/50, 25/75) across 4 datasets',
+        'Provide guidelines for choosing the optimal split based on dataset characteristics',
+      ],
+      deliverables: [
+        'Hybrid model builder Python package',
+        'Benchmark results with accuracy and training time for each split configuration',
+        'Design guideline document with decision tree for classical/quantum allocation',
+      ],
+      tools: ['PennyLane', 'PyTorch', 'scikit-learn', 'Pandas', 'Seaborn'],
+    },
+    lab: {
+      description: 'Implement a full hybrid quantum-classical neural network in PennyLane + PyTorch, training it end-to-end on a real dataset and comparing against purely classical and purely quantum baselines.',
+      setup: 'pip install pennylane torch torchvision scikit-learn matplotlib',
+      steps: [
+        'Set up a PennyLane device with 2 qubits and define the quantum QNode',
+        'Build a PyTorch model with: Linear(4,2) → QuantumLayer → Linear(2,1)',
+        'Train the hybrid model on the Wine dataset (2 classes, 4 features) for 50 epochs',
+        'Also train a purely classical 3-layer NN and a purely quantum VQC on the same data',
+        'Plot training curves for all 3 models on the same axes',
+        'Create a comparison table: final test accuracy, training time, parameter count',
+      ],
+      expectedOutput: 'A three-way comparison table and plot showing that the hybrid model achieves comparable or better accuracy with fewer total parameters than the purely classical model, and trains faster than the purely quantum model.',
+      challenge: 'Add differential privacy to your hybrid QNN by clipping gradients and adding Gaussian noise during training. Compare the privacy-accuracy trade-off against a non-private hybrid model.',
+    },
   },
 
   'module11-topic7': {
@@ -766,6 +1083,60 @@ const module11Data: Record<string, TopicData> = {
       'The choice of optimizer dramatically impacts training dynamics — experiment with both gradient-free and gradient-based methods.',
       'Document every experiment: the hyperparameters that work (and those that don\'t) are equally valuable findings.',
     ],
+    story: 'Theory without practice is like studying sheet music without ever touching an instrument. In this lab, you will finally build your own quantum neural network from scratch — encoding data, designing variational circuits, running optimization loops, and evaluating results. By the end, you will have a working QNN that classifies real data, bridging the gap between abstract concepts and practical quantum machine learning.',
+    concepts: [
+      { type: 'text', text: 'Building a QNN involves five steps: (1) encode classical data as quantum states, (2) apply variational layers with trainable parameters, (3) measure expectation values, (4) compute loss, and (5) update parameters via classical optimization.' },
+      { type: 'diagram', chart: 'sequenceDiagram\n  participant P as Python\n  participant Q as Quantum Circuit\n  participant O as Optimizer\n  P->>Q: Encode data, run circuit\n  Q->>P: Return ⟨Z⟩ expectation\n  P->>P: Compute loss\n  P->>O: Send loss & gradients\n  O->>P: Update parameters θ\n  P->>Q: Rerun with new θ' },
+      { type: 'code', code: { language: 'python', code: 'from qiskit.primitives import Estimator\nfrom qiskit.circuit.library import RealAmplitudes\n\nestimator = Estimator()\npub = (ansatz, obs, params)\nresult = estimator.run([pub]).result()\nexpectation = result.values[0]' } },
+      { type: 'list', title: 'Lab Checklist', items: ['Install Qiskit and verify import', 'Load and preprocess dataset (scale to [0, π])', 'Design feature map for data encoding', 'Build variational ansatz with configurable layers', 'Set up Estimator primitive for expectation values', 'Train with COBYLA and record loss history', 'Evaluate on test set and compare baseline'] },
+      { type: 'card', cards: [{ front: 'Why use Estimator instead of Sampler?', back: 'Estimator directly computes expectation values ⟨ψ|O|ψ⟩ needed for loss and gradients. Sampler returns measurement counts requiring post-processing. Estimator is more accurate and efficient for VQC training.' }, { front: 'How many shots should you use?', back: 'More shots = more accurate expectation values but slower execution. Start with 1024 shots for development, increase to 8192 for final results.' }] },
+    ],
+    activity: {
+      description: 'Complete the end-to-end QNN lab: implement, train, and evaluate a QNN on the Iris dataset, then systematically vary hyperparameters to understand their effect.',
+      steps: [
+        'Load Iris, select 2 features and 2 classes, scale to [0, π]',
+        'Build QNN: ZZFeatureMap(2) → RealAmplitudes(2, reps=2) → ⟨Z₀⟩ measurement',
+        'Train using COBYLA for 150 iterations, plotting loss at each step',
+        'Evaluate on test set and record accuracy, precision, recall',
+        'Vary layers (L=1,2,3) and entanglement pattern (linear vs circular)',
+        'Create a results table comparing all configurations',
+      ],
+      discussionQuestions: [
+        'Which hyperparameter (layers, entanglement, optimizer) has the biggest impact on accuracy?',
+        'How close does your QNN accuracy come to a classical SVM on the same data?',
+      ],
+      materials: ['Python', 'Qiskit', 'scikit-learn', 'Matplotlib', 'Jupyter Notebook'],
+      codetask: { language: 'python', code: 'results = []\nfor L in [1, 2, 3]:\n    for ent in ["linear", "circular"]:\n        acc = run_qnn_experiment(L, ent)\n        results.append({"L": L, "ent": ent, "acc": acc})' },
+    },
+    project: {
+      description: 'Create a comprehensive, reusable QNN notebook template that can be adapted for any small-scale classification dataset, with documented parameters and visualization.',
+      objectives: [
+        'Design a parameterized notebook template with clear configuration cells',
+        'Implement robust training with error handling and checkpointing',
+        'Create automated result visualization and export functionality',
+      ],
+      deliverables: [
+        'Clean, well-documented Jupyter notebook template for QNN training',
+        'Sample outputs on Iris, Wine, and Breast Cancer datasets',
+        'User guide explaining how to adapt the template to new datasets',
+      ],
+      tools: ['Qiskit', 'scikit-learn', 'Matplotlib', 'Jupyter', 'nbconvert'],
+    },
+    lab: {
+      description: 'This comprehensive lab walks you through building, training, and evaluating a complete QNN on a real dataset, with systematic experimentation and documentation.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn matplotlib pandas',
+      steps: [
+        'Set up imports and configure the Qiskit backend (AerSimulator)',
+        'Load the Wine dataset, reduce to 4 features via PCA, and split into train/test',
+        'Build a QNN using ZZFeatureMap(4) and EfficientSU2(4, reps=2)',
+        'Train using the VQC class from qiskit-machine-learning with COBYLA optimizer',
+        'Evaluate: compute accuracy, generate confusion matrix, and plot results',
+        'Compare against classical SVM (RBF kernel) on the same data',
+        'Document all hyperparameters, results, and observations',
+      ],
+      expectedOutput: 'A complete Jupyter notebook showing: (1) dataset exploration, (2) QNN circuit diagram, (3) training loss convergence, (4) test accuracy and confusion matrix, (5) comparison table with classical baselines.',
+      challenge: 'Add a quantum-classical comparison section: train a classical neural network with equivalent parameter count and compare convergence speed, final accuracy, and model size. Discuss whether the QNN provides any measurable advantage.',
+    },
   },
 };
 

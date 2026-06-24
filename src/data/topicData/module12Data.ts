@@ -3,6 +3,59 @@ import type { TopicData } from '../../types';
 const module12Data: Record<string, TopicData> = {
   'module12-topic1': {
     topicId: 'module12-topic1',
+    story: 'In 2019, Google\'s Sycamore processor achieved "quantum supremacy" by solving a task in 200 seconds that would take a classical supercomputer 10,000 years. Yet that same processor could not run a simple quantum error-correction code — it lacked the qubit count and coherence time. This paradox defines the NISQ era: quantum devices exist, but they cannot replace classical computers. Instead, researchers realized that the path forward is hybrid: let quantum computers do what they do best (sampling from complex probability distributions, solving small optimization subproblems) while leaving the rest to classical hardware. This topic explores why hybrid computing is not a temporary workaround but the optimal strategy for the foreseeable future.',
+    concepts: [
+      { type: 'text', content: 'NISQ (Noisy Intermediate-Scale Quantum) devices are characterized by 50–1000 physical qubits, gate error rates of 10⁻³–10⁻², and coherence times of 10–100 µs. These constraints make fault-tolerant quantum computing infeasible but enable meaningful hybrid computation.' },
+      { type: 'math', content: '\\text{Hybrid Advantage} = \\max\\left(0,\\; f_{\\text{quantum}}(x) - f_{\\text{classical}}(x)\\right) \\quad \\text{where } f \\text{ measures solution quality for subtask } x' },
+      { type: 'chart', content: 'graph TD\n  A[Classical Data] -->|Preprocessing| B[Classical Feature Engineering]\n  B --> C[Quantum Encoding]\n  C --> D[Quantum Circuit PQC]\n  D -->|Measurement| E[Expectation Values]\n  E --> F[Classical Optimizer]\n  F -->|Parameter Update| D\n  F --> G[Final Prediction]' },
+      { type: 'code', content: '# Hybrid VQA framework pseudocode\nfrom scipy.optimize import minimize\n\ndef cost_function(params):\n    # Quantum computer estimates cost\n    cost = quantum_circuit(params)\n    return cost\n\n# Classical optimizer updates parameters\nresult = minimize(cost_function, initial_params, method="COBYLA")' },
+      { type: 'list', content: ['Variational Quantum Algorithms (VQA) are the archetypal hybrid framework', 'Quantum processor handles the core computation (energy estimation, circuit sampling)', 'Classical processor handles optimization, preprocessing, and orchestration', 'NISQ constraints (limited qubits, noise) make purely quantum approaches impractical', 'The goal is synergy — each platform does what it does best'] },
+      { type: 'flipcard', content: { front: 'Why can\'t we run large quantum algorithms on current hardware?', back: 'NISQ devices have limited qubits (50–1000), high gate error rates (10⁻³–10⁻²), and short coherence times. Fault-tolerant quantum computing requires millions of physical qubits and error rates below 10⁻⁶ — not yet achievable.' } },
+    ],
+    activity: {
+      description: 'Identify and analyze real-world problems through the lens of hybrid quantum-classical computing by evaluating which subtasks benefit from quantum processing.',
+      steps: [
+        'Select 3 ML problems from domains like drug discovery, finance, or logistics',
+        'For each problem, list all computational subtasks and classify each as "quantum-suitable" or "classical-suitable"',
+        'Design a hybrid architecture diagram showing data flow between quantum and classical components',
+        'Present your architecture to a peer and justify why each subtask is assigned to its platform',
+        'Compare your hybrid design with a purely classical approach — estimate potential advantages and limitations',
+      ],
+      discussionQuestions: [
+        'What types of computational problems benefit most from quantum processing in a hybrid setup?',
+        'How would your hybrid architecture change if quantum hardware improved by 10x (more qubits, lower noise)?',
+      ],
+      materials: ['Pen and paper or digital whiteboard for architecture diagrams', 'List of benchmark ML datasets for reference'],
+      codetask: 'Write a Python function that takes a list of computational subtasks and classifies each as "quantum" or "classical" based on simple heuristics (e.g., matrix operations → classical, sampling distributions → quantum).',
+    },
+    project: {
+      description: 'Design a comprehensive hybrid computing architecture for a real-world problem of your choice (e.g., drug discovery pipeline, financial portfolio optimization, traffic flow prediction).',
+      objectives: [
+        'Analyze the problem to identify quantum-suitable and classical-suitable subtasks',
+        'Design a complete hybrid architecture with clear data flow between components',
+        'Evaluate the potential advantage of your hybrid approach over a purely classical solution',
+      ],
+      deliverables: [
+        'Architecture diagram (digital or hand-drawn) showing all components and data flow',
+        'Written report (2–3 pages) justifying each design decision and analyzing potential quantum advantage',
+        'Presentation slides summarizing your architecture for a 5-minute pitch',
+      ],
+      tools: ['Python with Qiskit for proof-of-concept quantum circuits', 'Lucidchart, Draw.io, or pen-and-paper for diagrams'],
+    },
+    lab: {
+      description: 'Implement a simple VQA loop to understand the hybrid optimization cycle between quantum circuit execution and classical parameter updates.',
+      setup: 'pip install qiskit qiskit-aer numpy scipy',
+      steps: [
+        'Define a parameterized quantum circuit (PQC) with 2 qubits and 4 rotation parameters using Qiskit',
+        'Implement a cost function that estimates ⟨Z₀⟩ + ⟨Z₁⟩ using the Aer simulator',
+        'Use scipy.optimize.minimize with COBYLA to find parameters that minimize the cost',
+        'Plot the cost vs iteration to observe the hybrid optimization convergence',
+        'Modify the circuit (add entanglement) and compare convergence behavior',
+        'Experiment with different classical optimizers (SPSA, Adam via SPSA) and compare convergence speed',
+      ],
+      expectedOutput: 'A convergence plot showing cost decreasing over iterations, with comparison of convergence behavior across different circuit designs and optimizers.',
+      challenge: 'Design a PQC where the global minimum corresponds to a known target state (e.g., |01⟩ + |10⟩). Can you guide the classical optimizer to find it?',
+    },
     prerequisites: [
       'Module 11: QNN — understanding of hybrid quantum-classical QNN architectures',
       'Module 10: VQC — parameterized circuits and hybrid optimization workflow',
@@ -111,6 +164,59 @@ const module12Data: Record<string, TopicData> = {
 
   'module12-topic2': {
     topicId: 'module12-topic2',
+    story: 'Imagine trying to describe the shape of an apple to someone who has only ever seen spheres. You could say "it is like a sphere but slightly flattened at the top and bottom" — a simple transformation of a familiar concept. Quantum feature extraction does something similar: it takes classical data and transforms it into a quantum state representation in an exponentially larger Hilbert space. In this quantum view, patterns that seemed hopelessly tangled in the original space become simple and separable. Companies like Zapata Computing and IBM have demonstrated that quantum-extracted features can improve classical classifiers on complex datasets, particularly in chemistry and materials science where the underlying physics is itself quantum.',
+    concepts: [
+      { type: 'text', content: 'Quantum feature extraction uses a feature map circuit $U_\\phi(x)$ to encode classical data $x \\in \\mathbb{R}^d$ into a quantum state $|\\psi(x)\\rangle = U_\\phi(x)|0\\rangle^{\\otimes n}$. Measurements of Pauli operators yield feature vectors that classical ML models consume.' },
+      { type: 'math', content: '|\\psi(x)\\rangle = U_\\Phi(x) H^{\\otimes n} |0\\rangle^{\\otimes n}, \\quad \\text{Feature vector } f(x) = [\\langle Z_1 \\rangle, \\langle Z_2 \\rangle, \\dots, \\langle Z_n \\rangle, \\langle X_1 \\rangle, \\dots]' },
+      { type: 'chart', content: 'graph LR\n  A[Classical Data Point x] -->|Feature Map U(x)| B[Quantum State]\n  B -->|Measure Pauli Operators| C[Expectation Values]\n  C --> D[Feature Vector fx]\n  D --> E[Classical Classifier]' },
+      { type: 'code', content: 'from qiskit.circuit import QuantumCircuit, Parameter\nfrom qiskit_aer import AerSimulator\nimport numpy as np\n\ndef quantum_feature_extractor(x, num_qubits=2):\n    qc = QuantumCircuit(num_qubits)\n    for i in range(num_qubits):\n        qc.ry(x[i], i)\n    qc.cx(0, 1)  # entangle\n    simulator = AerSimulator()\n    qc.save_expectation_value([\'ZZ\'], [0, 1])\n    result = simulator.run(qc).result()\n    return result.data().expectation_values' },
+      { type: 'list', content: ['Feature maps project data into an exponentially large Hilbert space (2^N dimensions for N qubits)', 'Angled encoding uses rotation gates parameterized by data values — simple but limited capacity', 'Amplitude encoding packs 2^N features into N qubits but requires deep state preparation circuits', 'Entanglement in feature maps encodes correlations between features automatically', 'Measured Pauli expectation values form the extracted feature vector'] },
+      { type: 'flipcard', content: { front: 'What makes quantum feature extraction potentially more powerful than classical kernel methods?', back: 'Quantum feature maps can exploit superposition and entanglement to compute inner products in spaces that are exponentially large, potentially capturing correlations that are intractable classically.' } },
+    ],
+    activity: {
+      description: 'Compare the expressiveness of different quantum feature maps by extracting features from a simple 2D dataset and visualizing the transformed feature space.',
+      steps: [
+        'Generate synthetic 2D classification data (e.g., concentric circles using make_circles)',
+        'Implement three feature maps: angle encoding with entanglement, angle encoding without entanglement, and ZZFeatureMap',
+        'Extract features from each map by measuring Pauli-Z expectations',
+        'Visualize the 2D projection of the extracted features using PCA',
+        'Train a classical SVM on each set of extracted features and compare accuracy',
+      ],
+      discussionQuestions: [
+        'Why does the entangling feature map separate the data better than the non-entangling one in certain cases?',
+        'How would the quality of extracted features change with more qubits or deeper circuits?',
+      ],
+      materials: ['Jupyter notebook with Qiskit and sklearn', 'Synthetic datasets from sklearn.datasets'],
+      codetask: 'Write a function that compares the classification accuracy of a classical SVM using original features vs quantum-extracted features across 3 different feature maps and plots the results.',
+    },
+    project: {
+      description: 'Build a quantum feature extraction pipeline that takes classical data and produces enhanced feature vectors for a downstream classical ML task, benchmarking against purely classical features.',
+      objectives: [
+        'Implement at least 3 different quantum feature maps and compare their expressiveness',
+        'Quantify the improvement in classifier performance when using quantum-extracted features',
+        'Identify which types of datasets benefit most from quantum feature extraction',
+      ],
+      deliverables: [
+        'Jupyter notebook with the complete feature extraction pipeline and benchmarking code',
+        'Report analyzing which feature maps work best for which data types and why',
+        'Visualization gallery showing original data vs quantum feature space projections',
+      ],
+      tools: ['Qiskit, sklearn, matplotlib', 'Synthetic and benchmark datasets (Iris, Wine, Breast Cancer)'],
+    },
+    lab: {
+      description: 'Implement a complete quantum feature extraction workflow: encode classical data into quantum circuits, extract Pauli expectation values, and use them as features for a classical classifier.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn matplotlib',
+      steps: [
+        'Load the Iris dataset and select 2 features for visualization',
+        'Create a custom sklearn Transformer that wraps a Qiskit ZZFeatureMap circuit',
+        'Extract features from all samples by measuring [⟨Z₀⟩, ⟨Z₁⟩, ⟨Z₀Z₁⟩] on 2 qubits',
+        'Train a Logistic Regression classifier on the extracted features',
+        'Plot decision boundaries of the classifier in the quantum feature space',
+        'Repeat with a different feature map and compare the decision boundaries',
+      ],
+      expectedOutput: 'Side-by-side plots showing decision boundaries for different feature maps in the quantum-transformed feature space, with classification accuracy annotated.',
+      challenge: 'Design a feature map that achieves 100% accuracy on the Iris dataset using only 2 qubits and a linear classifier — what does this tell you about the feature map\'s capacity?',
+    },
     prerequisites: [
       '12.1 Need for Hybrid Computing Models — understanding of hybrid paradigm',
       'Module 8: Quantum Feature Maps and Kernels — quantum feature spaces and encoding',
@@ -220,6 +326,59 @@ const module12Data: Record<string, TopicData> = {
 
   'module12-topic3': {
     topicId: 'module12-topic3',
+    story: 'In 2017, the team at Rigetti Computing published a paper showing that a hybrid quantum-classical classifier could match classical SVM performance on a handwriting recognition task — but only when the classical component was carefully chosen. The quantum feature map produced rich representations, but the final decision boundary was still learned by a classical logistic regression or SVM. This insight is crucial: quantum computing does not replace classical ML; it augments it. The classical component in a hybrid pipeline — whether a simple linear classifier, a random forest, or a neural network head — is responsible for the final, critical step of translating quantum-derived features into accurate predictions. This topic explores the classical half of the hybrid partnership.',
+    concepts: [
+      { type: 'text', content: 'The classical learning component in a hybrid pipeline receives quantum-extracted features and learns a decision boundary. It can be any standard ML algorithm: SVM, logistic regression, random forest, or a neural network. The quantum component\'s role is to transform the data into a more informative representation.' },
+      { type: 'math', content: '\\hat{y} = f_{\\text{classical}}\\left( \\text{Measure}\\left(U_\\phi(x)|0\\rangle\\right) \\right), \\quad \\text{where } f_{\\text{classical}} \\text{ is any standard ML model}' },
+      { type: 'chart', content: 'graph LR\n  A[Quantum Features] --> B[PCA / Feature Selection]\n  B --> C[SVM]\n  B --> D[Random Forest]\n  B --> E[Logistic Regression]\n  C --> F[Ensemble]\n  D --> F\n  E --> F\n  F --> G[Final Prediction]' },
+      { type: 'code', content: 'from sklearn.svm import SVC\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler\n\n# Assume quantum_features is an array from quantum feature extraction\npipeline = Pipeline([\n    ("scaler", StandardScaler()),\n    ("classifier", SVC(kernel="rbf"))\n])\npipeline.fit(quantum_features, y_train)' },
+      { type: 'list', content: ['SVM with RBF kernel works well on quantum features due to the already-transformed space', 'Random Forest provides interpretability through feature importance of quantum-derived features', 'Logistic regression reveals whether quantum features make the problem linearly separable', 'Regularization is critical — combined quantum-classical models have high capacity', 'Classical post-processing (softmax, thresholding) converts raw outputs to predictions'] },
+      { type: 'flipcard', content: { front: 'Why use a classical classifier on quantum features instead of a fully quantum classifier?', back: 'Classical classifiers are mature, well-understood, and computationally cheap. After the quantum transformation, the classification problem is often simpler — a classical model can solve it efficiently without needing more quantum resources.' } },
+    ],
+    activity: {
+      description: 'Experiment with different classical classifiers on quantum-extracted features to understand how the choice of classical model affects hybrid pipeline performance.',
+      steps: [
+        'Generate quantum-extracted features from a synthetic dataset using a ZZFeatureMap',
+        'Train 5 different classical classifiers (SVM, Random Forest, Logistic Regression, KNN, Neural Network) on the same quantum features',
+        'Compare classification accuracy, training time, and inference time across classifiers',
+        'Perform feature importance analysis (for tree-based models) to identify which quantum-extracted features matter most',
+        'Write a summary of which classical model works best for quantum features and hypothesize why',
+      ],
+      discussionQuestions: [
+        'Would a simple classifier (logistic regression) on good quantum features outperform a complex classifier on raw data?',
+        'How does the choice of classical component affect the overall hybrid pipeline\'s generalization?',
+      ],
+      materials: ['Pre-computed quantum features or access to a quantum simulator', 'sklearn with various classifiers'],
+      codetask: 'Write a function that takes quantum feature arrays and a list of classical model names, trains each, and returns a comparison DataFrame with accuracy, precision, recall, F1, and training time.',
+    },
+    project: {
+      description: 'Develop a systematic benchmarking framework that evaluates how different classical learning components perform when consuming quantum-extracted features across multiple datasets and feature maps.',
+      objectives: [
+        'Create a standardized benchmark for evaluating classical components in hybrid QML pipelines',
+        'Identify which classical algorithms are most complementary to quantum feature extraction',
+        'Determine how the choice of classical model interacts with the choice of quantum feature map',
+      ],
+      deliverables: [
+        'Benchmarking Python package (or notebook) with automated evaluation across dataset × feature map × classifier combinations',
+        'Report with statistical analysis of results, including interaction effects between quantum and classical components',
+        'Recommendation guide: "Which classical classifier should I use with which quantum feature map?"',
+      ],
+      tools: ['Qiskit, sklearn, pandas, matplotlib, seaborn', 'Multiple benchmark datasets (classification)'],
+    },
+    lab: {
+      description: 'Build a hybrid classifier where you systematically swap the classical component while keeping the quantum feature extraction fixed, analyzing how performance changes.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas',
+      steps: [
+        'Create a fixed quantum feature extractor using ZZFeatureMap on 2 qubits for the Iris dataset',
+        'Build a helper function that creates a pipeline: quantum extraction → scaler → [classifier]',
+        'Loop through SVM (linear, rbf, poly), Random Forest (n_estimators=10,50,100), and Logistic Regression',
+        'Record test accuracy for each classifier using 5-fold cross-validation',
+        'Identify which classifier performs best and analyze why (e.g., SVM with RBF kernel might be redundant)',
+        'Repeat with a different feature map and note any changes in the best classifier',
+      ],
+      expectedOutput: 'A comparison table showing mean ± std test accuracy for each classical classifier on quantum features, with a short analysis paragraph explaining the results.',
+      challenge: 'If linear SVM achieves the same accuracy as RBF SVM on quantum features, what does this imply about the quantum feature map? Design an experiment to test your hypothesis.',
+    },
     prerequisites: [
       '12.2 Quantum Feature Extraction — understanding of quantum-derived features',
       'Classical ML knowledge (Module 2–3): supervised learning algorithms, model evaluation',
@@ -329,6 +488,60 @@ const module12Data: Record<string, TopicData> = {
 
   'module12-topic4': {
     topicId: 'module12-topic4',
+    story: 'When the first quantum computing SDKs emerged, researchers faced a practical challenge: how do you make quantum circuits work with the ML tools that data scientists already use? Scikit-learn, with its elegant Pipeline API and vast collection of estimators, was the natural target. In 2019, the Qiskit team released qiskit-machine-learning, which included a QuantumKernel class that could be plugged directly into sklearn\'s SVC. Suddenly, a data scientist could write pipeline.fit(X_train, y_train) and have it execute quantum circuits under the hood. This integration democratized QML — you no longer needed to be a quantum physicist to experiment with quantum-enhanced machine learning. Today, integrating QML with sklearn is the most common entry point for practitioners entering the field.',
+    concepts: [
+      { type: 'text', content: 'Scikit-learn integration is achieved through custom Transformer classes that wrap quantum circuits. The transform method encodes each data point into a quantum circuit, runs it on a simulator or hardware, measures expectation values, and returns a classical feature matrix for downstream sklearn estimators.' },
+      { type: 'math', content: 'K_{ij} = |\\langle \\psi(x_i) | \\psi(x_j) \\rangle|^2, \\quad \\text{Kernel matrix for sklearn SVC with } kernel=\\text{"precomputed"}' },
+      { type: 'chart', content: 'graph TD\n  A[sklearn Pipeline] --> B[StandardScaler]\n  B --> C[QuantumFeatureExtractor\n  Custom Transformer]\n  C --> D[PCA Dimensionality\n  Reduction]\n  D --> E[SVC / RandomForest\n  Classifier]\n  E --> F[Predictions]' },
+      { type: 'code', content: 'from sklearn.base import TransformerMixin, BaseEstimator\n\nclass QuantumFeatureExtractor(BaseEstimator, TransformerMixin):\n    def __init__(self, num_qubits=2):\n        self.num_qubits = num_qubits\n\n    def fit(self, X, y=None):\n        return self\n\n    def transform(self, X):\n        # Encode each row into a quantum circuit, measure, return features\n        features = []\n        for sample in X:\n            qc = self._encode(sample)\n            exp_vals = self._measure(qc)\n            features.append(exp_vals)\n        return np.array(features)' },
+      { type: 'list', content: ['Custom Transformer must implement fit() and transform() methods', 'Qiskit\'s ZZFeatureMap and QuantumKernel are pre-built for sklearn integration', 'Quantum kernel methods use SVC with kernel="precomputed" and the quantum kernel matrix', 'sklearn Pipeline enables seamless chaining with standard preprocessing steps', 'Cross-validation and grid search work transparently with quantum pipeline steps'] },
+      { type: 'flipcard', content: { front: 'What is the O(N²) challenge in quantum kernel methods?', back: 'Computing the quantum kernel matrix requires running quantum circuits for every pair of data points — O(N²) circuit executions. For datasets with thousands of samples, this becomes the main computational bottleneck.' } },
+    ],
+    activity: {
+      description: 'Build a custom sklearn Transformer that wraps a Qiskit feature map circuit, creating a fully integrated quantum-enhanced pipeline.',
+      steps: [
+        'Implement a QuantumFeatureExtractor class inheriting from TransformerMixin and BaseEstimator',
+        'In the transform method, encode each data sample into a quantum circuit using angle encoding',
+        'Measure Pauli-Z expectation values for each qubit to form the feature vector',
+        'Create a Pipeline: StandardScaler → QuantumFeatureExtractor → SVC',
+        'Use GridSearchCV to tune both the quantum parameters (reps in ZZFeatureMap) and classical parameters (SVC C, gamma)',
+        'Compare cross-validation scores of the quantum pipeline against a purely classical pipeline',
+      ],
+      discussionQuestions: [
+        'What are the advantages and disadvantages of making quantum circuits a drop-in sklearn component?',
+        'How would you handle the case where the quantum Transformer is too slow for large datasets?',
+      ],
+      materials: ['Qiskit, sklearn, scipy', 'Small benchmark datasets (Iris, Wine, Breast Cancer)'],
+      codetask: 'Extend the QuantumFeatureExtractor to accept a parameter `encoding` that chooses between "angle", "amplitude", and "zz" encoding strategies, and compare their performance.',
+    },
+    project: {
+      description: 'Create a reusable Python package that provides scikit-learn compatible quantum feature extractors, kernel estimators, and pipeline components for the QML community.',
+      objectives: [
+        'Implement a library of sklearn-compatible quantum transformers for common feature maps',
+        'Support both simulator and hardware backends transparently',
+        'Provide benchmarking utilities for comparing quantum vs classical pipelines',
+      ],
+      deliverables: [
+        'Python package with at least 3 quantum transformer classes and 1 quantum kernel estimator',
+        'Documentation with usage examples and API reference',
+        'Demonstration notebook showing quantum pipelines outperforming classical baselines on a suitable dataset',
+      ],
+      tools: ['Qiskit, sklearn, setuptools', 'Optional: PennyLane for additional feature map implementations'],
+    },
+    lab: {
+      description: 'Build and evaluate a complete sklearn pipeline with a quantum feature extraction step, comparing its performance against a classical baseline on a real-world classification task.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib',
+      steps: [
+        'Load the Wine dataset and split into train/test sets',
+        'Build a classical baseline pipeline: StandardScaler → SVC (RBF kernel)',
+        'Build a custom QuantumFeatureExtractor transformer using ZZFeatureMap with 4 qubits',
+        'Build the quantum pipeline: StandardScaler → QuantumFeatureExtractor → SVC (linear kernel)',
+        'Use cross_val_score to compare both pipelines with 5-fold CV',
+        'Plot the comparison and write a paragraph analyzing the results',
+      ],
+      expectedOutput: 'Cross-validation comparison plot and table showing mean ± std accuracy for classical vs quantum pipeline, with analysis of whether the quantum pipeline offers any improvement.',
+      challenge: 'Modify the quantum pipeline to use a QuantumKernel instead of a separate feature extractor. Does the kernel approach outperform the feature extraction approach on your dataset? Why or why not?',
+    },
     prerequisites: [
       '12.3 Classical Learning Components — understanding of classical ML models',
       'Module 7–8: Data encoding and feature maps — quantum circuit design for encoding',
@@ -383,7 +596,7 @@ const module12Data: Record<string, TopicData> = {
           { label: 'D', text: 'qiskit.providers' },
         ],
         correctAnswer: 'C',
-        explanation: 'The `qiskit-machine-learning` package provides `QuantumKernel` in `qiskit_machine_learning.kernels`. This class computes the quantum kernel matrix (pairwise fidelities) which can be passed to sklearn\'s SVC with `kernel=`"precomputed"`.',
+        explanation: 'The `qiskit-machine-learning` package provides `QuantumKernel` in `qiskit_machine_learning.kernels`. This class computes the quantum kernel matrix (pairwise fidelities) which can be passed to sklearn\'s SVC with `kernel="precomputed"`.',
         difficulty: 'Hard',
         topic: 'QuantumKernel',
       },
@@ -438,6 +651,60 @@ const module12Data: Record<string, TopicData> = {
 
   'module12-topic5': {
     topicId: 'module12-topic5',
+    story: 'In 2018, Xanadu released PennyLane, a library that did something remarkable: it made quantum circuits differentiable. A data scientist could now define a quantum circuit, plug it into PyTorch or TensorFlow as a layer, and train the entire hybrid model end-to-end using standard gradient descent. This was a paradigm shift — suddenly, quantum computing was not a separate world but a natural extension of deep learning. The same year, Google released TensorFlow Quantum (TFQ), integrating Cirq circuits as Keras layers. These frameworks opened the door to hybrid models that combine classical convolutional layers with quantum variational layers, processing classical data through a quantum lens before making predictions. Today, the question is no longer "can we integrate quantum with deep learning?" but "what hybrid architectures work best?"',
+    concepts: [
+      { type: 'text', content: 'PennyLane\'s qml.qnn.TorchLayer and TensorFlow Quantum\'s PQC layer wrap parameterized quantum circuits as differentiable layers in deep learning frameworks. Gradients flow through these layers via the parameter-shift rule, enabling end-to-end training with standard optimizers (Adam, SGD).' },
+      { type: 'math', content: '\\frac{\\partial \\langle \\psi(\\theta) | O | \\psi(\\theta) \\rangle}{\\partial \\theta_i} = \\frac{\\langle \\psi(\\theta + s) | O | \\psi(\\theta + s) \\rangle - \\langle \\psi(\\theta - s) | O | \\psi(\\theta - s) \\rangle}{2\\sin(s)}' },
+      { type: 'chart', content: 'graph TD\n  A[Input Image] --> B[Conv2D 32]\n  B --> C[MaxPool2D]\n  C --> D[Conv2D 64]\n  D --> E[Flatten]\n  E --> F[Quantum Layer\n  4 qubits, 8 params]\n  F --> G[Dense 128]\n  G --> H[Softmax Output]' },
+      { type: 'code', content: 'import pennylane as qml\nimport torch\n\n# Define quantum device\ndev = qml.device("default.qubit", wires=4)\n\n@qml.qnode(dev, interface="torch")\ndef quantum_layer(inputs, weights):\n    qml.AngleEmbedding(inputs, wires=range(4))\n    qml.BasicEntanglerLayers(weights, wires=range(4))\n    return [qml.expval(qml.PauliZ(i)) for i in range(4)]\n\n# Wrap as torch layer\nqlayer = qml.qnn.TorchLayer(quantum_layer, {"weights": (3, 4)})' },
+      { type: 'list', content: ['PennyLane supports PyTorch, TensorFlow, and JAX interfaces', 'TFQ uses Cirq circuits wrapped as tf.keras.layers.Layer', 'Parameter-shift rule enables analytic gradients for quantum circuits', 'Hybrid models can interleave multiple classical and quantum layers', 'End-to-end training means gradients flow from classical loss through quantum layers back to classical layers'] },
+      { type: 'flipcard', content: { front: 'Why is differentiability of quantum circuits so important?', back: 'Without differentiability, we could not use gradient-based optimization (Adam, SGD) for quantum parameters. The parameter-shift rule gives us analytic gradients, allowing quantum layers to be trained exactly like classical neural network layers.' } },
+    ],
+    activity: {
+      description: 'Build a hybrid neural network with a quantum layer inserted between classical layers, training end-to-end on a simple classification task.',
+      steps: [
+        'Define a PennyLane quantum device with 4 qubits',
+        'Create a QNode implementing AngleEmbedding + BasicEntanglerLayers with 8 trainable parameters',
+        'Wrap the QNode as a TorchLayer with appropriate weight shape',
+        'Build a PyTorch model: Linear(4→8) → QuantumLayer → Linear(4→2)',
+        'Train on a synthetic 2-class dataset using CrossEntropyLoss and Adam optimizer',
+        'Plot the training loss and compare convergence speed with and without the quantum layer',
+      ],
+      discussionQuestions: [
+        'How does adding a quantum layer affect the number of trainable parameters compared to a purely classical model of similar capacity?',
+        'What types of problems might benefit from having a quantum layer in the middle of a deep network?',
+      ],
+      materials: ['PennyLane, PyTorch (or TensorFlow)', 'Synthetic classification dataset'],
+      codetask: 'Modify the hybrid model to have 2 quantum layers (with a classical linear layer between them). Does this help or hurt performance? Investigate gradient flow through multiple quantum layers.',
+    },
+    project: {
+      description: 'Design and evaluate a hybrid deep learning architecture that combines classical convolutional layers with quantum variational layers for an image classification task.',
+      objectives: [
+        'Design at least 3 hybrid architectures with different placements of quantum layers (early, middle, late fusion)',
+        'Compare hybrid models against a purely classical baseline of similar parameter count',
+        'Analyze which architecture configurations yield the best accuracy and why',
+      ],
+      deliverables: [
+        'Python package with reusable hybrid model definitions (PennyLane + PyTorch/TensorFlow)',
+        'Benchmarking report comparing hybrid architectures on MNIST or Fashion-MNIST',
+        'Gradient analysis visualization showing gradient flow through quantum layers during training',
+      ],
+      tools: ['PennyLane, PyTorch or TensorFlow', 'Optional: TensorFlow Quantum for comparison'],
+    },
+    lab: {
+      description: 'Implement a hybrid neural network with a quantum variational layer using PennyLane integrated with PyTorch, train it on a real dataset, and analyze its performance.',
+      setup: 'pip install pennylane torch torchvision numpy matplotlib',
+      steps: [
+        'Load the Fashion-MNIST dataset and select 2 classes (e.g., T-shirt vs Sneaker)',
+        'Downsample images to 4×4 and flatten to 16 features',
+        'Build a classical baseline: Linear(16→64)→ReLU→Linear(64→2)',
+        'Build a hybrid model: Linear(16→32)→ReLU→QuantumLayer(4 qubits)→Linear(4→2)',
+        'Train both models for 20 epochs with the same optimizer and learning rate',
+        'Compare test accuracy, training time, convergence speed, and parameter count',
+      ],
+      expectedOutput: 'Comparison plot showing training curves for both models, with a table comparing test accuracy, parameter count, and training time. Analysis paragraph explaining any differences observed.',
+      challenge: 'Design a hybrid architecture that outperforms the classical baseline on a binary subset of Fashion-MNIST. Experiment with different numbers of qubits, quantum layer placements, and classical layer sizes to find the optimal configuration.',
+    },
     prerequisites: [
       '12.4 Integration with Scikit-Learn — understanding of quantum-classical pipeline integration patterns',
       'Familiarity with TensorFlow or PyTorch (conceptual understanding of autograd, layers, optimizers)',
@@ -546,6 +813,60 @@ const module12Data: Record<string, TopicData> = {
 
   'module12-topic6': {
     topicId: 'module12-topic6',
+    story: 'A student once said: "I understood hybrid QML in theory, but nothing made it click like building a pipeline myself." This lab is that moment of click. You have learned about NISQ constraints, quantum feature extraction, classical components, sklearn integration, and PennyLane layers — now it is time to assemble everything into a working hybrid learning pipeline. By the end of this lab, you will have built a model that runs classical data through a quantum circuit and makes predictions using a classical classifier. You will also have established a rigorous methodology for comparing hybrid models against classical baselines — a skill that separates serious QML practitioners from enthusiasts.',
+    concepts: [
+      { type: 'text', content: 'This lab integrates all Module 12 concepts into a single end-to-end pipeline. The pipeline includes: classical preprocessing (scaling), quantum encoding (feature map), quantum variational processing (trainable PQC), measurement, and classical prediction. A classical baseline (e.g., sklearn SVC with RBF kernel) serves as the benchmark.' },
+      { type: 'math', content: '\\text{Accuracy}_{\\text{hybrid}} \\stackrel{?}{>} \\text{Accuracy}_{\\text{classical}}, \\quad \\text{measured across } k \\text{ train-test splits with } \\mu \\pm \\sigma' },
+      { type: 'chart', content: 'graph TD\n  A[Raw Data] --> B[StandardScaler]\n  B --> C[Quantum Encoding\n  Angle/ZZFeatureMap]\n  C --> D[Variational Quantum\n  Circuit Trainable]\n  D --> E[Pauli Measurement]\n  E --> F[Classical Classifier\n  SVC / LogisticRegression]\n  F --> G[Prediction]\n  H[Classical Baseline\n  StandardScaler + SVC RBF] --> G' },
+      { type: 'code', content: '# Full hybrid pipeline skeleton\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.svm import SVC\n\npipeline = Pipeline([\n    ("scaler", StandardScaler()),\n    ("quantum_features", QuantumFeatureExtractor(num_qubits=4)),\n    ("classifier", SVC(kernel="linear"))\n])\n\n# Classical baseline\nbaseline = Pipeline([\n    ("scaler", StandardScaler()),\n    ("classifier", SVC(kernel="rbf"))\n])\n\n# Compare\nfrom sklearn.model_selection import cross_val_score\nhybrid_score = cross_val_score(pipeline, X, y, cv=5)\nclassical_score = cross_val_score(baseline, X, y, cv=5)' },
+      { type: 'list', content: ['Always build and evaluate the classical baseline first', 'Use cross-validation (5-fold) for statistically meaningful comparison', 'Report both mean and standard deviation of accuracy across folds', 'Document all hyperparameters: qubit count, circuit depth, encoding method, classical model, regularization', 'A negative result (quantum does not beat classical) is still valuable scientific output'] },
+      { type: 'flipcard', content: { front: 'What is data leakage and why is it critical in hybrid pipelines?', back: 'Data leakage occurs when the scaler is fitted on the full dataset before train-test splitting. This means test data statistics influence training transformations, giving overly optimistic performance. Always fit scalers only on the training set.' } },
+    ],
+    activity: {
+      description: 'Complete the hybrid pipeline lab by building, training, and evaluating a quantum-enhanced ML pipeline against a classical baseline, following rigorous experimental methodology.',
+      steps: [
+        'Preprocess data: perform train-test split (80:20), then fit StandardScaler on training data only',
+        'Build the classical baseline pipeline and evaluate with cross_val_score (5-fold)',
+        'Build the quantum pipeline with a custom QuantumFeatureExtractor using ZZFeatureMap on 4 qubits',
+        'Evaluate the quantum pipeline with cross_val_score using the same 5-fold splits',
+        'Compare scores: report mean ± std for both pipelines and test for statistical significance',
+        'Write a 1-page lab report documenting the methodology, results, and conclusions',
+      ],
+      discussionQuestions: [
+        'Did the quantum pipeline outperform the classical baseline? If yes, why? If no, what factors might explain the result?',
+        'How would you modify the pipeline to potentially improve hybrid performance? (More qubits? Different encoding? Deeper circuits?)',
+      ],
+      materials: ['Qiskit, sklearn, Jupyter notebook', 'Iris or Wine dataset for initial testing'],
+      codetask: 'Add a feature importance analysis step to your pipeline: use Random Forest on the quantum-extracted features to identify which Pauli expectation values are most predictive. Visualize the top features.',
+    },
+    project: {
+      description: 'Create an end-to-end reproducible benchmark that compares hybrid quantum-classical pipelines against purely classical baselines across multiple datasets, feature maps, and classical classifiers.',
+      objectives: [
+        'Build a reusable benchmarking framework for hybrid QML pipelines',
+        'Identify conditions under which quantum enhancement provides measurable improvement',
+        'Publish reproducible results that contribute to the community\'s understanding of practical QML',
+      ],
+      deliverables: [
+        'Python package with functions for building, training, and evaluating hybrid pipelines',
+        'Benchmark results across at least 5 datasets, 3 feature maps, and 3 classical classifiers',
+        'A written report with statistical analysis, visualizations, and recommendations for practitioners',
+      ],
+      tools: ['Qiskit, sklearn, pandas, matplotlib, seaborn', 'Optional: PennyLane for additional quantum layer options'],
+    },
+    lab: {
+      description: 'The capstone implementation lab for Module 12 — build a complete end-to-end hybrid learning pipeline and rigorously evaluate it against a classical baseline.',
+      setup: 'pip install qiskit qiskit-aer qiskit-machine-learning scikit-learn pandas matplotlib seaborn',
+      steps: [
+        'Load the Wine dataset and create a stratified train-test split (80:20, random_state=42)',
+        'Build a classical baseline: Pipeline([StandardScaler, SVC(rbf)]) and evaluate with 5-fold CV',
+        'Implement a QuantumFeatureExtractor with ZZFeatureMap(repetitions=2) on 4 qubits',
+        'Build the hybrid pipeline: Pipeline([StandardScaler, QuantumFeatureExtractor, SVC(linear)])',
+        'Run 5-fold CV on both pipelines and collect mean ± std accuracy',
+        'Visualize results with a bar chart (error bars showing std) and write a statistical comparison',
+      ],
+      expectedOutput: 'A comparison bar chart with error bars showing mean cross-validation accuracy for classical vs hybrid pipeline, along with a markdown report analyzing the results and discussing whether quantum advantage was observed.',
+      challenge: 'The hybrid pipeline may not beat the classical baseline on Wine dataset — that is expected. Your challenge is to design a new synthetic dataset where the quantum pipeline clearly outperforms the classical baseline. What properties must this dataset have? (Hint: think about non-linear patterns that a quantum feature map can exploit.)',
+    },
     prerequisites: [
       'All topics in Module 12 (12.1–12.5) — complete hybrid QML pipeline theory',
       'Module 11.7 Lab: Building a QNN — practical QNN implementation experience',
